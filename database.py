@@ -1,10 +1,35 @@
 import psycopg2
 import config
 
+#表示
+def l1_show(ip):
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor() 
 
-def connect(ip, once_neg_percent):
+
+
+    #全て取得
+    # sql_l1_select = "SELECT * FROM l1_user;"
+
+    # 一部のみ取得
+    sql_l1_select = "SELECT * FROM l1_user where user_id = '%s';"%(ip,)
+    cur.execute(sql_l1_select)
+
+     #全て取得
+    l1_show = cur.fetchall()
+
+
+    cur.close()
+    conn.close()  
+
+    return l1_show
+
+
+
+#挿入
+def l1_connect(ip, once_neg_percent):
     """ Connect to the PostgreSQL database server """
-    ip = ip.pop() #list解除
     conn = None
 
 

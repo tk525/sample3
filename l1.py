@@ -29,7 +29,7 @@ vect = CountVectorizer(max_df=1, stop_words='english').fit(tester)
 X_train = vect.transform(tester)
 
 new_tester = vect.get_feature_names()
-print('TESTER features:\n{}'.format(new_tester)) #文字リスト
+# print('TESTER features:\n{}'.format(new_tester)) #文字リスト ['alive', 'death', 'die', 'think', 'want', 'way']
 
 
 
@@ -48,13 +48,13 @@ dp_list_eachwords = tif.get_feature_names()
 #新規データ内にあるネガティブワードを、単語リストを参照しながらカウント
 badwords=0
 see_badwords = [badwords+dp_list_eachwords.count(new_tester[i]) for i in range(len(new_tester))]
-print(see_badwords) #リスト型、単語があれば１/なければ0
+# print(see_badwords) #リスト型、単語があれば１/なければ0 #[0, 1, 1, 0, 0, 0]
 
 
 
-#新規テキストに対するネガティブワードのパーセンテージ計算
-once_neg_percent = '{:.0%}'.format(sum(see_badwords) / len(see_badwords))
-print(once_neg_percent)
+#新規テキストに対するネガティブワードの計算を小数点で実行
+once_neg_percent = '{:.2}'.format(sum(see_badwords) / len(see_badwords))
+# print(once_neg_percent) #0.33
 
 
 
@@ -77,9 +77,22 @@ def get_ip() -> list:
             except KeyError as err:
                 pass
         return result
-ip = get_ip()
+ip = get_ip().pop()
 
 
 
 #データベース.pyにIPアドレスとネガティブパーセンテージ受け渡し
-x = database.connect(ip, once_neg_percent)
+# x = database.l1_connect(ip, once_neg_percent)
+
+
+
+# データベース.pyでデータベースの中身を取得
+l1_ip_df = pd.DataFrame(database.l1_show(ip))
+l1_ip_df_col = list(l1_ip_df[2])
+
+l1_ip_total=0
+for i in range(len(l1_ip_df_col)):
+    l1_ip_total = l1_ip_total + float(l1_ip_df_col[i])
+print(l1_ip_total/3)
+
+
