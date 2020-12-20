@@ -1,5 +1,9 @@
 import re
 import mglearn
+import netifaces as ni
+import psutil
+import os
+import socket
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,6 +12,10 @@ from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV, train_test_split, cross_val_score
 from sklearn.decomposition import LatentDirichletAllocation
+
+import database
+
+
 
 dp_list = pd.read_excel('depression_wrod_list.xlsx', index_col=0, header=0)
 tester = pd.read_csv('/Users/takipon/Desktop/dprapp/tester.csv')
@@ -47,3 +55,31 @@ print(see_badwords) #リスト型、単語があれば１/なければ0
 #新規テキストに対するネガティブワードのパーセンテージ計算
 once_neg_percent = '{:.0%}'.format(sum(see_badwords) / len(see_badwords))
 print(once_neg_percent)
+
+
+
+#IPアドレス取得
+def get_ip() -> list:
+    if os.name == "nt":
+        # Windows
+        return socket.gethostbyname_ex(socket.gethostname())[2]
+        pass
+    else:
+        # それ以外
+        result = []
+        address_list = psutil.net_if_addrs()
+        for nic in address_list.keys():
+            ni.ifaddresses(nic)
+            try:
+                ip = ni.ifaddresses(nic)[ni.AF_INET][0]['addr']
+                if ip not in ["127.0.0.1"]:
+                    result.append(ip)
+            except KeyError as err:
+                pass
+        return result
+ip = get_ip()
+
+
+
+#データベース.pyにIPアドレスとネガティブパーセンテージ受け渡し
+x = database.connect(ip, once_neg_percent)
