@@ -18,6 +18,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.neighbors import KNeighborsClassifier
 
 import database
+import l1_login
 
 
 
@@ -88,7 +89,7 @@ for i in range(len(enco_array_num_4knn)):
         enco_respond.append(enco_list[enco_array_num_4knn[i]])
         continue
 
-print(enco_respond) #新規データポイントの数に追いつくまで、enco_listの単語たちが入力されるようになる
+print('「感想」 %s'%enco_respond) #新規データポイントの数に追いつくまで、enco_listの単語たちが入力されるようになる
 
 
 
@@ -117,36 +118,17 @@ once_neg_percent = '{:.2}'.format(sum(see_badwords) / len(see_badwords))
 
 
 
-#IPアドレス取得
-def get_ip() -> list:
-    if os.name == "nt":
-        # Windows
-        return socket.gethostbyname_ex(socket.gethostname())[2]
-        pass
-    else:
-        # それ以外
-        result = []
-        address_list = psutil.net_if_addrs()
-        for nic in address_list.keys():
-            ni.ifaddresses(nic)
-            try:
-                ip = ni.ifaddresses(nic)[ni.AF_INET][0]['addr']
-                if ip not in ["127.0.0.1"]:
-                    result.append(ip)
-            except KeyError as err:
-                pass
-        return result
-ip = get_ip().pop()
+ip = l1_login.get_ip().pop()
 
 
 
-#データベース.pyにIPアドレスとネガティブパーセンテージ受け渡し
-x = database.l1_connect(ip, once_neg_percent)
+# #データベース.pyにIPアドレスとネガティブパーセンテージ受け渡し
+# x = database.l1_ai_connect(ip, once_neg_percent)
 
 
 
 # データベース.pyでデータベースの中身を取得
-l1_ip_df = pd.DataFrame(database.l1_show(ip))
+l1_ip_df = pd.DataFrame(database.l1_ai_show(ip))
 l1_ip_df_col = list(l1_ip_df[2])
 
 l1_ip_total=0
@@ -154,7 +136,7 @@ for i in range(len(l1_ip_df_col)):
     l1_ip_total = l1_ip_total + float(l1_ip_df_col[i])
 l1_ip_total = l1_ip_total/len(l1_ip_df_col)
 
-if l1_ip_total >= 0.3:
+if l1_ip_total >= 0.8:
     print('L2に進め')
 else:
     print('L1残留')
