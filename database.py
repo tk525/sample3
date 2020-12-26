@@ -1,17 +1,14 @@
 import psycopg2
 import config
 
-#表示
-def l1_show(ip):
+#Level1_user 表示
+def l1_ai_show(ip):
     params = config.config()
     conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
-
-
     #全て取得
     # sql_l1_select = "SELECT * FROM l1_user;"
-
     # 一部のみ取得
     sql_l1_select = "SELECT * FROM l1_user where user_id = '%s';"%(ip,)
     cur.execute(sql_l1_select)
@@ -19,27 +16,21 @@ def l1_show(ip):
      #全て取得
     l1_show = cur.fetchall()
 
-
     cur.close()
     conn.close()  
-
     return l1_show
 
 
 
-#挿入
-def l1_connect(ip, once_neg_percent):
+#Level1_user 挿入
+def l1_ai_connect(ip, once_neg_percent):
     """ Connect to the PostgreSQL database server """
     conn = None
-
-
 
     try:
         params = config.config()
         conn = psycopg2.connect(**params)
         cur = conn.cursor()        
-
-
 
         #l1_user dprappデータベースの中身表示
         sql_l1_select = "SELECT * FROM l1_user;"
@@ -61,8 +52,6 @@ def l1_connect(ip, once_neg_percent):
         # x = cur.fetchall()
         # print(x)
 
-
-
         # display the PostgreSQL database server version
         db_version = cur.fetchone()
         print(db_version)
@@ -75,3 +64,47 @@ def l1_connect(ip, once_neg_percent):
         if conn is not None:
             conn.close()
             print('Database connection closed.')
+
+
+
+#Level1_login 挿入
+def l1_login_connect(ip):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    try:
+        params = config.config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()        
+
+        sql_l1_login_insert = "INSERT INTO l1_login (user_id) VALUES ('%s');"%(ip)
+
+        cur.execute(
+            sql_l1_login_insert
+        )
+        conn.commit() #挿入
+       
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print('Database connection closed.')
+
+#Level1_user 表示
+def l1_login_show(ip):
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor() 
+
+    sql_l1_select = "SELECT * FROM l1_login where user_id = '%s' ORDER BY id DESC LIMIT 1;"%(ip,) #IDが一致したデータの最後に更新されたものを取得
+    cur.execute(sql_l1_select)
+
+     #全て取得
+    l1_show = cur.fetchall()
+
+    cur.close()
+    conn.close()  
+    return l1_show
+
