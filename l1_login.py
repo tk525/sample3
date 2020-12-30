@@ -34,6 +34,6 @@ ip = get_ip().pop()
 
 
 #IPアドレスが一致したデータの最終更新されたものを取得
-l1_login_last_record = database.l1_login_show(ip).pop()
-login_point_judge = 'ログインポイント付与' if l1_login_last_record[0] % 3 == 0 else '' #計算
-print(login_point_judge)
+# l1_login_last_record = database.l1_login_show(ip).pop()
+# login_point_judge = 'ログインポイント付与' if l1_login_last_record[0] % 3 == 0 else '' #計算
+# print(login_point_judge)
