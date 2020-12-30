@@ -119,16 +119,15 @@ once_neg_percent = '{:.2}'.format(sum(see_badwords) / len(see_badwords))
 
 
 ip = l1_login.get_ip().pop()
+text = ''.join(tester_list)
 
 
-
-# #データベース.pyにIPアドレスとネガティブパーセンテージ受け渡し
-# x = database.l1_ai_connect(ip, once_neg_percent)
-
+#データベース.pyにIPアドレスとネガティブパーセンテージ＋テキスト受け渡し
+x = database.l1_user_connect(ip, once_neg_percent, text)
 
 
 # データベース.pyでデータベースの中身を取得
-l1_ip_df = pd.DataFrame(database.l1_ai_show(ip))
+l1_ip_df = pd.DataFrame(database.l1_user_show(ip))
 l1_ip_df_col = list(l1_ip_df[2])
 
 l1_ip_total=0
