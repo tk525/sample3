@@ -31,7 +31,7 @@ def personality_judge(tester_x):
 
     presonality_result_patient_names = [patient_name_list[value] for value in list(itertools.chain.from_iterable(knn.kneighbors(tester_x)[1]))] #結果の２番目にあるarray(つまり、配列番号)を抜き出す、二次元を一次元に。そして患者リストの名前を参照する ['O', 'K', 'Q', 'M', 'E', 'N', 'J', 'D', 'F']
 
-    personality_result = [-petinet_dpr[i] for i in presonality_result_patient_names] #各患者名の鬱度カテを引用し、負の値にそのまま変換 [0.555555555555556, 0.407407407407407...
+    personality_result = [petinet_dpr[i] for i in presonality_result_patient_names] #各患者名の鬱度カテを引用し、そのまま変換 [0.555555555555556, 0.407407407407407...
     personality_result = float(personality_result[0]) #小数点の文字列をfloatで変換
 
     return personality_result
