@@ -168,4 +168,28 @@ def l2_personality_last_record(ip):
 
 
 
+#l2_dairy 挿入
+def l2_dairy(ip, mind, re_text):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    try:
+        params = config.config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()        
+
+        sql = "INSERT INTO l2_dairy (dairy_user_id, dairy_mind, dairy_text) VALUES ('%s', '%s', '%s');"%(ip, mind, re_text)
+
+        cur.execute(
+            sql
+        )
+        conn.commit() #挿入
+       
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print('Database connection closed.')
 
