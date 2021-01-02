@@ -23,12 +23,12 @@ record_intlist = [int(record_replace[i]) for i in range(len(record_replace))] #i
 record_2_deminsion = np.array(record_intlist).reshape(1,len(record_intlist)) #データの二次元配列化
 
 
-
 #最終スコアから性格の得点を合わせる
-# personality_judge = database.l2_personality_last_record(ip).pop()[3] #0.185185185185185
-personality_judge = 0.185185185185185
-total_score_personality = float(score) + -personality_judge #0.144814814814815
-
+def personal_score(ip):
+    # personality_judge = database.l2_personality_last_record(ip).pop()[3] #0.185185185185185
+    personality_judge = 0.185185185185185
+    total_score_personality = float(score) + -personality_judge #0.144814814814815
+    return total_score_personality
 
 
 recommend_name_list = np.array(recommend.index)
@@ -56,7 +56,7 @@ recommend_all_options = [recommend_concrete_more[i] for i in recommend_value] #[
 
 
 
-x = math.ceil(len(recommend_all_options) * total_score_personality) #3.62を切り上げ
+x = math.ceil(len(recommend_all_options) * personal_score(ip)) #3.62を切り上げ
 recommend_random = random.choices(recommend_all_options, k=len(recommend_all_options)-x) #選択肢の中からランダムに１つ選択する total25/21選択
 
 # print(recommend_random)
