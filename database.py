@@ -10,8 +10,8 @@ def l1_user_show(ip):
     #全て取得
     # sql_l1_select = "SELECT * FROM l1_user;"
     # 一部のみ取得
-    sql_l1_select = "SELECT * FROM l1_user where user_id = '%s';"%(ip,)
-    cur.execute(sql_l1_select)
+    sql = "SELECT * FROM l1_user where user_id = '%s';"%(ip,)
+    cur.execute(sql)
 
      #全て取得
     l1_show = cur.fetchall()
@@ -36,11 +36,9 @@ def l1_user_connect(ip, once_neg_percent, text):
     # 数字・文字入れれる
         # sql_l1_insert = "INSERT INTO l1_user (user_id, text) VALUES ('%s', '%s');"%('aaa','DSAD',)
     # 変数代入
-        sql_l1_insert = "INSERT INTO l1_user (user_id, text_score, text) VALUES ('%s', '%s', '%s');"%(ip, once_neg_percent, text)
+        sql = "INSERT INTO l1_user (user_id, text_score, text) VALUES ('%s', '%s', '%s');"%(ip, once_neg_percent, text)
 
-        cur.execute(
-            sql_l1_insert
-        )
+        cur.execute(sql)
         conn.commit() #挿入
 
         # cur.fetchall()
@@ -72,11 +70,9 @@ def l1_login_connect(ip):
         conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
-        sql_l1_login_insert = "INSERT INTO l1_login (user_id) VALUES ('%s');"%(ip)
+        sql = "INSERT INTO l1_login (login_user_id) VALUES ('%s');"%(ip)
 
-        cur.execute(
-            sql_l1_login_insert
-        )
+        cur.execute(sql)
         conn.commit() #挿入
        
         cur.close()
@@ -93,15 +89,15 @@ def l1_login_show(ip):
     conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
-    sql_l2_select = "SELECT * FROM l1_login where login_user_id = '%s' ORDER BY id DESC LIMIT 1;"%(ip,) #IDが一致したデータの最後に更新されたものを取得
-    cur.execute(sql_l2_select)
+    sql = "SELECT * FROM l1_login where login_user_id = '%s' ORDER BY id DESC LIMIT 1;"%(ip,) #IDが一致したデータの最後に更新されたものを取得
+    cur.execute(sql)
 
      #全て取得
-    l1_show = cur.fetchall()
+    show = cur.fetchall()
 
     cur.close()
     conn.close()  
-    return l1_show
+    return show
 
 
 
@@ -115,11 +111,11 @@ def l1_user_last_record(ip):
     cur.execute(sql)
 
      #全て取得
-    l1_show = cur.fetchall()
+    show = cur.fetchall()
 
     cur.close()
     conn.close()  
-    return l1_show
+    return show
 
 
 
@@ -180,9 +176,7 @@ def l2_dairy(ip, mind, re_text):
 
         sql = "INSERT INTO l2_dairy (dairy_user_id, dairy_mind, dairy_text) VALUES ('%s', '%s', '%s');"%(ip, mind, re_text)
 
-        cur.execute(
-            sql
-        )
+        cur.execute(sql)
         conn.commit() #挿入
        
         cur.close()
@@ -193,3 +187,44 @@ def l2_dairy(ip, mind, re_text):
             conn.close()
             print('Database connection closed.')
 
+
+
+def l2_endg(ip, end_goal, end_goal_tasks):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    try:
+        params = config.config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()        
+
+        """DBに同じIPアドレスがある場合はend_goal_tasksのみを更新させるために、
+        ipアドレスでDB内を検索し、もしあればend_goal_tasksのみ更新。
+        無くて、l2_endg.pyからend_goal_tasksを受け取っていればor受け取ってなければの分岐を作成
+        """
+        sql = "SELECT * FROM l2_endg where endg_user_id = '%s';"%(ip,)
+        cur.execute(sql)
+        show = cur.fetchall()
+
+        if not show: #ipアドレスでDB内を検索して、無い場合
+
+            if end_goal_tasks == 'empty': #l2_endg.pyからend_goal_tasksを受け取ってなければ
+                print('2')
+                sql = "INSERT INTO l2_endg (endg_user_id, end_goal) VALUES ('%s', '%s');"%(ip, end_goal)
+            else: #l2_endg.pyからend_goal_tasksを受け取っていれば
+                print('3')
+                sql = "INSERT INTO l2_endg (endg_user_id, end_goal, end_goal_tasks) VALUES ('%s', '%s', '%s');"%(ip, end_goal, end_goal_tasks)
+
+        else: #end_goal_tasksのみ更新
+            sql = "UPDATE l2_endg set end_goal_tasks = (select REPLACE (end_goal_tasks, '', '%s'));"%(end_goal_tasks,)
+
+        cur.execute(sql)
+        conn.commit()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print('Database connection closed.')
