@@ -14,11 +14,13 @@ def l1_user_show(ip):
     cur.execute(sql)
 
      #全て取得
-    l1_show = cur.fetchall()
+    show = cur.fetchall()
 
     cur.close()
-    conn.close()  
-    return l1_show
+    conn.close() 
+    print('l1_user Database connection closed.')
+ 
+    return show
 
 #l1_user 挿入
 def l1_user_connect(ip, once_neg_percent, text):
@@ -56,7 +58,7 @@ def l1_user_connect(ip, once_neg_percent, text):
     finally:
         if conn is not None:
             conn.close()
-            print('Database connection closed.')
+            print('l1_user_connect Database connection closed.')
 
 
 
@@ -81,7 +83,7 @@ def l1_login_connect(ip):
     finally:
         if conn is not None:
             conn.close()
-            print('Database connection closed.')
+            print('l1_login_connect Database connection closed.')
 
 #l1_loginの最終レコードのみ 表示
 def l1_login_show(ip):
@@ -96,7 +98,8 @@ def l1_login_show(ip):
     show = cur.fetchall()
 
     cur.close()
-    conn.close()  
+    conn.close() 
+    print('l1_login_show Database connection closed.')
     return show
 
 
@@ -115,6 +118,7 @@ def l1_user_last_record(ip):
 
     cur.close()
     conn.close()  
+    print('l1_user_last_record Database connection closed.')
     return show
 
 
@@ -133,9 +137,7 @@ def l2_personality(ip, record, personality_result):
 
         sql = "INSERT INTO l2_personality (personality_user_id, record, personality_result) VALUES ('%s', '%s', '%s');"%(ip, record, personality_result)
 
-        cur.execute(
-            sql
-        )
+        cur.execute(sql)
         conn.commit() #挿入
        
         cur.close()
@@ -144,7 +146,24 @@ def l2_personality(ip, record, personality_result):
     finally:
         if conn is not None:
             conn.close()
-            print('Database connection closed.')
+            print('l2_personality Database connection closed.')
+
+#l2_personalityの全てのレコードを取得 表示
+def l2_personality_all_record():
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor() 
+
+    sql = "SELECT * FROM l2_personality;"
+    cur.execute(sql)
+
+     #全て取得
+    show = cur.fetchall()
+
+    cur.close()
+    conn.close() 
+    print('l2_personality_all_record Database connection closed.') 
+    return show 
 
 #l2_personalityの最終レコードを取得 表示
 def l2_personality_last_record(ip):
@@ -159,7 +178,8 @@ def l2_personality_last_record(ip):
     show = cur.fetchall()
 
     cur.close()
-    conn.close()  
+    conn.close() 
+    print('l2_personality Database connection closed.') 
     return show 
 
 
@@ -185,10 +205,28 @@ def l2_dairy(ip, mind, re_text):
     finally:
         if conn is not None:
             conn.close()
-            print('Database connection closed.')
+            print('l2_dairy Database connection closed.')
+
+#l2_dairy 表示
+def l2_dairy_show(ip):
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor() 
+
+    sql = "SELECT * FROM l2_dairy where dairy_user_id = '%s';"%(ip,)
+    cur.execute(sql)
+
+     #全て取得
+    show = cur.fetchall()
+
+    cur.close()
+    conn.close() 
+    print('l2_dairy Database connection closed.') 
+    return show 
 
 
 
+#l2_endg 挿入or更新
 def l2_endg(ip, end_goal, end_goal_tasks):
     """ Connect to the PostgreSQL database server """
     conn = None
@@ -227,4 +265,117 @@ def l2_endg(ip, end_goal, end_goal_tasks):
     finally:
         if conn is not None:
             conn.close()
-            print('Database connection closed.')
+            print('l2_endg Database connection closed.')
+
+#l2_endg 表示
+def l2_endg_show(ip):
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor() 
+
+    sql = "SELECT * FROM l2_endg where endg_user_id = '%s';"%(ip,)
+    cur.execute(sql)
+
+     #全て取得
+    show = cur.fetchall()
+
+    cur.close()
+    conn.close() 
+    print('l2_endg Database connection closed.') 
+    return show 
+
+
+
+
+
+#l3_dairy ID一致・最終更新されたものを表示
+def l3_dairy(ip):
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor() 
+
+    #IDが一致したデータの最後に更新されたものを取得
+    sql = "SELECT * FROM l1_login where login_user_id = '%s' ORDER BY id DESC LIMIT 1;"%(ip,)
+    cur.execute(sql)
+
+     #全て取得
+    show = cur.fetchall()
+
+    cur.close()
+    conn.close()
+    print('l3_dairy(仮) Database connection closed.')  
+    return show
+
+
+
+#l3_bbs_txt 全て表示
+def l3_bbs_txt(ip):
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor() 
+
+    sql = "SELECT * FROM l3_bullentin_board_text where bbs_txt_user_id = '%s';"%(ip,)
+    cur.execute(sql)
+
+     #全て取得
+    show = cur.fetchall()
+
+    cur.close()
+    conn.close() 
+    print('l3_bbs_txt Database connection closed.') 
+    return show 
+
+#l3_bbs_txt 指定した日付表示
+def l3_bbs_txt_show_date(date):
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor() 
+
+    sql = "SELECT * FROM l3_bullentin_board_text WHERE bbs_txt_created_on::text LIKE '{}%';".format(date)
+    cur.execute(sql)
+
+     #全て取得
+    show = cur.fetchall()
+
+    cur.close()
+    conn.close() 
+    print('l3_bbs_txt Database connection closed.') 
+    return show 
+
+#l3_bbs_txt 指定したid表示
+def l3_bbs_txt_show_id(id):
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor() 
+
+    sql = "SELECT * FROM l3_bullentin_board_text where id = '%s';"%(id,)
+    cur.execute(sql)
+
+     #全て取得
+    show = cur.fetchall()
+
+    cur.close()
+    conn.close() 
+    print('l3_bbs_txt Database connection closed.') 
+    return show 
+
+
+
+#l3_bbs_act 指定した日付のアクション表示
+def l3_bbs_act_show_date(date):
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor() 
+
+    sql = "SELECT * FROM l3_bullentin_board_act WHERE bbs_act_created_on::text LIKE '{}%';".format(date)
+    cur.execute(sql)
+
+     #全て取得
+    show = cur.fetchall()
+
+    cur.close()
+    conn.close() 
+    print('l3_bbs_txt Database connection closed.') 
+    return show 
+
+
