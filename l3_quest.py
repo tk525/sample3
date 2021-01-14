@@ -1,15 +1,185 @@
 import re
+import os 
+import time
 import itertools
 import datetime
+import random
 import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
+from keras.models import Sequential
+from keras.layers import Dense, LSTM
 
 import database, l1_login
 
 
 personality_features_pre = np.array(pd.read_excel('/Users/takipon/Desktop/dprapp/sample.xlsx', index_col=0, header=0, sheet_name='personality_x2').columns)
 personality_features = np.delete(np.delete(personality_features_pre, 28), 27)
+
+
+
+
+
+#LSTM(RNN)
+class LSTM_RNN:
+
+    def make_sentense(act_txt_bbs):
+
+        #テキストデータの前処理
+        os.environ['KMP_DUPLICATE_LIB_OK']='TRUE'
+        start = time.time()
+
+        text_pre = pd.read_excel('/Users/takipon/Desktop/dprapp/sample.xlsx', index_col=None, header=0, sheet_name='sugesstion_list')
+        all_text = text_pre['text']
+        all_text = random.choice(all_text)
+
+        text = all_text + ' ' + act_txt_bbs + ' . '
+        print("文字数",text)
+
+
+
+        #LSTM設定をする
+        n_rnn = 10 #時系列の数
+        batch_size = 128 
+        epochs = 200 #多いと精度が上がるが、ラグいので20で
+        n_mid = 256 #中間層のニューロン数
+
+
+
+        #文字のベクトル化
+        # インデックスと文字で辞書を作成
+        chars = sorted(list(set(text)))  # setで文字の重複をなくし、各文字をリストに格納する
+        print("文字数（重複無し）", len(chars))
+        char_indices = {}  # 文字がキーでインデックスが値
+        for i, char in enumerate(chars):
+            char_indices[char] = i
+        indices_char = {}  # インデックスがキーで文字が値
+        for i, char in enumerate(chars):
+            indices_char[i] = char
+        
+        # 時系列データと、それから予測すべき文字を取り出す
+        time_chars = []
+        next_chars = []
+        for i in range(0, len(text) - n_rnn):
+            time_chars.append(text[i: i + n_rnn])
+            next_chars.append(text[i + n_rnn])
+        
+        # 入力と正解をone-hot表現で表す。１文字毎に0,1のベクトルをフルイメージです。
+        x = np.zeros((len(time_chars), n_rnn, len(chars)), dtype=np.bool)
+        t = np.zeros((len(time_chars), len(chars)), dtype=np.bool)
+        for i, t_cs in enumerate(time_chars):
+            t[i, char_indices[next_chars[i]]] = 1  # 正解をone-hot表現で表す
+            for j, char in enumerate(t_cs):
+                x[i, j, char_indices[char]] = 1  # 入力をone-hot表現で表す
+
+        print("xの形状", x.shape)
+        print("tの形状", t.shape)
+
+
+
+        #LSTMモデルの構築
+        model_lstm = Sequential()
+        model_lstm.add(LSTM(n_mid, input_shape=(n_rnn, len(chars))))
+        model_lstm.add(Dense(len(chars), activation="softmax"))
+        model_lstm.compile(loss='categorical_crossentropy', optimizer="adam")
+        print(model_lstm.summary())
+
+
+
+        #文章生成用の関数
+        from keras.callbacks import LambdaCallback
+        
+        def on_epoch_end(epoch, logs):
+            print("エポック: ", epoch)
+
+            elapsed_time = time.time() - start
+            print ("on_epoch_end  elapsed_time:{0}".format(elapsed_time) + "[sec]")
+            
+            beta = 4  # 確率分布を調整する定数
+            prev_text = text[0:n_rnn]  # 入力に使う文字
+            created_text = prev_text  # 生成されるテキスト
+            
+            print("シード: ", created_text)
+
+            for i in range(100):
+                # 入力をone-hot表現に
+                x_pred = np.zeros((1, n_rnn, len(chars)))
+                for j, char in enumerate(prev_text):
+                    x_pred[0, j, char_indices[char]] = 1
+                
+                # 予測を行い、次の文字を得る
+                # yの形状は、1列 1049行(文字数=出力層の数)になっている
+                y = model.predict(x_pred)
+                #print(y.shape )
+                p_power = y[0] ** beta  # 確率分布の調整(1049個の配列の中から、確率が高い文字を取得しようとしている　)
+                next_index = np.random.choice(len(p_power), p=p_power/np.sum(p_power))        
+                next_char = indices_char[next_index]
+
+                created_text += next_char
+                prev_text = prev_text[1:] + next_char
+
+            print(created_text)
+            print()
+            
+
+
+        # エポック終了後に実行される関数を設定
+        epock_end_callback= LambdaCallback(on_epoch_end=on_epoch_end)
+
+
+
+        #学習
+        model = model_lstm
+
+        elapsed_time = time.time() - start
+        print ("学習開始 elapsed_time:{0}".format(elapsed_time) + "[sec]")
+        history_lstm = model_lstm.fit(x, t,
+                            batch_size=batch_size,
+                            epochs=epochs,
+                            callbacks=[epock_end_callback])
+
+
+
+
+
+        # def get_antifical_text(lstm_predict):
+        def get_antifical_text():
+    
+            beta = 4  # 確率分布を調整する定数
+            prev_text = text[0:n_rnn]  # 入力に使う文字
+            created_text = prev_text  # 生成されるテキスト
+
+            for i in range(100):
+                x_pred = np.zeros((1, n_rnn, len(chars)))
+                for j, char in enumerate(prev_text):
+                    x_pred[0, j, char_indices[char]] = 1
+                    
+                y = model.predict(x_pred)
+                p_power = y[0] ** beta  # 確率分布の調整(1049個の配列の中から、確率が高い文字を取得しようとしている　)
+                next_index = np.random.choice(len(p_power), p=p_power/np.sum(p_power))        
+                next_char = indices_char[next_index]
+
+                created_text += next_char
+                prev_text = prev_text[1:] + next_char
+
+            return created_text
+
+
+        # lstm_predict = model_lstm.predict(x, batch_size=batch_size)
+        # antifical_txt_pre = get_antifical_text(lstm_predict)
+        antifical_txt_pre = get_antifical_text()
+        # print('AI文章',antifical_txt_pre)
+        antifical_txt = antifical_txt_pre.split()
+        # print(antifical_txt_pre)
+
+        ai_txt_num = antifical_txt.index('.')
+
+        #カンマがあるところまで作った文章を単語を入れていく
+        ai_txt = ''
+        for num in range(ai_txt_num):
+            ai_txt = ai_txt + ' ' + antifical_txt[num]
+
+        return ai_txt
 
 
 
@@ -124,9 +294,12 @@ for num in similarity_rate_endg:
 
 act_bbs = word_cut(other_user_act_bbs)
 txt_bbs = word_cut(other_user_txt_bbs)
+act_txt_bbs_pre = act_bbs + txt_bbs
+
+act_txt_bbs = ''
+for bbs in act_txt_bbs_pre:
+    act_txt_bbs = bbs +' '+ act_txt_bbs #today making great fuck day app today making great day app
 
 
-
-
-
-#LSTM(RNN)
+ai_txt = LSTM_RNN.make_sentense(act_txt_bbs)
+print(ai_txt)

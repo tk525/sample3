@@ -1,5 +1,6 @@
 import psycopg2
 import config
+import numpy as np
 
 #l1_user 表示
 def l1_user_show(ip):
@@ -22,6 +23,23 @@ def l1_user_show(ip):
  
     return show
 
+#l1_userのipが一致する最終レコードを取得 表示
+def l1_user_last_record(ip):
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor() 
+
+    sql = "SELECT login_user_id, text_score, created_on, num_of_times_using_bad_word FROM l1_login JOIN l1_user ON l1_login.login_user_id=l1_user.user_id ORDER BY created_on DESC LIMIT 1;" #IDが一致したデータの最後に更新されたものを取得
+    cur.execute(sql)
+
+     #全て取得
+    show = cur.fetchall()
+
+    cur.close()
+    conn.close()  
+    print('l1_user_last_record Database connection closed.')
+    return show
+
 #l1_user 挿入
 def l1_user_connect(ip, once_neg_percent, text):
     """ Connect to the PostgreSQL database server """
@@ -32,24 +50,33 @@ def l1_user_connect(ip, once_neg_percent, text):
         conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
-        #l1_user データ挿入
-    # 数字のみ
-        # sql_l1_insert = "INSERT INTO l1_user (user_id, text) VALUES (0062, 111);"
-    # 数字・文字入れれる
-        # sql_l1_insert = "INSERT INTO l1_user (user_id, text) VALUES ('%s', '%s');"%('aaa','DSAD',)
-    # 変数代入
-        sql = "INSERT INTO l1_user (user_id, text_score, text) VALUES ('%s', '%s', '%s');"%(ip, once_neg_percent, text)
 
+        sql = "SELECT login_user_id, text_score, created_on, num_of_times_using_bad_word FROM l1_login JOIN l1_user ON l1_login.login_user_id=l1_user.user_id ORDER BY created_on DESC LIMIT 1;" #IDが一致したデータの最後に更新されたものを取得
         cur.execute(sql)
-        conn.commit() #挿入
 
-        # cur.fetchall()
-        # x = cur.fetchall()
-        # print(x)
+        #全て取得
+        show = cur.fetchall()
+        show = np.array(show)
+        show = np.ravel(show)
 
-        # display the PostgreSQL database server version
-        db_version = cur.fetchone()
-        print(db_version)
+
+        #l1_user データ挿入
+        if type(show[len(show)-1]) == datetime.datetime: #最後のレコードの挿入されてるデータ型が日付であれば。つまり、初回であれば
+            # 数字のみ
+            # sql_l1_insert = "INSERT INTO l1_user (user_id, text) VALUES (0062, 111);"
+            # 数字・文字入れれる
+            # sql_l1_insert = "INSERT INTO l1_user (user_id, text) VALUES ('%s', '%s');"%('aaa','DSAD',)
+            # 変数代入
+            sql = "INSERT INTO l1_user (user_id, text_score, text) VALUES ('%s', '%s', '%s');"%(ip, once_neg_percent, text)
+
+        elif type(show[len(show)-1]) == int:
+            sql = "INSERT INTO l1_user (user_id, text_score, text, num_of_times_using_bad_word) VALUES ('%s', '%s', '%s', '%s');"%(ip, once_neg_percent, text, show[4])
+
+
+        print(sql)
+        # cur.execute(sql)
+        # conn.commit() #挿入
+
        
 	# close the communication with the PostgreSQL
         cur.close()
@@ -59,6 +86,31 @@ def l1_user_connect(ip, once_neg_percent, text):
         if conn is not None:
             conn.close()
             print('l1_user_connect Database connection closed.')
+
+def l1_user_connect_with_bw(ip, once_neg_percent, text, num_of_bw):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+
+    try:
+        params = config.config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()        
+
+        sql = "INSERT INTO l1_user (user_id, text_score, text, num_of_times_using_bad_word) VALUES ('%s', '%s', '%s', '%s');"%(ip, once_neg_percent, text, num_of_bw)
+        cur.execute(sql)
+        conn.commit() #挿入
+       
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print('l1_user_connect Database connection closed.')
+
+
+
 
 
 
@@ -100,25 +152,6 @@ def l1_login_show(ip):
     cur.close()
     conn.close() 
     print('l1_login_show Database connection closed.')
-    return show
-
-
-
-#l1_userのipが一致する最終レコードを取得 表示
-def l1_user_last_record(ip):
-    params = config.config()
-    conn = psycopg2.connect(**params)
-    cur = conn.cursor() 
-
-    sql = "SELECT login_user_id, text_score, created_on FROM l1_login JOIN l1_user ON l1_login.login_user_id=l1_user.user_id ORDER BY created_on DESC LIMIT 1;" #IDが一致したデータの最後に更新されたものを取得
-    cur.execute(sql)
-
-     #全て取得
-    show = cur.fetchall()
-
-    cur.close()
-    conn.close()  
-    print('l1_user_last_record Database connection closed.')
     return show
 
 
