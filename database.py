@@ -1,6 +1,9 @@
 import psycopg2
 import config
 import numpy as np
+import datetime
+
+
 
 #l1_user 表示
 def l1_user_show(ip):
@@ -70,12 +73,10 @@ def l1_user_connect(ip, once_neg_percent, text):
             sql = "INSERT INTO l1_user (user_id, text_score, text) VALUES ('%s', '%s', '%s');"%(ip, once_neg_percent, text)
 
         elif type(show[len(show)-1]) == int:
-            sql = "INSERT INTO l1_user (user_id, text_score, text, num_of_times_using_bad_word) VALUES ('%s', '%s', '%s', '%s');"%(ip, once_neg_percent, text, show[4])
+            sql = "INSERT INTO l1_user (user_id, text_score, text, num_of_times_using_bad_word) VALUES ('%s', '%s', '%s', '%s');"%(ip, once_neg_percent, text, show[len(show)-1])
 
-
-        print(sql)
-        # cur.execute(sql)
-        # conn.commit() #挿入
+        cur.execute(sql)
+        conn.commit() #挿入
 
        
 	# close the communication with the PostgreSQL
@@ -280,10 +281,8 @@ def l2_endg(ip, end_goal, end_goal_tasks):
         if not show: #ipアドレスでDB内を検索して、無い場合
 
             if end_goal_tasks == 'empty': #l2_endg.pyからend_goal_tasksを受け取ってなければ
-                print('2')
                 sql = "INSERT INTO l2_endg (endg_user_id, end_goal) VALUES ('%s', '%s');"%(ip, end_goal)
             else: #l2_endg.pyからend_goal_tasksを受け取っていれば
-                print('3')
                 sql = "INSERT INTO l2_endg (endg_user_id, end_goal, end_goal_tasks) VALUES ('%s', '%s', '%s');"%(ip, end_goal, end_goal_tasks)
 
         else: #end_goal_tasksのみ更新
@@ -393,6 +392,28 @@ def l3_bbs_txt_show_id(id):
     return show 
 
 
+def l3_bbs_txt_insert(ip, text):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    try:
+        params = config.config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()        
+
+        sql = "INSERT INTO l3_bullentin_board_text (bbs_txt_user_id, bbs_txt_text) VALUES ('%s', '%s');"%(ip, text)
+        cur.execute(sql)
+        conn.commit()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print('suspended_and_baned Database connection closed.')
+
+
 
 #l3_bbs_act 指定した日付のアクション表示
 def l3_bbs_act_show_date(date):
@@ -412,3 +433,63 @@ def l3_bbs_act_show_date(date):
     return show 
 
 
+
+
+#垢BAN / 3日間のsuspended 挿入
+def suspended_and_baned(ip, level):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    try:
+        params = config.config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()        
+
+        sql = "INSERT INTO suspended_and_baned (sb_user_id, sb_level) VALUES ('%s', '%s');"%(ip, level)
+        cur.execute(sql)
+        conn.commit()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print('suspended_and_baned Database connection closed.')
+
+#垢BAN / 3日間のsuspended 表示
+def suspended_and_baned_show(ip):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor()        
+
+    sql = "SELECT * FROM suspended_and_baned WHERE sb_user_id = '%s';"%(ip,)
+    cur.execute(sql)
+
+    #全て取得
+    show = cur.fetchall()
+
+    cur.close()
+    conn.close()
+    print('suspended_and_baned Database connection closed.')
+    return show
+
+#垢BAN / 3日間のsuspended 削除
+def suspended_and_baned_delete(ip):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor()        
+
+    sql = "delete from suspended_and_baned where sb_user_id = '%s';"%(ip,)
+    cur.execute(sql)
+    conn.commit()
+
+    cur.close()
+    conn.close()
+    print('suspended_and_baned Database connection closed.')
