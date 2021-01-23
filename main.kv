@@ -1,0 +1,109 @@
+<ChatBox@Label>:
+    size_hint_y: None
+    text_size: self.width, None
+    height: self.texture_size[1]
+    halign: 'left'
+    valign: 'middle'
+
+
+<SMS_user>:
+
+    GridLayout:
+        cols : 1
+
+        ScrollView:
+            RecycleView:
+                id: rv
+                viewclass: 'ChatBox'
+
+                RecycleBoxLayout:
+                    height: self.minimum_height
+                    size_hint_y: None
+                    default_size_hint: 1, None
+                    orientation: 'vertical'
+
+        TextInput:
+            hint_text : 'Write here'
+            id : txt
+            size_hint : .8 , .1
+            pos : 0 ,0
+                
+        BoxLayout:
+            size_hint: 1, 0.1
+            Button:
+                text : 'Send'
+                on_press : root.send_txt()
+
+
+<SMS_mher>:
+
+    GridLayout:
+        cols : 1
+
+        ScrollView:
+            RecycleView:
+                id: rv
+                viewclass: 'ChatBox'
+
+                RecycleBoxLayout:
+                    height: self.minimum_height
+                    size_hint_y: None
+                    default_size_hint: 1, None
+                    orientation: 'vertical'
+
+        TextInput:
+            hint_text : 'Write here'
+            id : txt
+            size_hint : .8 , .1
+            pos : 0 ,0
+                
+        BoxLayout:
+            size_hint: 1, 0.1
+
+            Button:
+                text : 'Receive'
+                on_press : root.receive_txt()
+
+
+
+<VChat>:
+    canvas:
+        Color:
+            rgb: (1, 1, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    Button:
+        center: self.parent.center
+        font_size: 100
+        height: 150
+        width: 850
+        color: (0, 0, 0, 2)
+        background_color: (0.52, 0.8, 0.98, 0.3)
+        text: "VCHAT WITH MHER"
+        on_press: root.camera()
+<MainScreen>:
+    CameraPreview:
+        id: camera_preview
+        size: root.size
+
+
+
+<Tel>:
+    canvas:
+        Color:
+            rgb: (1, 1, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    Button:
+        center: self.parent.center
+        font_size: 100
+        height: 150
+        width: 850
+        color: (0, 0, 0, 2)
+        background_color: (0.52, 0.8, 0.98, 0.3)
+        text: "TALK WITH MHER"
+        on_press: root.tel_record()
