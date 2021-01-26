@@ -178,7 +178,10 @@ class TelApp(App):
 
 
 #0:チャット 1:ビデオ電話 2:電話のみ
-order = 1
+order = 0
+
+ip = l1_login.get_ip().pop()
+memo_from_mc = 'she is fine.'
 
 mher = 2
 
@@ -243,6 +246,8 @@ if mher >= 1: #カウンセラーの待機が1以上の場合
     if order == 2: #TEL
         print('TEL')
         TelApp().run()
+
+    database.l3_mc_insert(ip, memo_from_mc)    
     
 else:
     print('現在混み合っております')

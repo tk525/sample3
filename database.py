@@ -218,6 +218,8 @@ def l2_personality_last_record(ip):
 
 
 
+
+
 #l2_dairy 挿入
 def l2_dairy(ip, mind, re_text):
     """ Connect to the PostgreSQL database server """
@@ -257,6 +259,40 @@ def l2_dairy_show(ip):
     conn.close() 
     print('l2_dairy Database connection closed.') 
     return show 
+
+#l2_dairy 更新
+def l2_dairy_update(ip):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    try:
+        params = config.config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()        
+
+        # sql = "SELECT encode(pm_user_name::bytea, 'escape') FROM paid_members;"
+        sql = "SELECT dairy_text FROM l2_dairy WHERE dairy_user_id = '%s';"%(ip,)
+        cur.execute(sql)
+        show = np.array(cur.fetchall())
+        show = np.ravel(show)
+        # print(show)
+
+        #l3_mcのmemoだけ暗号化
+        for text in show:
+            sql = "UPDATE l2_dairy SET dairy_text = '{}'::bytea WHERE dairy_user_id ='{}';".format(text,ip)
+
+        cur.execute(sql)
+        conn.commit()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print('l2_dairy Database connection closed.')
+
+
 
 
 
@@ -337,6 +373,8 @@ def l3_dairy(ip):
     conn.close()
     print('l3_dairy(仮) Database connection closed.')  
     return show
+
+
 
 
 
@@ -432,6 +470,8 @@ def l3_bbs_txt_insert(ip, text):
 
 
 
+
+
 #l3_bbs_act 指定した日付のアクション表示
 def l3_bbs_act_show_date(date):
     params = config.config()
@@ -465,6 +505,109 @@ def l3_bbs_act_show_id(id):
     conn.close() 
     print('l3_bbs_txt Database connection closed.') 
     return show 
+
+
+
+
+
+#l3_mc 挿入
+def l3_mc_insert(ip, memo):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    try:
+        params = config.config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()        
+
+        sql = "INSERT INTO l3_mc (mc_user_id, memo) VALUES ('%s', '%s');"%(ip, memo)
+        cur.execute(sql)
+        conn.commit()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print('l3_mher Database connection closed.')
+
+#l3_mc 更新
+def l3_mc_update(ip):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    try:
+        params = config.config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()        
+
+        # sql = "SELECT encode(pm_user_name::bytea, 'escape') FROM paid_members;"
+        sql = "SELECT memo FROM l3_mc WHERE mc_user_id = '%s';"%(ip,)
+        cur.execute(sql)
+        show = np.array(cur.fetchall())
+        show = np.ravel(show)
+
+        #l3_mcのmemoだけ暗号化
+        for text in show:
+            sql = "UPDATE l3_mc SET memo = '{}'::bytea WHERE mc_user_id ='{}';".format(text,ip)
+
+        cur.execute(sql)
+        conn.commit()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print('l3_mc Database connection closed.')
+
+
+
+
+
+#paid_mambers 表示
+def l3_create_user_show():
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor()        
+
+    sql = "SELECT encode(pm_user_name::bytea, 'escape') FROM paid_members;"
+    # sql = "SELECT * FROM paid_members;"
+    cur.execute(sql)
+    show = cur.fetchall()
+
+    cur.close()
+    conn.close() 
+    print('l3_bbs_txt Database connection closed.') 
+    return show
+
+#paid_mambers 挿入
+def l3_create_user_insert(user_name, birth, mail, tel, credit_card):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    try:
+        params = config.config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()        
+
+        sql = "INSERT INTO paid_members (pm_user_name, pm_birth, pm_mail, pm_tel, pm_credit_card) VALUES ('%s'::bytea, '%s'::bytea, '%s'::bytea, '%s'::bytea, '%s'::bytea);"%(user_name, birth, mail, tel, credit_card)
+        cur.execute(sql)
+        conn.commit()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print('paid_members Database connection closed.') 
+
 
 
 
@@ -527,3 +670,5 @@ def suspended_and_baned_delete(ip):
     cur.close()
     conn.close()
     print('suspended_and_baned Database connection closed.')
+
+
