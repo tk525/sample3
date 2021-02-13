@@ -1,0 +1,31 @@
+{%- extends "layout.html" %}
+{%- block content %}
+<div class="large" style='margin-top: 30px;'>
+    <div class="text-center">
+        {% if not word1 %}
+            <label class="subheader">{{word2}}</label>
+        {% else %}
+        <label class="subheader">{{word1}}</label>
+        {% for reco in word2 %}
+        <label class="subheader">{{reco}}</label>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+  <div class="large" style='margin-top: 50px;'>
+    <div class="text-center">
+      <label class="subheader">
+          How was your day?
+      </label>
+      <div style="margin-left:30px; margin-right:30px;">
+        <form action="/" method="POST">
+            <textarea placeholder="type here" name="text"></textarea>
+            <fieldset>
+                <button class="button" type="submit" value="Submit">Submit</button>
+            </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{%- endblock %}

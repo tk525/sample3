@@ -4,7 +4,9 @@ import pandas as pd
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 
-import database, l1_login
+import database, l1_login, main
+
+
 
 def personality_judge(tester_x):
 
@@ -44,10 +46,13 @@ def personality_to_db(tester_x, personality_judge):
     # personality_judge = personality_judge(tester_x)
     database.l2_personality(ip, tester_x, personality_judge)
 
+def l2_dignosis(survey):
 
+    # tester_x = [[1,0,1,1,1,0,0,0,1,1,1,0,1,0,1,0,1,0,0,1,0,0,0,1,1,0,1]] #14
+    tester_x = survey
 
-tester_x = [[1,0,1,1,1,0,0,0,1,1,1,0,1,0,1,0,1,0,0,1,0,0,0,1,1,0,1]] #14
+    #挿入コマンド
+    p_judge = personality_judge(tester_x)
+    # personality_to_db(np.ravel(tester_x), p_judge)
 
-#挿入コマンド
-# personality_judge = personality_judge(tester_x)
-# personality_to_db(np.ravel(tester_x), personality_judge)
+    return p_judge

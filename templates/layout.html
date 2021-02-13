@@ -1,0 +1,52 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sample3</title>
+    <link rel="stylesheet" href="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  </head>
+  <body>
+
+    <!-- Start Top Bar -->
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <ul class="menu">
+          <li class="menu-text">Sample3 site</li>
+          <li><a href="/">AI Listening</a></li>
+          <li><a href="/diagnosis_p">diagnosis personarity</a></li>
+          <li><a href="/dairy">Your Dairy</a></li>
+          <li><a href="/fg_p">Your Final Goal</a></li>
+          <li><a href="/quest_p">Self Quest</a></li>
+          <li><a href="/bbs_p">Message Board</a></li>
+          <li><a href="/twmc_p">Conversation with MC</a></li>
+        </ul>
+      </div>
+      <div class="top-bar-right">
+        <ul class="menu">
+          <li><a href="/uregistration_p">User Registration</a></li>
+        </ul>
+      </div>
+    </div>
+    <!-- End Top Bar -->
+    ajaxを実装、画像クリックしたら拡大、ページネーション、新規登録の部分変更<br>
+    チェックボックスでブラウザ終了時にDBに保存する？<br>
+    サンプルをDBに入れるべし<br>
+    {%- block content %}{% endblock %}
+    
+
+    <ul class="menu">
+      <li><a href="#">管理者</a></li>
+      <li><a href="#">ログイン/ログアウト</a></li>
+    </ul>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://dhbhdrzi4tiry.cloudfront.net/cdn/sites/foundation.js"></script>
+    <script>
+      $(document).foundation();
+    </script>
+  </body>
+</html>

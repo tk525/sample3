@@ -1,0 +1,76 @@
+{%- extends "layout.html" %}
+{%- block content %}
+
+
+<div class="large" style='margin-top: 30px;'>
+    <div class="text-center">
+
+        {{warn}}
+        <div style="margin-top: 30px; margin-left: 30px; margin-right: 30px;">
+            <form action="/bbs_p" method="POST">
+                <textarea name="new_post"></textarea>
+                <button class="button" type="submit">post</button>
+            </form>
+        </div>
+
+        
+        {{ pagination.info }}
+        {{ pagination.links }}
+        <div style="margin-top: 30px;">
+
+
+            <form id="form" style="margin-bottom: 30px;">
+            {% for i in range(txt|length) %}
+            <div class="card" style="margin-top: 10px; margin-bottom: 10px;">
+                <div class="card-section" style="background-color: lightblue;">
+                    <p>{{ date[i] }} - no.{{ bbs_id[i] }}</p>
+                    <p>{{ txt[i] }}</p> 
+                    <p id="{{ i }}">{{ act[i] }}</p>
+                </div>
+                <div class="card-section">
+                    <button name="{{i}},{{ bbs_id[i] }}" id="text_id" value="{{ act[i] }}" type="submit" style="background-color:darksalmon;">good</button> 
+                </div>
+              </div>
+                {% endfor %}
+            </form>
+
+
+        </div>
+        {{ pagination.links }}
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function(event) {
+      $(document).on('click', '#text_id',function(event){
+        event.preventDefault();
+        var value = $(this).attr('value');
+
+        var id_pre = $(this).attr('name');
+        var id_pre = id_pre.split(',');
+        var id = '#' + id_pre[0];
+
+        $.ajax({
+            type : 'post',
+            url : '/bbs_ajax',
+            data : {text : value, act : id_pre[1]},
+            dataType: 'json',
+            success: function(response){
+             $('#text_id').html(response['form'])
+             console.log($('#text_id').html(response['form']));
+           },
+           error: function(rs, e){
+             console.log(rs.responseText);
+           }
+        })
+
+        .done(function(data){
+          $(id).text(data.output).show();
+        });
+
+      });
+    });
+  </script>
+{% endblock %}
