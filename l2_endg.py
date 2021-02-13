@@ -1,27 +1,45 @@
 import re
 import pandas as pd
 import database, l2_ai, l1_login
+import numpy as np
 
+def endg_show():
+    ip = l1_login.get_ip().pop()
+    show = np.array(database.l2_endg_show(ip))
+    show = np.ravel(show)
 
-#もし初めてなら文を作れ＋login
-tester = pd.read_csv('/Users/takipon/Desktop/dprapp/tester_endg.csv')
+    return show[2], show[3]
 
-ip = l1_login.get_ip().pop()
+def endg_admittion():
+    
+    ip = l1_login.get_ip().pop()
+    personal_score = l2_ai.personal_score(ip)
+    personal_score = 0.9
 
-# personal_score = l2_ai.personal_score(ip) #0.144814814814815
-personal_score = 0.80
+    if personal_score >= 0.75:
+        result = 0
+    else:
+        result = 1
+    return result
 
-end_goal = '最終目標はXだよ'
+def endg(eg, task):
+    #もし初めてなら文を作れ＋login
+    # tester = pd.read_csv('/Users/takipon/Desktop/dprapp/tester_endg.csv')
 
+    ip = l1_login.get_ip().pop()
+    # personal_score = l2_ai.l2_ai.personal_score(ip) #0.144814814814815
 
+    # if personal_score >= 0.50:
 
-if personal_score <= 0.75:
-    end_goal_tasks = 'empty'
-elif personal_score >= 0.75:
-    # end_goal_tasks = list(tester.columns)
-    end_goal_tasks = ""
-    for col in tester.columns:
-        end_goal_tasks = col + "," + end_goal_tasks
-    end_goal_tasks = re.sub(r"'","''", end_goal_tasks) #クォーテーション対策。クォーテーションがある部分にもう１つ入れるとクォーテーションとして機能するらしい
+    #     if personal_score <= 0.75:
+    #         database.l2_endg(ip, eg)
 
-database.l2_endg(ip, end_goal, end_goal_tasks)
+    #     elif personal_score >= 0.75:
+
+    end_goal_tasks = task.split(',')
+    eg_task = ''
+    for txt in end_goal_tasks:
+        eg_task = eg_task + txt + ','
+            # end_goal_tasks = re.sub(r"'","''", end_goal_tasks) #クォーテーション対策。クォーテーションがある部分にもう１つ入れるとクォーテーションとして機能するらしい
+    database.l2_endg(ip, eg, eg_task)
+

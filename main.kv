@@ -10,6 +10,7 @@
 
     GridLayout:
         cols : 1
+        font_name: '/path/font/meiryo.ttc'
 
         ScrollView:
             RecycleView:
@@ -31,8 +32,53 @@
         BoxLayout:
             size_hint: 1, 0.1
             Button:
-                text : 'Send'
+                text : 'memo'
                 on_press : root.send_txt()
+
+        BoxLayout:
+            size_hint: 1, 0.05
+
+            Button:
+                id: button1
+                text : 'x'
+                on_press : root.on_label()
+
+            Button:
+                id: score
+                text : 'score'
+                on_press : root.score()
+
+            Button:
+                id: personality
+                text : 'personality'
+                on_press : root.personality()
+
+            Button:
+                id: endg_task
+                text : 'end goal and tasks'
+                on_press : root.endg_task()
+
+            Button:
+                id: bbs_txt
+                text : 'txt on bbs'
+                on_press : root.bbs_txt()
+
+            Button:
+                id: bbs_act
+                text : 'act on bbs'
+                on_press : root.bbs_act()
+
+        ScrollView:
+            size_hint: 1, 0.05
+            id: kkk
+            BoxLayout:
+                id: gogo
+                text: 'here, we draw users information'
+                orientation: 'vertical'
+            
+
+
+
 
 
 <SMS_mher>:

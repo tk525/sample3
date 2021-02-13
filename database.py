@@ -14,7 +14,8 @@ def l1_user_show(ip):
     #全て取得
     # sql_l1_select = "SELECT * FROM l1_user;"
     # 一部のみ取得
-    sql = "SELECT * FROM l1_user where user_id = '%s';"%(ip,)
+    # sql = "SELECT * FROM l1_user where user_id = '%s';"%(ip,)
+    sql = "SELECT * FROM l1_user where user_id = %s;"%(ip,)
     cur.execute(sql)
 
      #全て取得
@@ -221,7 +222,7 @@ def l2_personality_last_record(ip):
 
 
 #l2_dairy 挿入
-def l2_dairy(ip, mind, re_text):
+def l2_dairy(ip, mind, re_text, img):
     """ Connect to the PostgreSQL database server """
     conn = None
 
@@ -230,8 +231,9 @@ def l2_dairy(ip, mind, re_text):
         conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
-        sql = "INSERT INTO l2_dairy (dairy_user_id, dairy_mind, dairy_text) VALUES ('%s', '%s', '%s');"%(ip, mind, re_text)
+        sql = "INSERT INTO l2_dairy (dairy_user_id, dairy_mind, dairy_text, img) VALUES ('%s', '%s', '%s', '%s');"%(ip, mind, re_text, img)
 
+        print(img)
         cur.execute(sql)
         conn.commit() #挿入
        
@@ -249,7 +251,24 @@ def l2_dairy_show(ip):
     conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
-    sql = "SELECT * FROM l2_dairy where dairy_user_id = '%s';"%(ip,)
+    sql = "SELECT * FROM l2_dairy where dairy_user_id = '%s' ORDER BY dairy_created_on DESC;"%(ip,)
+    cur.execute(sql)
+
+     #全て取得
+    show = cur.fetchall()
+
+    cur.close()
+    conn.close() 
+    print('l2_dairy Database connection closed.') 
+    return show 
+
+#l2_dairy 表示
+def l2_dairy_show_text_encode(ip):
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor() 
+
+    sql = "SELECT encode(dairy_text::bytea, 'escape') FROM l2_dairy where dairy_user_id = '%s' ORDER BY dairy_created_on DESC;"%(ip,)
     cur.execute(sql)
 
      #全て取得
@@ -321,8 +340,12 @@ def l2_endg(ip, end_goal, end_goal_tasks):
             else: #l2_endg.pyからend_goal_tasksを受け取っていれば
                 sql = "INSERT INTO l2_endg (endg_user_id, end_goal, end_goal_tasks) VALUES ('%s', '%s', '%s');"%(ip, end_goal, end_goal_tasks)
 
-        else: #end_goal_tasksのみ更新
-            sql = "UPDATE l2_endg set end_goal_tasks = (select REPLACE (end_goal_tasks, '', '%s'));"%(end_goal_tasks,)
+        else: 
+            if end_goal == 'empty':#end_goal_tasksのみ更新
+                sql = "UPDATE l2_endg SET (end_goal_tasks) = ('%s');"%(end_goal_tasks,)
+            else:
+                sql = "UPDATE l2_endg SET (end_goal, end_goal_tasks) = ('%s', '%s');"%(end_goal, end_goal_tasks,)
+
 
         cur.execute(sql)
         conn.commit()
@@ -379,6 +402,21 @@ def l3_dairy(ip):
 
 
 #l3_bbs_txt 全て表示
+def l3_bbs_all_txt():
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor() 
+
+    sql = "SELECT * FROM l3_bullentin_board_text ORDER BY id DESC;"
+    cur.execute(sql)
+    show = cur.fetchall()
+
+    cur.close()
+    conn.close() 
+    print('l3_bbs_txt Database connection closed.') 
+    return show 
+
+#l3_bbs_txt 全て表示
 def l3_bbs_txt(ip):
     params = config.config()
     conn = psycopg2.connect(**params)
@@ -418,7 +456,7 @@ def l3_bbs_txt_show_id(id):
     conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
-    sql = "SELECT * FROM l3_bullentin_board_text where bbs_txt_user_id = '%s';"%(id,)
+    sql = "SELECT * FROM l3_bullentin_board_text WHERE bbs_txt_user_id = '%s';"%(id,)
     cur.execute(sql)
 
      #全て取得
@@ -506,6 +544,67 @@ def l3_bbs_act_show_id(id):
     print('l3_bbs_txt Database connection closed.') 
     return show 
 
+#l3_bbs_act 表示
+def l3_bbs_act_show_all():
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor() 
+
+    sql = "SELECT * FROM l3_bullentin_board_act;"
+    cur.execute(sql)
+
+     #全て取得
+    show = cur.fetchall()
+
+    cur.close()
+    conn.close() 
+    print('l3_bbs_txt Database connection closed.') 
+    return show 
+
+#l3_bbs_act 挿入
+def l3_bbs_act_insert(ip, act):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    try:
+        params = config.config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()        
+
+        sql = "INSERT INTO l3_bullentin_board_act (bbs_act_user_id, bbs_act) VALUES ('%s', '%s');"%(ip, act)
+        cur.execute(sql)
+        conn.commit()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print('l3_bbs_act Database connection closed.')
+
+#l3_bbs_act 挿入
+def l3_bbs_act_delete(ip, act):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    try:
+        params = config.config()
+        conn = psycopg2.connect(**params)
+        cur = conn.cursor()        
+
+        sql = "DELETE FROM l3_bullentin_board_act WHERE bbs_act_user_id = '%s' AND bbs_act = '%s';"%(ip, act)
+        cur.execute(sql)
+        conn.commit()
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+    finally:
+        if conn is not None:
+            conn.close()
+            print('l3_bbs_act Database connection closed.')
+
 
 
 
@@ -567,7 +666,7 @@ def l3_mc_update(ip):
 
 
 
-#paid_mambers 表示
+#paid_mambers 名前 表示
 def l3_create_user_show():
     """ Connect to the PostgreSQL database server """
     conn = None
@@ -586,8 +685,68 @@ def l3_create_user_show():
     print('l3_bbs_txt Database connection closed.') 
     return show
 
+#paid_mambers 名前 表示
+def l3_create_user_show_all(ip):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor()        
+
+    sql = "SELECT encode(pm_user_id::bytea, 'escape') FROM paid_members;"
+    cur.execute(sql)
+    show = cur.fetchall()
+
+    for num, ips in enumerate(show):
+        if ips[0] == ip:
+            break
+
+
+    sql = ["SELECT encode(pm_user_name::bytea, 'escape') FROM paid_members;",
+        "SELECT encode(pm_birth::bytea, 'escape') FROM paid_members;",
+        "SELECT encode(pm_mail::bytea, 'escape') FROM paid_members;",
+        "SELECT encode(pm_tel::bytea, 'escape') FROM paid_members;",
+        "SELECT encode(pm_credit_card::bytea, 'escape') FROM paid_members;"]
+    datas = []
+
+    for i in range(len(sql)):
+        cur.execute(sql[i])
+        data = cur.fetchall()
+        datas.append(data[num])
+
+
+    cur.close()
+    conn.close() 
+    print('l3_bbs_txt Database connection closed.') 
+    return datas
+
+#paid_mambers ipアドレス 表示
+def l3_create_user_show_ip(ip):
+    """ Connect to the PostgreSQL database server """
+    conn = None
+
+    params = config.config()
+    conn = psycopg2.connect(**params)
+    cur = conn.cursor()        
+
+    sql = "SELECT encode(pm_user_id::bytea, 'escape') FROM paid_members;"
+    cur.execute(sql)
+    shows = cur.fetchall()
+
+    for show in shows:
+        if show[0] == ip:
+            show = 'OK'
+        else:
+            show = ''
+    
+    cur.close()
+    conn.close() 
+    print('l3_bbs_txt Database connection closed.') 
+    return show
+
 #paid_mambers 挿入
-def l3_create_user_insert(user_name, birth, mail, tel, credit_card):
+def l3_create_user_insert(user_name, birth, mail, tel, credit_card, ip):
     """ Connect to the PostgreSQL database server """
     conn = None
 
@@ -596,7 +755,7 @@ def l3_create_user_insert(user_name, birth, mail, tel, credit_card):
         conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
-        sql = "INSERT INTO paid_members (pm_user_name, pm_birth, pm_mail, pm_tel, pm_credit_card) VALUES ('%s'::bytea, '%s'::bytea, '%s'::bytea, '%s'::bytea, '%s'::bytea);"%(user_name, birth, mail, tel, credit_card)
+        sql = "INSERT INTO paid_members (pm_user_name, pm_birth, pm_mail, pm_tel, pm_credit_card, pm_user_id) VALUES ('%s'::bytea, '%s'::bytea, '%s'::bytea, '%s'::bytea, '%s'::bytea, '%s'::bytea);"%(user_name, birth, mail, tel, credit_card, ip)
         cur.execute(sql)
         conn.commit()
 

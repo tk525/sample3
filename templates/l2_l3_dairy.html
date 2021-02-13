@@ -1,0 +1,44 @@
+{%- extends "layout.html" %}
+{%- block content %}
+
+<div class="large" style='margin-top: 30px;'>
+    <div class="text-center">
+        <ul class="accordion" data-accordion>
+            <li class="accordion-item" data-accordion-item>
+            <a href="#" class="accordion-title">write your day below text box.</a>
+            <div class="accordion-content" data-tab-content style="margin-right: 30px; margin-left: 30px;">
+                <form action="/dairy" method="POST" enctype="multipart/form-data">
+                    <textarea name="new_text"></textarea>
+                    <label for="exampleFileUpload" class="button">Upload File</label>
+                    <input type="file" id="exampleFileUpload" name="imgfile" class="show-for-sr">
+                    <button class="button" type="submit">write</button>
+                    <!-- <button class="button" type="submit" value="Submit">Submit</button> -->
+                </form>
+            </div>
+            </li>
+        </ul>
+
+        {{d_comment}}
+
+
+
+
+
+        
+        <div style="margin-top: 30px; margin-bottom: 10px;">
+            <div style="margin-top: 20px; margin-bottom: 20px;">
+                {{ pagination.info }}
+                {{ pagination.links }}
+                {% for i in range(text|length) %}
+                    <div style="margin-top: 10px;" >{{text[i][1]}} {{text[i][0]}}</div>
+                    {% if text[i][2] != None%}
+                        <img src="{{text[i][2]}}" style="height: 100px;">
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}

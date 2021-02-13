@@ -1,0 +1,45 @@
+{%- extends "layout.html" %}
+{%- block content %}
+
+
+<div class="large" style='margin-top: 30px;'>
+    <div class="text-center">
+
+        {% for i in range(fgs|length) %}
+            <div style="color: rgb(94, 110, 255);">
+                <input type="checkbox" name="q1" data-question="{{i}}" class="question_checkbox"> {{fgs[i]}}
+            </div>        
+        {% endfor %}
+
+        {{sug}}
+
+    </div>
+</div>
+
+
+<!-- チェックボックス保持 -->
+<script> 
+    var targets = document.querySelectorAll('.question_checkbox');
+    var checkboxClick = function(){
+        var self = this;
+        sessionStorage.setItem('input[data-question="' + self.getAttribute('data-question') + '"]', self.checked);
+    };
+    Array.prototype.forEach.call(targets, function(e){
+        e.addEventListener('click', checkboxClick)
+    })
+
+    var addSessionStorage = function() {
+        var session = sessionStorage;
+        Object.keys(session).forEach(function(key){
+            if(key.indexOf('data-question') !== -1 && this[key] === 'true' && document.querySelector(key) !== null) {
+                document.querySelector(key).checked = true;
+            }
+        }, session)
+    }
+
+    window.addEventListener('load', addSessionStorage);
+</script>
+
+{% endblock %}
+
+
