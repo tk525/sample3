@@ -3,6 +3,27 @@
 
 
 <div class="large" style='margin-top: 30px;'>
+  <div class="text-center">
+    {% for error in form.uc_name.errors %}
+    <p style="color: orange;">{{ error }}</p>
+    {% endfor %}
+    {% for error in form.uc_birth.errors %}
+    <p style="color: orange;">{{ error }}</p>
+    {% endfor %}
+    {% for error in form.uc_email.errors %}
+    <p style="color: orange;">{{ error }}</p>
+    {% endfor %}
+    {% for error in form.uc_phonenum.errors %}
+    <p style="color: orange;">{{ error }}</p>
+    {% endfor %}
+    {% for error in form.uc_dcard.errors %}
+    <p style="color: orange;">{{ error }}</p>
+    {% endfor %}
+  </div>
+</div>
+
+
+<div class="large" style='margin-top: 30px;'>
     <div class="text-center">
 
             <!-- エラー警告 -->
@@ -17,14 +38,26 @@
         <form action="/uregistration_p" method="POST">
 
             <div class="cell small-12">
-                {% for i in range(title|length) %}
-                <label>{{ title[i] }}
-                  <input type="text" value="{{ sample[i] }}" name="{{i}}" aria-describedby="exampleHelpTextNothing" data-abide-ignore>
-                </label>
+              <label>your current info '{{ sample[0] }}'
+                {{ form.csrf_token }}
+                {{ form.uc_name(size=20, placeholder="Alex Gold") }}
+              </label>
+              <label>your current info '{{ sample[1] }}'
+                {{ form.uc_birth(placeholder="19981201") }}
+              </label>
+              <label>your current info '{{ sample[2] }}'
+                {{ form.uc_email(placeholder="sample@gmail.com") }}
+              </label>
+              <label>your current info '{{ sample[3] }}'
+                {{ form.uc_phonenum(placeholder="12300005555") }}
+              </label>
+              <label>your current info '{{ sample[4] }}'
+                {{ form.uc_dcard(placeholder="E100000") }}
+              </label>
             </div>
-                {% endfor %}
- 
+
             <button class="button" type="submit" value="Submit">Submit</button>
+
         </form>
 
     </div>

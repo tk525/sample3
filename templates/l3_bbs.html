@@ -3,12 +3,22 @@
 
 
 <div class="large" style='margin-top: 30px;'>
+  <div class="text-center">
+    {% for error in form.bbs_txt.errors %}
+    <p style="color: orange;">{{ error }}</p>
+    {% endfor %}
+  </div>
+</div>
+
+
+<div class="large" style='margin-top: 30px;'>
     <div class="text-center">
 
         {{warn}}
         <div style="margin-top: 30px; margin-left: 30px; margin-right: 30px;">
             <form action="/bbs_p" method="POST">
-                <textarea name="new_post"></textarea>
+                {{ form.csrf_token }}
+                {{ form.bbs_txt(size=20) }}
                 <button class="button" type="submit">post</button>
             </form>
         </div>
@@ -33,7 +43,6 @@
               </div>
                 {% endfor %}
             </form>
-
 
         </div>
         {{ pagination.links }}

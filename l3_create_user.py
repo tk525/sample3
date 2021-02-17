@@ -3,6 +3,12 @@ import numpy as np
 
 import database, l1_login
 
+def user_check():
+
+    ip = l1_login.get_ip().pop()
+    result = database.l3_create_user_show_ip(ip)
+    return result
+
 def l3_user_show():
 
     ip = l1_login.get_ip().pop()
@@ -16,11 +22,15 @@ def l3_cuser(user_name, birth, mail, tel, credit_card):
     ip = l1_login.get_ip().pop()
     database.l3_create_user_insert(user_name, birth, mail, tel, credit_card, ip)
 
-
-
     #＋日記/メンタルヘルス、心理カウンセラーからのメモを暗号化
 
     ip = l1_login.get_ip().pop()
 
     database.l2_dairy_update(ip)
     database.l3_mc_update(ip)
+
+def cuser_update(lists):
+
+    ip = l1_login.get_ip().pop()
+    id_num = database.l3_create_user_show_idnum(ip)
+    database.l3_uc_update(lists, id_num)
