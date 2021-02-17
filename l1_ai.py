@@ -32,7 +32,7 @@ def l1_ai(text):
     #新規データの重要な単語抜き出し
     tester_list = list(tester) #csvを文章でlist化
 
-    vect = CountVectorizer(max_df=1, stop_words='english').fit(tester_list)
+    vect = CountVectorizer(max_df=70, stop_words='english').fit(tester_list)#max_dfは入力された文字数に関係する？
     X_train = vect.transform(tester_list)
 
     new_tester_words = vect.get_feature_names()

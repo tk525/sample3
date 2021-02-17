@@ -105,7 +105,7 @@ def bbs(txt):
 
     warn=''
     # スコアが規定以上 / 垢BANの謹慎期間を超えた / sb_level=1
-    if score > 0.1 and ban_user_date <= datetime.datetime.now() and ban_user_lv == 1: #🌟本番ではscore > 0.8 and ban_user_date+datetime.timedelta(days=3) <= datetime.datetime.now() and ban_user_lv == 1
+    if score >= 0 and ban_user_date <= datetime.datetime.now() and ban_user_lv == 1: #🌟本番ではscore > 0.8 and ban_user_date+datetime.timedelta(days=3) <= datetime.datetime.now() and ban_user_lv == 1
 
         #垢BANの謹慎期間を超えたので削除
         database.suspended_and_baned_delete(ip)

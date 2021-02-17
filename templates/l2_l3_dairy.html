@@ -8,7 +8,10 @@
             <a href="#" class="accordion-title">write your day below text box.</a>
             <div class="accordion-content" data-tab-content style="margin-right: 30px; margin-left: 30px;">
                 <form action="/dairy" method="POST" enctype="multipart/form-data">
-                    <textarea name="new_text"></textarea>
+                    <!-- <textarea name="new_text"></textarea> -->
+                    {{ form.csrf_token }}
+                    {{ form.dairy_txt.label }} {{ form.dairy_txt(size=20) }}
+
                     <label for="exampleFileUpload" class="button">Upload File</label>
                     <input type="file" id="exampleFileUpload" name="imgfile" class="show-for-sr">
                     <button class="button" type="submit">write</button>
@@ -22,6 +25,13 @@
 
 
 
+        <div class="large" style='margin-top: 30px;'>
+            <div class="text-center">
+              {% for error in form.dairy_txt.errors %}
+              <p style="color: orange;">{{ error }}</p>
+              {% endfor %}
+            </div>
+          </div>
 
 
         

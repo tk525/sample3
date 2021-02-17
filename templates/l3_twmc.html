@@ -211,6 +211,7 @@
     });
 </script>
 
+
 <div class="large" style='margin-top: 30px;'>
     <div class="text-center">
         
@@ -221,8 +222,18 @@
             </form>
         {% elif txt == '0' %}
             <ul id="messages"></ul>
-            <input type="text" id="myMessage">
-            <button id="sendbutton">Send</button>
+            {{ form.csrf_token }}
+            {{ form.twmc_txt(size=20, id="myMessage") }}
+            <button id="sendbutton" style="background-color: lightblue;">Send</button>
+            
+            <div class="large" style='margin-top: 30px;'>
+                <div class="text-center">
+                  {% for error in form.twmc_txt.errors %}
+                  <p style="color: orange;">{{ error }}</p>
+                  {% endfor %}
+                </div>
+            </div>
+            
             <div style="margin-top: 30px;">
                 <ul>
                     <li style="display: inline;"><button id="views" name="graph" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">graph</button></li>

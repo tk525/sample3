@@ -11,6 +11,20 @@
         {% endfor %}
         </div>
 
+
+        <div class="large" style='margin-top: 30px;'>
+            <div class="text-center">
+              {% for error in form.endg_txt.errors %}
+              <p style="color: orange;">{{ error }}</p>
+              {% endfor %}
+              {% for error in form.tasks_txt.errors %}
+              <p style="color: orange;">{{ error }}</p>
+              {% endfor %}
+            </div>
+        </div>
+
+
+
         <div style="margin-left:30px; margin-right:30px;">
             <form action="/fg_p" method="POST">
                 
@@ -18,8 +32,14 @@
                 <label class="subheader">
                     {{our_text[i]}}
                 </label>
-                <textarea name="{{i}}" placeholder="type"></textarea>
                 {% endfor %}
+
+                <!-- <textarea name="{{i}}" placeholder="type"></textarea> -->
+                {{ form.csrf_token }}
+                {{ form.endg_txt.label }}
+                {{ form.endg_txt(size=20) }}
+                {{ form.tasks_txt(size=20) }}
+
                 <fieldset>
                     <button class="button" type="submit" value="Submit">Submit</button>
                 </fieldset>
