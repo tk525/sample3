@@ -109,3 +109,9 @@ def roomname():
         roomname = 0
 
     return roomname
+
+def owner():
+
+    roomname = '/'+pd.read_pickle("wtf.csv")
+    print('確認', roomname)
+    return roomname

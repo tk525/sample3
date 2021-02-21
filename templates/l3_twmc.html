@@ -17,28 +17,10 @@
         // どうも１つづつ個別で存在しないといけないらしい。
         // オブジェクト思考みたいな書き方したら死んだ
 
-
-        // // 部屋を作成した
-        // $('#choice').on('click', function() {
-        //     var value = $('#twmc_rn').val();           
-        //     socket.on('join', function(roomname) {
-        //         socket.emit("join", value);
-        //     });
-        // });
-        // socket.on('connect', function(data) {
-        //     socket.send('connected!');
-        // });
-
-// namespaceのurlの指定方法がわからねえ！
-
         $('#choice').on('click', function() {
             var value = $('#twmc_rn').val();
             socket_emi.emit("join", value);
         });
-
-
-        
-
 
         socket.on('message', function(msg) {
             $("#messages").append('<li>'+msg+'</li>');
@@ -48,16 +30,33 @@
         $('#sendbutton').on('click', function() {
 
             var roomname = '/'+$('#rn').val();
-            console.log('かくにん',roomname);
-            socket_emi.emit("tes", roomname);
 
             socket.send($('#myMessage').val(), roomname);
             $('#myMessage').val('');
 
         });
+        
 
-                
+        // ページ離れる時の処理
+        window.onload = function(){
+            //ページを離れる直前にメッセージを表示する
+            // window.onbeforeunload = function(){
+            //     return "OK?";
+            // }
 
+            //ページを離れた時に新規ウィンドウを開く
+            window.onunload = function(){
+                // window.open();
+                var roomname = $('#rn').val();
+
+                socket_emi.emit("parting", roomname);
+
+            }
+        }
+
+
+        
+        // グラフ
         $(document).on('click', '#views',function(event){
             event.preventDefault();
             var sign_pre = $(this).attr('name');

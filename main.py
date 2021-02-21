@@ -401,7 +401,19 @@ def twmc():
 @app.route("/twmc_p", methods=["post"])
 def twmc_post():
     
-    rmsign = l3_twmc.roomname()
+    rmsign = l3_twmc.roomname() #部屋番号
+
+    #部屋番号一時記録
+    try:
+        rms = pd.read_pickle("rm.csv")
+    except EOFError:
+        rms = None
+    if rms == None:
+        rms = [rmsign]
+    else:
+        rms.append(rmsign)
+    pd.to_pickle(rms, "rm.csv")
+    # print(pd.read_pickle("rm.csv"))
 
     form = TwmcForm()
     sign = request.form['action']
@@ -442,15 +454,16 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 def join(roomname):
     print(f"A user is joining. roomname is {roomname}")
     join_room(roomname)
-    # pd.to_pickle(roomname, "rm.csv") #変数書き出し
 
+@socketio.on("parting")
+def parting(roomname):
 
+    room_list = pd.read_pickle("rm.csv")
+    print(room_list)
+    num = room_list.index(roomname)
+    room_list.pop(num)
 
-
-
-@socketio.on("tes")
-def tes(roomname):
-    print('tes：',roomname)
+    pd.to_pickle(room_list, "rm.csv")
 
 #namespaceが部屋番号っぽい
 class test(Namespace):
@@ -470,15 +483,66 @@ class test(Namespace):
 
 
 
-
-
-
 #管理者ページ
 @app.route("/own_p")
 def own():
 
-    return render_template('own.html')
+    try:
+        rm_list = pd.read_pickle("rm.csv")
 
+        rm_list.insert(0,len(rm_list)+1)
+        # print(rm_list) #[3, 'yjc9sPHkIW', 'yjc9sPHkIW', 'a']
+
+    except EOFError:
+        rm_list = ''
+
+    roomsign = 0
+
+    form = ''
+
+    return render_template('own.html', rooms=rm_list, roomsign=roomsign, form=form)
+
+@app.route("/own_p", methods=["post"])
+def own_post():
+
+    #XSS対策 validation
+    form = TwmcForm()
+
+    roomsign = 1
+    tenta_val = ''
+
+    in_use = pd.read_pickle("rm.csv")
+
+    num=0
+    for i in range(len(in_use)):
+        num += 1
+
+        try:
+            tenta_val = request.form['%s'%num]
+        except KeyError:
+            tenta_val = None
+        
+        if tenta_val != None:
+            break 
+
+    pd.to_pickle(tenta_val, "own_rm.csv")
+    # print(pd.read_pickle("wtf.csv"))
+
+    return render_template('own.html', rooms=tenta_val, roomsign=roomsign, form=form)
+
+# これは必要なのか
+# @socketio.on("joins") 
+# def joins(roomname):
+#     print(f"A user is joining. roomname is {roomname}")
+#     join_room(roomname)
+
+@socketio.on('message', namespace=l3_twmc.owner())
+# @socketio.on('message', namespace=x)
+def handleMessage(msg, roomname):
+    print('['+ roomname +'] Message: ' + msg )
+    send(msg,
+        broadcast=True,
+    )
 
 
 
