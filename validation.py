@@ -67,3 +67,9 @@ class TwmcForm(FlaskForm):
             Length(max=70),
         ]
     )
+    twmc_room = TextField('twmc_room', 
+        validators=[
+            DataRequired(),
+            Length(max=10),
+        ]
+    )

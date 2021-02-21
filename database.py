@@ -4,7 +4,6 @@ import numpy as np
 import datetime
 
 
-
 #l1_user 表示
 def l1_user_show(ip):
     params = config.config()
@@ -783,28 +782,34 @@ def l3_create_user_show_all(ip):
     cur.execute(sql)
     show = cur.fetchall()
 
-    for num, ips in enumerate(show):
-        if ips[0] == ip:
-            break
-    num = num + 1 #配列は0からだけど、DBは1からなので
+    if show == []:
+        datas = ''
 
-    sql = ["SELECT encode(pm_user_name::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";",
-        "SELECT encode(pm_birth::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";",
-        "SELECT encode(pm_mail::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";",
-        "SELECT encode(pm_tel::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";",
-        "SELECT encode(pm_credit_card::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";"]
+    else:
+        for num, ips in enumerate(show):
+            if ips[0] == ip:
+                break
+        num = num + 1 #配列は0からだけど、DBは1からなので
 
-    datas_pre = []
-    for i in range(len(sql)):
-        cur.execute(sql[i])
-        data = cur.fetchall()
-        datas_pre.append(data)
-    datas_pre=np.array(datas_pre)
-    datas=np.ravel(datas_pre)
+        sql = ["SELECT encode(pm_user_name::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";",
+            "SELECT encode(pm_birth::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";",
+            "SELECT encode(pm_mail::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";",
+            "SELECT encode(pm_tel::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";",
+            "SELECT encode(pm_credit_card::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";",
+            "SELECT pm_room_name FROM paid_members WHERE id = "+ str(num) +";"
+        ]
+
+        datas_pre = []
+        for i in range(len(sql)):
+            cur.execute(sql[i])
+            data = cur.fetchall()
+            datas_pre.append(data)
+        datas_pre=np.array(datas_pre)
+        datas=np.ravel(datas_pre)
 
     cur.close()
     conn.close() 
-    print('l3_bbs_txt Database connection closed.') 
+    print('paidmembers Database connection closed.') 
     return datas
 
 #paid_mambers ipアドレス 表示
@@ -821,12 +826,16 @@ def l3_create_user_show_ip(ip):
     shows = cur.fetchall()
 
     num = 1
-    for show in shows:
-        if show[0] == ip:
-            show = 'OK'
-        else:
-            show = ''
-        num = num + 1 #配列番号になる
+    if len(shows) > 0:
+        for show in shows:
+            if show[0] == ip:
+                show = 'OK'
+            else:
+                show = ''
+            num = num + 1 #配列番号になる
+    else:
+        show = ''
+
 
     cur.close()
     conn.close() 
@@ -861,7 +870,8 @@ def l3_create_user_show_idnum(ip):
     return num
 
 #paid_mambers 挿入
-def l3_create_user_insert(user_name, birth, mail, tel, credit_card, ip):
+def l3_create_user_insert(user_name, birth, mail, tel, credit_card, ip, roomname):
+# def l3_create_user_insert(user_name, birth, mail, tel, credit_card, ip):
     """ Connect to the PostgreSQL database server """
     conn = None
 
@@ -871,9 +881,10 @@ def l3_create_user_insert(user_name, birth, mail, tel, credit_card, ip):
         cur = conn.cursor()        
 
         # sql = "INSERT INTO paid_members (pm_user_name, pm_birth, pm_mail, pm_tel, pm_credit_card, pm_user_id) VALUES ('%s'::bytea, '%s'::bytea, '%s'::bytea, '%s'::bytea, '%s'::bytea, '%s'::bytea);"%(user_name, birth, mail, tel, credit_card, ip)
-        #SQL攻撃対策
-        sql = "INSERT INTO paid_members (pm_user_name, pm_birth, pm_mail, pm_tel, pm_credit_card, pm_user_id) VALUES (%s::bytea, %s::bytea, %s::bytea, %s::bytea, %s::bytea, %s::bytea);"
-        para = (user_name, birth, mail, tel, credit_card, ip)
+        #SQL攻撃対策 roomnameだけは裸で
+        sql = "INSERT INTO paid_members (pm_user_name, pm_birth, pm_mail, pm_tel, pm_credit_card, pm_user_id, pm_room_name) VALUES (%s::bytea, %s::bytea, %s::bytea, %s::bytea, %s::bytea, %s::bytea, %s);"
+        # sql = "INSERT INTO paid_members (pm_user_name, pm_birth, pm_mail, pm_tel, pm_credit_card, pm_user_id) VALUES (%s::bytea, %s::bytea, %s::bytea, %s::bytea, %s::bytea, %s::bytea);"
+        para = (user_name, birth, mail, tel, credit_card, ip, roomname)
         cur.execute(sql, para)
         conn.commit()
 
@@ -886,7 +897,8 @@ def l3_create_user_insert(user_name, birth, mail, tel, credit_card, ip):
             print('paid_members Database connection closed.') 
 
 #paid_mambers 挿入
-def l3_uc_update(lists, id_num):
+def l3_uc_update(lists, id_num, roomname):
+# def l3_uc_update(lists, id_num):
     """ Connect to the PostgreSQL database server """
     conn = None
 
@@ -897,23 +909,28 @@ def l3_uc_update(lists, id_num):
         
         if len(lists) == 1:
         #SQL攻撃対策?
-            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea WHERE id = "+str(id_num)+";"
+            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea, pm_room_name = "+roomname+" WHERE id = "+str(id_num)+";"
+            # sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea WHERE id = "+str(id_num)+";"
 
         if len(lists) == 2:
         #SQL攻撃対策?
-            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea WHERE id = "+str(id_num)+";"
+            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea, pm_room_name = "+roomname+" WHERE id = "+str(id_num)+";"
+            # sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea WHERE id = "+str(id_num)+";"
 
         if len(lists) == 3:
         #SQL攻撃対策?
-            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea WHERE id = "+str(id_num)+";"
+            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea, pm_room_name = "+roomname+" WHERE id = "+str(id_num)+";"
+            # sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea WHERE id = "+str(id_num)+";"
 
         if len(lists) == 4:
         #SQL攻撃対策?
-            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea ,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea ,"+lists[3][0]+" = '"+lists[3][1]+"'::bytea WHERE id = "+str(id_num)+";"
+            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea ,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea ,"+lists[3][0]+" = '"+lists[3][1]+"'::bytea, pm_room_name = "+roomname+" WHERE id = "+str(id_num)+";"
+            # sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea ,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea ,"+lists[3][0]+" = '"+lists[3][1]+"'::bytea WHERE id = "+str(id_num)+";"
 
         if len(lists) == 5: #一応フル変更verも用意
         #SQL攻撃対策?
-            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea ,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea ,"+lists[3][0]+" = '"+lists[3][1]+"'::bytea ,"+lists[4][0]+" = '"+lists[4][1]+"'::bytea WHERE id = "+str(id_num)+";"
+            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea ,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea ,"+lists[3][0]+" = '"+lists[3][1]+"'::bytea ,"+lists[4][0]+" = '"+lists[4][1]+"'::bytea, pm_room_name = "+roomname+" WHERE id = "+str(id_num)+";"
+            # sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea ,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea ,"+lists[3][0]+" = '"+lists[3][1]+"'::bytea ,"+lists[4][0]+" = '"+lists[4][1]+"'::bytea WHERE id = "+str(id_num)+";"
 
         cur.execute(sql)
         conn.commit()

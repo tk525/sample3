@@ -5,22 +5,58 @@
 <script type="text/javascript">
     $(document).ready(function() {
     
-        var socket = io.connect('http://127.0.0.1:5000');//flask接続アドレスと同じにしなければならぬ...
-    
-        socket.on('connect', function() {
-            socket.send('User has connected!');
+        var x = $('#rn').val();
+        console.log('ここ',x);
+
+        // アドレスに+α追加するとemit系が死ぬ
+        //flask接続アドレスと同じにしなければならぬ...
+        // urlを指定するとemitが死ぬが、指定しなければ公開になる。
+        var socket_emi = io.connect('http://127.0.0.1:5000');
+        var socket = io.connect('http://127.0.0.1:5000'+'/'+x);
+        
+        // どうも１つづつ個別で存在しないといけないらしい。
+        // オブジェクト思考みたいな書き方したら死んだ
+
+
+        // // 部屋を作成した
+        // $('#choice').on('click', function() {
+        //     var value = $('#twmc_rn').val();           
+        //     socket.on('join', function(roomname) {
+        //         socket.emit("join", value);
+        //     });
+        // });
+        // socket.on('connect', function(data) {
+        //     socket.send('connected!');
+        // });
+
+// namespaceのurlの指定方法がわからねえ！
+
+        $('#choice').on('click', function() {
+            var value = $('#twmc_rn').val();
+            socket_emi.emit("join", value);
         });
-    
+
+
+        
+
+
         socket.on('message', function(msg) {
             $("#messages").append('<li>'+msg+'</li>');
             console.log('Received message');
         });
-    
+                
         $('#sendbutton').on('click', function() {
-            socket.send($('#myMessage').val());
+
+            var roomname = '/'+$('#rn').val();
+            console.log('かくにん',roomname);
+            socket_emi.emit("tes", roomname);
+
+            socket.send($('#myMessage').val(), roomname);
             $('#myMessage').val('');
+
         });
-    
+
+                
 
         $(document).on('click', '#views',function(event){
             event.preventDefault();
@@ -215,41 +251,72 @@
 <div class="large" style='margin-top: 30px;'>
     <div class="text-center">
         
-        {% if txt =='' %}
-            <form action="/twmc_p" method="POST">
-                <button value=0 name="action" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">chat</button>
-                <button value=2 name="action" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">voice call</button>
-            </form>
-        {% elif txt == '0' %}
-            <ul id="messages"></ul>
-            {{ form.csrf_token }}
-            {{ form.twmc_txt(size=20, id="myMessage") }}
-            <button id="sendbutton" style="background-color: lightblue;">Send</button>
-            
-            <div class="large" style='margin-top: 30px;'>
-                <div class="text-center">
-                  {% for error in form.twmc_txt.errors %}
-                  <p style="color: orange;">{{ error }}</p>
-                  {% endfor %}
+
+        {% if roomname == 0 %}
+            <div>
+                <p>you must create a user account</p>
+            </div>
+        {% else %}
+
+            {% if txt =='' %}
+
+                <div class="large" style='margin-top: 30px;'>
+                    <div class="text-center">
+                    {% for error in form.twmc_room.errors %}
+                    <p style="color: orange;">{{ error }}</p>
+                    {% endfor %}
+                    </div>
                 </div>
-            </div>
-            
-            <div style="margin-top: 30px;">
-                <ul>
-                    <li style="display: inline;"><button id="views" name="graph" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">graph</button></li>
-                    <li style="display: inline;"><button id="views" name="personality" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">personality</button></li>
-                    <li style="display: inline;"><button id="views" name="endgtask" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">end goal and tasks</button></li>
-                    <li style="display: inline;"><button id="views" name="bbsontxt" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">bbs on text</button></li>
-                    <li style="display: inline;"><button id="views" name="bbsonact" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">bbs on act</button></li>
-                </ul>
-                <canvas id="view"></canvas>
-                <!-- <p id="view"></p> -->
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
-            </div>
 
 
-        {% elif txt == '2' %}
-            coming soon!
+                <form action="/twmc_p" method="POST">
+                    <p id="twmc_rn">{{ roomname }}</p>
+                    <!-- {{ form.csrf_token }}
+                    {{ form.twmc_room(size=20, id="twmc_rn") }} -->
+                    <button id="choice" value=0 name="action" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">chat</button>
+                    <button id="choice" value=2 name="action" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">voice call</button>
+                </form>
+
+            {% elif txt == '0' %}
+                
+                <ul id="messages"></ul>
+                {{ form.csrf_token }}
+                {{ form.twmc_txt(size=20, id="myMessage") }}
+                <input id="rn" value="{{ roomname }}" style="display: none;"></p>
+                <button id="sendbutton" style="background-color: lightblue;">Send</button>
+                
+
+                <!-- <p>input your name</p>
+                {{ form.csrf_token }}
+                {{ form.twmc_room(size=20, id="twmc_rn") }}
+                <button id="choice">ok</button> -->
+
+                <div class="large" style='margin-top: 30px;'>
+                    <div class="text-center">
+                    {% for error in form.twmc_txt.errors %}
+                    <p style="color: orange;">{{ error }}</p>
+                    {% endfor %}
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <ul>
+                        <li style="display: inline;"><button id="views" name="graph" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">graph</button></li>
+                        <li style="display: inline;"><button id="views" name="personality" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">personality</button></li>
+                        <li style="display: inline;"><button id="views" name="endgtask" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">end goal and tasks</button></li>
+                        <li style="display: inline;"><button id="views" name="bbsontxt" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">bbs on text</button></li>
+                        <li style="display: inline;"><button id="views" name="bbsonact" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">bbs on act</button></li>
+                    </ul>
+                    <canvas id="view"></canvas>
+                    <!-- <p id="view"></p> -->
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+                </div>
+
+
+            {% elif txt == '2' %}
+                coming soon!
+            {% endif %}
+        
         {% endif %}
 
     </div>

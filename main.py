@@ -2,11 +2,12 @@ import csv
 import datetime
 import os
 import math
-import numpy as np
 import bleach
+import pandas as pd
+import numpy as np
 from flask import Flask, render_template, request
-from flask_socketio import SocketIO, send
 from flask import send_from_directory, redirect, url_for, jsonify
+from flask_socketio import join_room, leave_room, SocketIO, send, Namespace, emit
 from werkzeug.utils import secure_filename
 from flask_paginate import Pagination, get_page_parameter
 
@@ -389,18 +390,23 @@ def bbs_pagination_func(datas, date, act, bbs_id):  #ページネーション
 #L3会話withMC Conversation with MC🌟
 @app.route("/twmc_p")
 def twmc():
-
+    
+    form = TwmcForm()
     txt =''
 
-    return render_template('l3_twmc.html', txt=txt)
+    rmsign = l3_twmc.roomname()
+
+    return render_template('l3_twmc.html', roomname=rmsign, txt=txt, form=form)
 
 @app.route("/twmc_p", methods=["post"])
 def twmc_post():
+    
+    rmsign = l3_twmc.roomname()
 
     form = TwmcForm()
     sign = request.form['action']
 
-    return render_template('l3_twmc.html', txt=sign, form=form)
+    return render_template('l3_twmc.html', txt=sign, form=form, roomname=rmsign)
 
 @app.route("/twmc_ajax", methods=["post"])
 def twmc_ajax():
@@ -427,13 +433,42 @@ def twmc_ajax():
             return jsonify({'output':form})
 
 
+
 app.config['SECRET_KEY'] = 'mysecret'
 socketio = SocketIO(app, cors_allowed_origins='*')
 
-@socketio.on('message')
-def handleMessage(msg):
-	# print('Message: ' + msg)
-	send(msg, broadcast=True)
+# @socketio.on("join", namespace='/jimin')
+@socketio.on("join") 
+def join(roomname):
+    print(f"A user is joining. roomname is {roomname}")
+    join_room(roomname)
+    # pd.to_pickle(roomname, "rm.csv") #変数書き出し
+
+
+
+
+
+@socketio.on("tes")
+def tes(roomname):
+    print('tes：',roomname)
+
+#namespaceが部屋番号っぽい
+class test(Namespace):
+
+    roomname = '/'+l3_twmc.roomname()
+
+    @socketio.on('message', namespace=roomname)
+    # @socketio.on('message', namespace=x)
+    def handleMessage(msg, roomname):
+        print('['+ roomname +'] Message: ' + msg )
+        send(msg,
+            broadcast=True,
+            # namespace=roomname
+        )
+
+
+
+
 
 
 

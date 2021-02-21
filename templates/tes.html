@@ -1,0 +1,114 @@
+{%- extends "layout.html" %}
+{%- block content %}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+    
+        var socket = io.connect('http://127.0.0.1:5000');//flask接続アドレスと同じにしなければならぬ...
+        
+        // どうも１つづつ個別で存在しないといけないらしい。
+        // オブジェクト思考みたいな書き方したら死んだ
+
+
+        // // 部屋を作成した
+        // $('#choice').on('click', function() {
+        //     var value = $('#twmc_rn').val();           
+        //     socket.on('join', function(roomname) {
+        //         socket.emit("join", value);
+        //     });
+        // });
+
+// joinとhandleMessageが起動できた
+
+        $('#choice').on('click', function() {
+            // socket.on('join', function(data) {
+            var value = $('#twmc_rn').val();
+            socket.emit("join", value);
+            // });
+        });
+
+        // socket.on('connect', function(data) {
+        //     socket.send('connected!');
+        // });
+
+        
+
+
+        socket.on('message', function(msg) {
+            $("#messages").append('<li>'+msg+'</li>');
+            console.log('Received message');
+        });
+                
+        $('#sendbutton').on('click', function() {
+            socket.send($('#myMessage').val());
+            $('#myMessage').val('');
+        });
+                
+
+// =======================================================================
+
+$('#choice').on('click', function() {
+            // socket.on('join', function(data) {
+            var value = $('#twmc_rn').val();
+            socket.emit("join", value);
+            // });
+        });
+
+        // socket.on('connect', function(data) {
+        //     socket.send('connected!');
+        // });
+
+        
+
+
+        socket.on('message', function(msg) {
+            $("#messages").append('<li>'+msg+'</li>');
+            console.log('Received message');
+        });
+                
+        $('#sendbutton').on('click', function() {
+
+            
+            var roomname = '/'+$('#rn').val();
+            console.log('かくにん',roomname);
+            // socket.emit("tes", roomname);
+
+
+            socket.send($('#myMessage').val(), roomname);
+            $('#myMessage').val('');
+        });
+
+// ==========================================================
+var x = $('#rn').val();
+        console.log('ここ',x);
+
+        // アドレスに+α追加するとemit系が死ぬ
+        //flask接続アドレスと同じにしなければならぬ...
+        // urlを指定するとemitが死ぬが、指定しなければ公開になる。
+        var socket_emi = io.connect('http://127.0.0.1:5000');
+        var socket = io.connect('http://127.0.0.1:5000'+'/'+x);
+// socket.emiとsocket.sendでルートを変えたら一応指示は通った。
+
+$('#choice').on('click', function() {
+            var value = $('#twmc_rn').val();
+            socket_emi.emit("join", value);
+        });
+
+        socket.on('message', function(msg) {
+            $("#messages").append('<li>'+msg+'</li>');
+            console.log('Received message');
+        });
+                
+        $('#sendbutton').on('click', function() {
+
+            var roomname = '/'+$('#rn').val();
+            console.log('かくにん',roomname);
+            socket_emi.emit("tes", roomname);
+
+            socket.send($('#myMessage').val(), roomname);
+            $('#myMessage').val('');
+
+        });
+
+
