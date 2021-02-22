@@ -47,7 +47,7 @@ def post():
             word1 = 'I see your think of ' + word1[0]
             word2 = [word2.pop()]
 
-            if score >= 0.8:
+            if float(score)> 0.8:
                 recommend = l2_ai.l2_ai()
                 txt = 'I can reccomend to you'
                 for reco in recommend:
@@ -124,28 +124,36 @@ def dairy_post():
     if request.method == "POST":
         if form.validate_on_submit():
 
-            new_text = request.form['new_text']
+            new_text = request.form['dairy_txt']
+            new_mood = request.form['dairy_mood']
 
             #XSS対策
             new_text = bleach.clean(new_text)
 
             admit = l3_record.l3_record()
             if admit is 'OK':
+
                 UPLOAD_FOLDER = os.path.join('static', 'img')
                 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
                 file = request.files['imgfile']
-                # if file and allwed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 
-                img = '/static/img/' + file.filename
+                if file.filename != '':
+                    # if file and allwed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                
+                    img = '/static/img/' + file.filename
+
+                else:
+                    img = ''
+
             else:
                 img = ''
             # img = 'static/img/tester.png'
             # d = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
 
-            d_comment = l2_record.l2_dairy(new_text, img)
+            d_comment = l2_record.l2_dairy(new_text, new_mood, img)
 
             dairy_pre = l2_record.l2_show_more()
             pagination, res = pagination_func(dairy_pre)
@@ -238,7 +246,7 @@ def ur():
     sample = show()
 
     datas = l3_create_user.l3_user_show()
-    if datas != []:
+    if len(datas) > 0:
         sample = np.ravel(datas)
 
     return render_template('l3_user_create.html', sample=sample, form=form)
@@ -459,11 +467,13 @@ def join(roomname):
 def parting(roomname):
 
     room_list = pd.read_pickle("rm.csv")
-    print(room_list)
-    num = room_list.index(roomname)
-    room_list.pop(num)
+    try:
+        num = room_list.index(roomname)
+        room_list.pop(num)
 
-    pd.to_pickle(room_list, "rm.csv")
+        pd.to_pickle(room_list, "rm.csv")
+    except ValueError:
+        pass
 
 #namespaceが部屋番号っぽい
 class test(Namespace):
@@ -529,6 +539,30 @@ def own_post():
     # print(pd.read_pickle("wtf.csv"))
 
     return render_template('own.html', rooms=tenta_val, roomsign=roomsign, form=form)
+
+@app.route("/own_ajax", methods=["post"])
+def own_ajax():
+
+    #XSS対策 validation
+    # form = TwmcForm()
+    # if request.method == "POST":
+    #     if form.validate_on_submit():
+
+    sign = request.form['sign']
+
+    # #XSS対策
+    # sign = bleach.clean(sign)
+
+    if len(sign) > 0: #ifの中に書かないと起動しない
+
+        print('いま',sign)
+        sign = l3_twmc.twmc(sign)
+        print('こうなったよ',sign)
+
+        return jsonify({'output':sign})
+
+    else:
+        return jsonify({'output':form})
 
 # これは必要なのか
 # @socketio.on("joins") 

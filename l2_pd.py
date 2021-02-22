@@ -43,7 +43,10 @@ def personality_judge(tester_x):
 def personality_to_db(tester_x, personality_judge):
 
     ip = l1_login.get_ip().pop()
-    # personality_judge = personality_judge(tester_x)
+
+    #DBのSQL攻撃対策の弊害の対策
+    tester_x = str(tester_x)
+    
     database.l2_personality(ip, tester_x, personality_judge)
 
 def l2_dignosis(survey):
@@ -53,6 +56,8 @@ def l2_dignosis(survey):
 
     #挿入コマンド
     p_judge = personality_judge(tester_x)
-    # personality_to_db(np.ravel(tester_x), p_judge)
+
+    tester_x = np.ravel(tester_x)
+    personality_to_db(tester_x, p_judge)
 
     return p_judge

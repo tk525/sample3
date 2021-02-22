@@ -120,20 +120,27 @@ def l1_ai(text):
 
 
     ip = l1_login.get_ip().pop()
-    text = ''.join(tester_list)
+    # text = ''.join(tester_list)
+    text = [text]
 
 
     #データベース.pyにIPアドレスとネガティブパーセンテージ＋テキスト受け渡し
-    x = database.l1_user_connect(ip, once_neg_percent, text)
+    database.l1_user_connect(ip, once_neg_percent, text)
 
 
     # データベース.pyでデータベースの中身を取得
     l1_ip_df = pd.DataFrame(database.l1_user_show(ip))
-    l1_ip_df_col = list(l1_ip_df[2])
+    try:
+        l1_ip_df_col = list(l1_ip_df[2])
+    except KeyError:
+        l1_ip_df_col = ''
 
-    l1_ip_total=0
-    for i in range(len(l1_ip_df_col)):
-        l1_ip_total = l1_ip_total + float(l1_ip_df_col[i])
-    l1_ip_total = l1_ip_total/len(l1_ip_df_col)
+    if len(l1_ip_df_col) > 0:
+        l1_ip_total=0
+        for i in range(len(l1_ip_df_col)):
+            l1_ip_total = l1_ip_total + float(l1_ip_df_col[i])
+        l1_ip_total = l1_ip_total/len(l1_ip_df_col)
+    else:
+        l1_ip_total = once_neg_percent
 
     return renew_tester_words_voca, enco_respond, l1_ip_total

@@ -6,7 +6,7 @@
     $(document).ready(function() {
     
         var x = $('#rmid').val();
-        console.log('ここ',x);
+        // console.log('ここ',x);
 
         var socket_emi = io.connect('http://127.0.0.1:5000');
         var socket = io.connect('http://127.0.0.1:5000'+'/'+x);
@@ -41,7 +41,7 @@
             $.ajax(
                 {
                 type : 'post',
-                url : '/twmc_ajax',
+                url : '/own_ajax',
                 data : {sign : sign_pre},
                 dataType: 'json',
                 success: function(response){
@@ -54,167 +54,55 @@
             })
             .done(function(data){
                 // $(view).text(data.output).show();
-                for (let i=0; i<2; i++){ //初期化作業
-                        console.log(i);
-                        var ctx = document.getElementById('view').getContext('2d');
-                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        
-                        var myLineChart = new Chart(ctx);
-                        // myLineChart.clear();
-                        myLineChart.destroy();
-                    }
-                
+
+
+
                 if (data.output[0]=="score"){
+                 
+                  google.charts.load('current', {'packages':['corechart']});
+                  google.charts.setOnLoadCallback(drawChart);
+                  
+                  grp_datas = [['Date', 'Score']]
+                  for (let i=0; i<data.output[1].length; i++){
+                    grp_datas.push(data.output[1][i]);
+                  }
 
-                    var score = data.output[1];
-                    var txt = data.output[2];
-                    var date = data.output[3];
-    
-                    var ctx = document.getElementById("view");
+                  function drawChart() {
+                    var data = google.visualization.arrayToDataTable(
+                      grp_datas
+                    );
 
-                    ctx.height = 500; //destroyしたら半分のサイズになるのを防ぐため
-
-                    var myLineChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: date,
-                            datasets: [
-                                {
-                                label: 'mind socre',//最高気温(度）
-                                data: score,
-                                borderColor: "rgba(255,0,0,1)",
-                                backgroundColor: "rgba(0,0,0,0)"
-                                },
-                            ],
-                        },
-                        options: {
-                            title: {
-                                display: true,
-                                text: 'users score'//気温（8月1日~8月7日）
-                            },
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        suggestedMax: Math.max.apply(null,score),
-                                        suggestedMin: 0,
-                                        stepSize: 0.1,
-                                        callback: function(value, index, values){
-                                        return  value +  '*'
-                                        }
-                                    }
-                                }]
-                            },
-                        }
-                    });
-                    // myLineChart.clear();
-                }else if (data.output[0]=="personality"){
-                    // $(view).text(data.output[1]).show();
-                    for (let i=0; i<2; i++){ //初期化作業
-                        console.log(i);
-                        var ctx = document.getElementById('view').getContext('2d');
-                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        
-                        var myLineChart = new Chart(ctx);
-                        // myLineChart.clear();
-                        myLineChart.destroy();
-                    }
-                    // function draw() {
-
-                    // var ctx = document.getElementById('view').getContext('2d');
-                    var can = document.getElementById('view');
-
-                    // 設定
-                    // can.height=500;
-                    can.height=data.output[1].length * 22;
-
-                    var ctx = can.getContext('2d');
-                    ctx.font = "14px serif";
-                    for (let i = 0; i < data.output[1].length; i++){
-                        var num = 20 * i;
-                        ctx.fillText(data.output[1][i], 50, 20+num, );
-                        // ctx.fillText(data.output[1][1],0,28);
+                    var options = {
+                      title: 'Mind Score',
+                      curveType: 'function',
+                      legend: { position: 'bottom' }
                     };
-                    // };
-                    
+
+                    var chart = new google.visualization.LineChart(document.getElementById('viewing'));
+
+                    chart.draw(data, options);
+                  }
+
+
+
+                }else if (data.output[0]=="personality"){
+                  $(viewing).text(data.output[1]).show();
+
+
 
                 }else if (data.output[0]=="endgtask"){
-                    // $(view).text(['end goal is '+data.output[1], 'task is '+data.output[2]]).show();    
-                    for (let i=0; i<2; i++){ //初期化作業
-                        console.log(i);
-                        var ctx = document.getElementById('view').getContext('2d');
-                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        
-                        var myLineChart = new Chart(ctx);
-                        // myLineChart.clear();
-                        myLineChart.destroy();
-                    }
+                  $('#viewing').html(data.output[1].replace(/\n/g, '<br>'));
 
-                    var can = document.getElementById('view');
-
-                    var ctx = can.getContext('2d');
-                    ctx.font = "14px serif";
-
-                    ctx.fillText('end goal is '+data.output[1], 50, 20, );
-                    ctx.fillText('task for end goal is ', 50, 40, );
-
-                    tasks = data.output[2].split(',');
-                    for (let i = 0; i < tasks.length; i++){
-                        var num = 20 * (i+2);
-                        ctx.fillText(tasks[i], 50, 20+num, );
-                    };
-
-                    
 
                 }else if (data.output[0]=="bbsontxt"){
-                    // $(view).text(data.output[1]).show();
-                    for (let i=0; i<2; i++){ //初期化作業
-                        console.log(i);
-                        var ctx = document.getElementById('view').getContext('2d');
-                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        
-                        var myLineChart = new Chart(ctx);
-                        // myLineChart.clear();
-                        myLineChart.destroy();
-                    }
+                  $('#viewing').html(data.output[1].replace(/\n/g, '<br>'));
 
-                    var can = document.getElementById('view');
 
-                    can.height=data.output[1].length*22;
-
-                    var ctx = can.getContext('2d');
-                    ctx.font = "14px serif";
-
-                    for (let i = 0; i < data.output[1].length; i++){
-                        var num = 20 * i;
-                        ctx.fillText(data.output[2][i]+' : '+data.output[1][i], 10, 20+num, );
-                    };
 
                 }else if (data.output[0]=="bbsonact"){
-                    // $(view).text(data.output[1]).show();
+                  $('#viewing').html(data.output[1].replace(/\n/g, '<br>'));
 
-                    for (let i=0; i<2; i++){ //初期化作業
-                        console.log(i);
-                        var ctx = document.getElementById('view').getContext('2d');
-                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        
-                        var myLineChart = new Chart(ctx);
-                        // myLineChart.clear();
-                        myLineChart.destroy();
-                    }
-
-                    var can = document.getElementById('view');
-
-                    // can.height=data.output[1].length*22;
-
-                    var ctx = can.getContext('2d');
-                    ctx.font = "14px serif";
-
-                    for (let i = 0; i < data.output[1].length; i++){
-                        var num = 20 * i;
-                        ctx.fillText('[good] '+data.output[1][i], 10, 20+num, );
-                    };
-
-                }
+                };
             });
         });
 
@@ -239,7 +127,7 @@
       {% else %}
 
         <p>user is nothing</p>
-        
+
       {% endif %}
 
       {% elif roomsign == 1 %}
@@ -273,10 +161,12 @@
                 <li style="display: inline;"><button id="views" name="bbsontxt" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">bbs on text</button></li>
                 <li style="display: inline;"><button id="views" name="bbsonact" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">bbs on act</button></li>
             </ul>
-            <canvas id="view"></canvas>
-            <!-- <p id="view"></p> -->
+
+            <div id="viewing" style="width: 400px; height: 200px"></div>
+
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
         </div>
+
 
       {% endif %}
     </div>

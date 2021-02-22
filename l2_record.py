@@ -27,16 +27,20 @@ def l2_show_more():
 
     return txt_date
 
-def l2_dairy(new_text, img):
+def l2_dairy(new_text, new_mood, img):
     # text = pd.read_csv('/Users/takipon/Desktop/dprapp/tester.csv')
     text = new_text
 
     # mind_pre = 3,4,3,4,3 #今までの評価
     ip = l1_login.get_ip().pop()
     datas_pre = database.l2_dairy_show(ip)
+
     mind_pre = []
-    for data in datas_pre:
-        mind_pre.append([int(data[2])])
+    if datas_pre == []:
+        mind_pre.append(0)
+    else:
+        for data in datas_pre:
+            mind_pre.append([int(data[2])])
 
     mind_new = [[len(mind_pre)]] #次の値の予想
 
@@ -61,7 +65,8 @@ def l2_dairy(new_text, img):
 
     #日記 + 数値 挿入
     ip = l1_login.get_ip().pop()
-    mind = mind_trend_new[0][0]
+    # mind = mind_trend_new[0][0]
+    mind = new_mood
 
     # re_text = ''
     # for col in text.columns.values: #csvのcolumnsの値のみを取得。つまりcsvのテキストのみを取得し、付属の説明を無視する リスト内包をすると加工前と同じ状態になるので不可

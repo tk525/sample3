@@ -54,195 +54,6 @@
             }
         }
 
-
-        
-        // グラフ
-        $(document).on('click', '#views',function(event){
-            event.preventDefault();
-            var sign_pre = $(this).attr('name');
-            console.log(sign_pre);
-            // var id_pre = id_pre.split(',');
-            // var id = '#' + id_pre[0];
-
-            $.ajax(
-                {
-                type : 'post',
-                url : '/twmc_ajax',
-                data : {sign : sign_pre},
-                dataType: 'json',
-                success: function(response){
-                    $('#views').html(response['form'])
-                    console.log($('#text_id').html(response['form']));
-                },
-                error: function(rs, e){
-                    console.log(rs.responseText);
-                }
-            })
-            .done(function(data){
-                // $(view).text(data.output).show();
-                for (let i=0; i<2; i++){ //初期化作業
-                        console.log(i);
-                        var ctx = document.getElementById('view').getContext('2d');
-                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        
-                        var myLineChart = new Chart(ctx);
-                        // myLineChart.clear();
-                        myLineChart.destroy();
-                    }
-                
-                if (data.output[0]=="score"){
-
-                    var score = data.output[1];
-                    var txt = data.output[2];
-                    var date = data.output[3];
-    
-                    var ctx = document.getElementById("view");
-
-                    ctx.height = 500; //destroyしたら半分のサイズになるのを防ぐため
-
-                    var myLineChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: date,
-                            datasets: [
-                                {
-                                label: 'mind socre',//最高気温(度）
-                                data: score,
-                                borderColor: "rgba(255,0,0,1)",
-                                backgroundColor: "rgba(0,0,0,0)"
-                                },
-                            ],
-                        },
-                        options: {
-                            title: {
-                                display: true,
-                                text: 'users score'//気温（8月1日~8月7日）
-                            },
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        suggestedMax: Math.max.apply(null,score),
-                                        suggestedMin: 0,
-                                        stepSize: 0.1,
-                                        callback: function(value, index, values){
-                                        return  value +  '*'
-                                        }
-                                    }
-                                }]
-                            },
-                        }
-                    });
-                    // myLineChart.clear();
-                }else if (data.output[0]=="personality"){
-                    // $(view).text(data.output[1]).show();
-                    for (let i=0; i<2; i++){ //初期化作業
-                        console.log(i);
-                        var ctx = document.getElementById('view').getContext('2d');
-                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        
-                        var myLineChart = new Chart(ctx);
-                        // myLineChart.clear();
-                        myLineChart.destroy();
-                    }
-                    // function draw() {
-
-                    // var ctx = document.getElementById('view').getContext('2d');
-                    var can = document.getElementById('view');
-
-                    // 設定
-                    // can.height=500;
-                    can.height=data.output[1].length * 22;
-
-                    var ctx = can.getContext('2d');
-                    ctx.font = "14px serif";
-                    for (let i = 0; i < data.output[1].length; i++){
-                        var num = 20 * i;
-                        ctx.fillText(data.output[1][i], 50, 20+num, );
-                        // ctx.fillText(data.output[1][1],0,28);
-                    };
-                    // };
-                    
-
-                }else if (data.output[0]=="endgtask"){
-                    // $(view).text(['end goal is '+data.output[1], 'task is '+data.output[2]]).show();    
-                    for (let i=0; i<2; i++){ //初期化作業
-                        console.log(i);
-                        var ctx = document.getElementById('view').getContext('2d');
-                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        
-                        var myLineChart = new Chart(ctx);
-                        // myLineChart.clear();
-                        myLineChart.destroy();
-                    }
-
-                    var can = document.getElementById('view');
-
-                    var ctx = can.getContext('2d');
-                    ctx.font = "14px serif";
-
-                    ctx.fillText('end goal is '+data.output[1], 50, 20, );
-                    ctx.fillText('task for end goal is ', 50, 40, );
-
-                    tasks = data.output[2].split(',');
-                    for (let i = 0; i < tasks.length; i++){
-                        var num = 20 * (i+2);
-                        ctx.fillText(tasks[i], 50, 20+num, );
-                    };
-
-                    
-
-                }else if (data.output[0]=="bbsontxt"){
-                    // $(view).text(data.output[1]).show();
-                    for (let i=0; i<2; i++){ //初期化作業
-                        console.log(i);
-                        var ctx = document.getElementById('view').getContext('2d');
-                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        
-                        var myLineChart = new Chart(ctx);
-                        // myLineChart.clear();
-                        myLineChart.destroy();
-                    }
-
-                    var can = document.getElementById('view');
-
-                    can.height=data.output[1].length*22;
-
-                    var ctx = can.getContext('2d');
-                    ctx.font = "14px serif";
-
-                    for (let i = 0; i < data.output[1].length; i++){
-                        var num = 20 * i;
-                        ctx.fillText(data.output[2][i]+' : '+data.output[1][i], 10, 20+num, );
-                    };
-
-                }else if (data.output[0]=="bbsonact"){
-                    // $(view).text(data.output[1]).show();
-
-                    for (let i=0; i<2; i++){ //初期化作業
-                        console.log(i);
-                        var ctx = document.getElementById('view').getContext('2d');
-                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-        
-                        var myLineChart = new Chart(ctx);
-                        // myLineChart.clear();
-                        myLineChart.destroy();
-                    }
-
-                    var can = document.getElementById('view');
-
-                    // can.height=data.output[1].length*22;
-
-                    var ctx = can.getContext('2d');
-                    ctx.font = "14px serif";
-
-                    for (let i = 0; i < data.output[1].length; i++){
-                        var num = 20 * i;
-                        ctx.fillText('[good] '+data.output[1][i], 10, 20+num, );
-                    };
-
-                }
-            });
-        });
     });
 </script>
 
@@ -269,7 +80,7 @@
 
 
                 <form action="/twmc_p" method="POST">
-                    <p id="twmc_rn">{{ roomname }}</p>
+                    <input id="twmc_rn" value="{{ roomname }}" style="display: none;">
                     <!-- {{ form.csrf_token }}
                     {{ form.twmc_room(size=20, id="twmc_rn") }} -->
                     <button id="choice" value=0 name="action" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">chat</button>
@@ -283,12 +94,6 @@
                 {{ form.twmc_txt(size=20, id="myMessage") }}
                 <input id="rn" value="{{ roomname }}" style="display: none;"></p>
                 <button id="sendbutton" style="background-color: lightblue;">Send</button>
-                
-
-                <!-- <p>input your name</p>
-                {{ form.csrf_token }}
-                {{ form.twmc_room(size=20, id="twmc_rn") }}
-                <button id="choice">ok</button> -->
 
                 <div class="large" style='margin-top: 30px;'>
                     <div class="text-center">
@@ -296,19 +101,6 @@
                     <p style="color: orange;">{{ error }}</p>
                     {% endfor %}
                     </div>
-                </div>
-                
-                <div style="margin-top: 30px;">
-                    <ul>
-                        <li style="display: inline;"><button id="views" name="graph" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">graph</button></li>
-                        <li style="display: inline;"><button id="views" name="personality" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">personality</button></li>
-                        <li style="display: inline;"><button id="views" name="endgtask" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">end goal and tasks</button></li>
-                        <li style="display: inline;"><button id="views" name="bbsontxt" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">bbs on text</button></li>
-                        <li style="display: inline;"><button id="views" name="bbsonact" class="hollow button secondary" style="color:rgb(81, 163, 196); background-color: rgb(227, 251, 253);">bbs on act</button></li>
-                    </ul>
-                    <canvas id="view"></canvas>
-                    <!-- <p id="view"></p> -->
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
                 </div>
 
 

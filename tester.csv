@@ -5,8 +5,11 @@ CREATE TABLE l1_user (id serial PRIMARY KEY, user_id VARCHAR(50) NOT NULL, text_
 
 ALTER TABLE l1_user ADD COLUMN num_of_times_using_bad_word int;
 ALTER TABLE l1_user ADD COLUMN user_twmc_name VARCHAR(10) NOT NULL;
+ALTER TABLE l1_user ADD COLUMN num_of_times_using_bad_word int;
 
 CREATE TABLE l1_login (id serial PRIMARY KEY, login_user_id VARCHAR(50) NOT NULL, last_logintime TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+ALTER TABLE l1_login RENAME COLUMN created_on TO last_logintime;
 
 CREATE TABLE l2_personality (id serial PRIMARY KEY, personality_user_id VARCHAR(50) NOT NULL, record VARCHAR(255) NOT NULL, personality_result float(50) NOT NULL, created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 

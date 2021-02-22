@@ -66,21 +66,19 @@ def l1_user_connect(ip, once_neg_percent, text):
         show = cur.fetchall()
         show = np.array(show)
         show = np.ravel(show)
+        # ['192.168.3.3' '0.0' datetime.datetime(2021, 2, 22, 5, 59, 28, 848773), None] #4
 
+        #l1_user データ挿入 バッドワード使用履歴の有無
+        # if type(show[len(show)-1]) == datetime.datetime:
+        if show[len(show)-1] == None or len(show) == 0: #最後のレコードの挿入されてるデータ型が日付であれば。つまり、初回であれば
 
-        #l1_user データ挿入
-        if type(show[len(show)-1]) == datetime.datetime: #最後のレコードの挿入されてるデータ型が日付であれば。つまり、初回であれば
-            # 数字のみ
-            # sql_l1_insert = "INSERT INTO l1_user (user_id, text) VALUES (0062, 111);"
-            # 数字・文字入れれる
-            # sql_l1_insert = "INSERT INTO l1_user (user_id, text) VALUES ('%s', '%s');"%('aaa','DSAD',)
-            # 変数代入
             # sql = "INSERT INTO l1_user (user_id, text_score, text) VALUES ('%s', '%s', '%s');"%(ip, once_neg_percent, text)
-            #SQL攻撃対策
+            # SQL攻撃対策
             sql = "INSERT INTO l1_user (user_id, text_score, text) VALUES (%s, %s, %s);"
             para = (ip, once_neg_percent, text)
 
-        elif type(show[len(show)-1]) == int:
+        # elif type(show[len(show)-1]) == int:
+        elif show[len(show)-1] != None:
             # sql = "INSERT INTO l1_user (user_id, text_score, text, num_of_times_using_bad_word) VALUES ('%s', '%s', '%s', '%s');"%(ip, once_neg_percent, text, show[len(show)-1])
             #SQL攻撃対策 
             sql = "INSERT INTO l1_user (user_id, text_score, text, num_of_times_using_bad_word) VALUES (%s, %s, %s, %s);"
@@ -909,27 +907,27 @@ def l3_uc_update(lists, id_num, roomname):
         
         if len(lists) == 1:
         #SQL攻撃対策?
-            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea, pm_room_name = "+roomname+" WHERE id = "+str(id_num)+";"
+            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea, pm_room_name = '"+roomname+"' WHERE id = "+str(id_num)+";"
             # sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea WHERE id = "+str(id_num)+";"
 
         if len(lists) == 2:
         #SQL攻撃対策?
-            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea, pm_room_name = "+roomname+" WHERE id = "+str(id_num)+";"
+            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea, pm_room_name = '"+roomname+"' WHERE id = "+str(id_num)+";"
             # sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea WHERE id = "+str(id_num)+";"
 
         if len(lists) == 3:
         #SQL攻撃対策?
-            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea, pm_room_name = "+roomname+" WHERE id = "+str(id_num)+";"
+            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea, pm_room_name = '"+roomname+"' WHERE id = "+str(id_num)+";"
             # sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea WHERE id = "+str(id_num)+";"
 
         if len(lists) == 4:
         #SQL攻撃対策?
-            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea ,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea ,"+lists[3][0]+" = '"+lists[3][1]+"'::bytea, pm_room_name = "+roomname+" WHERE id = "+str(id_num)+";"
+            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea ,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea ,"+lists[3][0]+" = '"+lists[3][1]+"'::bytea, pm_room_name = '"+roomname+"' WHERE id = "+str(id_num)+";"
             # sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea ,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea ,"+lists[3][0]+" = '"+lists[3][1]+"'::bytea WHERE id = "+str(id_num)+";"
 
         if len(lists) == 5: #一応フル変更verも用意
         #SQL攻撃対策?
-            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea ,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea ,"+lists[3][0]+" = '"+lists[3][1]+"'::bytea ,"+lists[4][0]+" = '"+lists[4][1]+"'::bytea, pm_room_name = "+roomname+" WHERE id = "+str(id_num)+";"
+            sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea ,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea ,"+lists[3][0]+" = '"+lists[3][1]+"'::bytea ,"+lists[4][0]+" = '"+lists[4][1]+"'::bytea, pm_room_name = '"+roomname+"' WHERE id = "+str(id_num)+";"
             # sql = "UPDATE paid_members SET "+lists[0][0]+" = '"+lists[0][1]+"'::bytea ,"+lists[1][0]+" = '"+lists[1][1]+"'::bytea ,"+lists[2][0]+" = '"+lists[2][1]+"'::bytea ,"+lists[3][0]+" = '"+lists[3][1]+"'::bytea ,"+lists[4][0]+" = '"+lists[4][1]+"'::bytea WHERE id = "+str(id_num)+";"
 
         cur.execute(sql)

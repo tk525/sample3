@@ -42,4 +42,4 @@ def cuser_update(lists):
     rmname = ''.join(rmname_pre)
 
     id_num = database.l3_create_user_show_idnum(ip)
-    database.l3_uc_update(lists, id_num, roname)
+    database.l3_uc_update(lists, id_num, rmname)

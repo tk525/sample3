@@ -14,14 +14,21 @@ class user_info():
         ip = l1_login.get_ip().pop()
         user_score_and_text_pre = np.array(database.l1_user_show(ip))
         if len(user_score_and_text_pre) > 0:
-            score = []
+            # score = []
+            # txt = []
+            # date = []
+            # for sco_txt in user_score_and_text_pre:
+            #     score.append(sco_txt[2])
+            #     txt.append(sco_txt[3])
+            #     date.append(sco_txt[4].strftime('%Y/%m/%d'))
+            date_score = []
             txt = []
-            date = []
             for sco_txt in user_score_and_text_pre:
-                score.append(sco_txt[2])
+                date_score.append(
+                    [sco_txt[4].strftime('%Y/%m/%d'), float(sco_txt[2])]
+                )
                 txt.append(sco_txt[3])
-                date.append(sco_txt[4].strftime('%Y/%m/%d'))
-        return 'score', score, txt, date
+        return 'score', date_score, txt
 
     #ユーザーの性格特徴
     def personality():
@@ -36,6 +43,11 @@ class user_info():
             for num in range(len(user_personality_pre)):
                 if user_personality_pre[num] == '1':
                     user_personality.append(personality_name[num]) #['真面目Seriousness', 'サボれないCannot slack
+            try:
+                user_personality.index(0)
+            except ValueError:
+                user_personality = 'this user has exceptional personality.'
+
         return 'personality', user_personality
 
     #ユーザーが設定した目標
@@ -44,7 +56,8 @@ class user_info():
         user_endg_and_tasks_pre = database.l2_endg_show(ip)
         if user_endg_and_tasks_pre is not None:
             user_endg_and_tasks = user_endg_and_tasks_pre.pop()
-        return 'endgtask', user_endg_and_tasks[2],  user_endg_and_tasks[3]
+        x = user_endg_and_tasks[2]+'\n'+user_endg_and_tasks[3]
+        return 'endgtask', x
 
     #ユーザーがBBSに投稿したテキスト
     def bbs_txt():
@@ -52,31 +65,35 @@ class user_info():
         user_bbs_txt_pre = np.array(database.l3_bbs_txt_show_id(ip))
         if user_bbs_txt_pre is not None:
             user_bbs_txts = np.array(user_bbs_txt_pre)
-            txt=[]
-            date=[]
-            for bbs_txt in user_bbs_txts:
-                txt.append(bbs_txt[2])
-                date.append(bbs_txt[3].strftime('%Y/%m/%d'))
 
-        return 'bbsontxt', txt, date
+            datas=''
+            for bbs_txt in user_bbs_txts:
+                # txt.append(bbs_txt[2])
+                # date.append(bbs_txt[3].strftime('%Y/%m/%d'))
+                datas = datas + bbs_txt[3].strftime('%Y/%m/%d')+' '+bbs_txt[2]+'\n'
+
+        return 'bbsontxt', datas
 
     #ユーザーがBBSでいいねしたテキストのみ
     def bbs_act():
         ip = l1_login.get_ip().pop()
         user_bbs_act_pre = np.array(database.l3_bbs_act_show_id(ip))
         if user_bbs_act_pre is not None:
-            user_bbs_act = []
+            user_bbs_act = ''
             for bbs_act in user_bbs_act_pre:
                 bbs_act_id = bbs_act[2]
                 bbs_act_pre = database.l3_bbs_txt_show_post_id(bbs_act_id)
-                user_bbs_act.append(bbs_act_pre.pop()[2]) #アクションしたテキストのみ取得
+
+                #アクションしたテキストのみ取得
+                # user_bbs_act.append(bbs_act_pre.pop()[2]) 
+                user_bbs_act = user_bbs_act + bbs_act_pre.pop()[2]+'\n'
+
         return 'bbsonact', user_bbs_act
 
 
 def twmc(sign):
 
     ip = l1_login.get_ip().pop()
-    memo_from_mc = 'she is fine.'
 
     mher = 2
 
@@ -112,6 +129,5 @@ def roomname():
 
 def owner():
 
-    roomname = '/'+pd.read_pickle("wtf.csv")
-    print('確認', roomname)
+    roomname = '/'+pd.read_pickle("own_rm.csv")
     return roomname
