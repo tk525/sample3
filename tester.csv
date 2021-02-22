@@ -1,1 +1,32 @@
 I want to die. but I want to alive. but sometimes, I think the way of death.
+
+
+CREATE TABLE l1_user (id serial PRIMARY KEY, user_id VARCHAR(50) NOT NULL, text_score VARCHAR(10) NOT NULL, text VARCHAR(255) NOT NULL, created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+ALTER TABLE l1_user ADD COLUMN num_of_times_using_bad_word int;
+ALTER TABLE l1_user ADD COLUMN user_twmc_name VARCHAR(10) NOT NULL;
+ALTER TABLE l1_user ADD COLUMN num_of_times_using_bad_word int;
+
+CREATE TABLE l1_login (id serial PRIMARY KEY, login_user_id VARCHAR(50) NOT NULL, last_logintime TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+ALTER TABLE l1_login RENAME COLUMN created_on TO last_logintime;
+
+CREATE TABLE l2_personality (id serial PRIMARY KEY, personality_user_id VARCHAR(50) NOT NULL, record VARCHAR(255) NOT NULL, personality_result float(50) NOT NULL, created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+CREATE TABLE l2_dairy (id serial PRIMARY KEY, dairy_user_id VARCHAR(50) NOT NULL, dairy_mind NUMERIC(4,2), dairy_text VARCHAR(255), dairy_created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+ALTER TABLE l2_dairy ADD img VARCHAR(50);
+
+CREATE TABLE l2_endg (id serial PRIMARY KEY, endg_user_id VARCHAR(50) NOT NULL, end_goal VARCHAR(50), end_goal_tasks VARCHAR(255), endg_created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+CREATE TABLE l3_bullentin_board_text (id serial PRIMARY KEY, bbs_txt_user_id VARCHAR(20) NOT NULL, bbs_txt_text VARCHAR(255) NOT NULL, bbs_txt_created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+CREATE TABLE l3_bullentin_board_act (id serial PRIMARY KEY, bbs_act_user_id VARCHAR(20) NOT NULL, bbs_act VARCHAR(5) NOT NULL, bbs_act_created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+CREATE TABLE suspended_and_baned (id serial PRIMARY KEY, sb_user_id VARCHAR(50) NOT NULL,  sb_level SMALLSERIAL NOT NULL, sb_created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+CREATE TABLE l3_mc (id serial PRIMARY KEY, mc_user_id VARCHAR(50) NOT NULL, memo TEXT NOT NULL, mc_created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+CREATE TABLE paid_members (id serial PRIMARY KEY, pm_user_name VARCHAR(300) NOT NULL, pm_birth VARCHAR(300) NOT NULL, pm_mail VARCHAR(300) NOT NULL, pm_tel VARCHAR(300) NOT NULL, pm_credit_card VARCHAR(300) NOT NULL, created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+ALTER TABLE paid_members ADD pm_user_id VARCHAR(300) NOT NULL;

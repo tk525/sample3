@@ -9,8 +9,17 @@
             <div class="accordion-content" data-tab-content style="margin-right: 30px; margin-left: 30px;">
                 <form action="/dairy" method="POST" enctype="multipart/form-data">
                     <!-- <textarea name="new_text"></textarea> -->
+                    <div style="width: 200px;">
+                        <legend>Please rate your current mood.</legend>
+                            <input type="radio" name="dairy_mood" value="1"><label>1</label>
+                            <input type="radio" name="dairy_mood" value="2" required><label>2</label>
+                            <input type="radio" name="dairy_mood" value="3"><label>3</label>
+                            <input type="radio" name="dairy_mood" value="4" required><label>4</label>
+                            <input type="radio" name="dairy_mood" value="5"><label>5</label>
+                    </div>
+
                     {{ form.csrf_token }}
-                    {{ form.dairy_txt.label }} {{ form.dairy_txt(size=20) }}
+                    {{ form.dairy_txt(size=20) }}
 
                     <label for="exampleFileUpload" class="button">Upload File</label>
                     <input type="file" id="exampleFileUpload" name="imgfile" class="show-for-sr">

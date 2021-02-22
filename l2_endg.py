@@ -6,9 +6,16 @@ import numpy as np
 def endg_show():
     ip = l1_login.get_ip().pop()
     show = np.array(database.l2_endg_show(ip))
-    show = np.ravel(show)
 
-    return show[2], show[3]
+    if len(show) == 0:
+        endg = 'what'
+        task = 'what'
+    else:
+        show = np.ravel(show)
+        endg = show[2]
+        task = show[3]
+
+    return endg, task
 
 def endg_admittion():
     

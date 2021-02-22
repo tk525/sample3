@@ -1,5 +1,6 @@
 import datetime
 import numpy as np
+import random, string
 
 import database, l1_login
 
@@ -20,7 +21,11 @@ def l3_user_show():
 def l3_cuser(user_name, birth, mail, tel, credit_card):
 
     ip = l1_login.get_ip().pop()
-    database.l3_create_user_insert(user_name, birth, mail, tel, credit_card, ip)
+
+    rmname_pre = [random.choice(string.ascii_letters + string.digits) for i in range(10)]
+    rmname = ''.join(rmname_pre)
+
+    database.l3_create_user_insert(user_name, birth, mail, tel, credit_card, ip, rmname)
 
     #＋日記/メンタルヘルス、心理カウンセラーからのメモを暗号化
 
@@ -32,5 +37,9 @@ def l3_cuser(user_name, birth, mail, tel, credit_card):
 def cuser_update(lists):
 
     ip = l1_login.get_ip().pop()
+
+    rmname_pre = [random.choice(string.ascii_letters + string.digits) for i in range(10)]
+    rmname = ''.join(rmname_pre)
+
     id_num = database.l3_create_user_show_idnum(ip)
-    database.l3_uc_update(lists, id_num)
+    database.l3_uc_update(lists, id_num, rmname)

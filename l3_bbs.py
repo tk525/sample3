@@ -86,7 +86,10 @@ def bbs(txt):
     score_pre = np.array(database.l1_user_last_record(ip))
     score_pre = np.ravel(score_pre)
     score = float(score_pre[1])
-    num_of_bw = int(score_pre[3])
+    try:
+        num_of_bw = int(score_pre[3])
+    except TypeError:
+        num_of_bw = 0
 
     #垢BANリスト呼び出し
     ban_user_pre = np.array(database.suspended_and_baned_show(ip))

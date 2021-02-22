@@ -2,11 +2,12 @@ import csv
 import datetime
 import os
 import math
-import numpy as np
 import bleach
+import pandas as pd
+import numpy as np
 from flask import Flask, render_template, request
-from flask_socketio import SocketIO, send
 from flask import send_from_directory, redirect, url_for, jsonify
+from flask_socketio import join_room, leave_room, SocketIO, send, Namespace, emit
 from werkzeug.utils import secure_filename
 from flask_paginate import Pagination, get_page_parameter
 
@@ -46,7 +47,7 @@ def post():
             word1 = 'I see your think of ' + word1[0]
             word2 = [word2.pop()]
 
-            if score >= 0.8:
+            if float(score)> 0.8:
                 recommend = l2_ai.l2_ai()
                 txt = 'I can reccomend to you'
                 for reco in recommend:
@@ -123,28 +124,36 @@ def dairy_post():
     if request.method == "POST":
         if form.validate_on_submit():
 
-            new_text = request.form['new_text']
+            new_text = request.form['dairy_txt']
+            new_mood = request.form['dairy_mood']
 
             #XSS対策
             new_text = bleach.clean(new_text)
 
             admit = l3_record.l3_record()
             if admit is 'OK':
+
                 UPLOAD_FOLDER = os.path.join('static', 'img')
                 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
                 file = request.files['imgfile']
-                # if file and allwed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 
-                img = '/static/img/' + file.filename
+                if file.filename != '':
+                    # if file and allwed_file(file.filename):
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                
+                    img = '/static/img/' + file.filename
+
+                else:
+                    img = ''
+
             else:
                 img = ''
             # img = 'static/img/tester.png'
             # d = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
 
-            d_comment = l2_record.l2_dairy(new_text, img)
+            d_comment = l2_record.l2_dairy(new_text, new_mood, img)
 
             dairy_pre = l2_record.l2_show_more()
             pagination, res = pagination_func(dairy_pre)
@@ -237,7 +246,7 @@ def ur():
     sample = show()
 
     datas = l3_create_user.l3_user_show()
-    if datas != []:
+    if len(datas) > 0:
         sample = np.ravel(datas)
 
     return render_template('l3_user_create.html', sample=sample, form=form)
@@ -389,18 +398,35 @@ def bbs_pagination_func(datas, date, act, bbs_id):  #ページネーション
 #L3会話withMC Conversation with MC🌟
 @app.route("/twmc_p")
 def twmc():
-
+    
+    form = TwmcForm()
     txt =''
 
-    return render_template('l3_twmc.html', txt=txt)
+    rmsign = l3_twmc.roomname()
+
+    return render_template('l3_twmc.html', roomname=rmsign, txt=txt, form=form)
 
 @app.route("/twmc_p", methods=["post"])
 def twmc_post():
+    
+    rmsign = l3_twmc.roomname() #部屋番号
+
+    #部屋番号一時記録
+    try:
+        rms = pd.read_pickle("rm.csv")
+    except EOFError:
+        rms = None
+    if rms == None:
+        rms = [rmsign]
+    else:
+        rms.append(rmsign)
+    pd.to_pickle(rms, "rm.csv")
+    # print(pd.read_pickle("rm.csv"))
 
     form = TwmcForm()
     sign = request.form['action']
 
-    return render_template('l3_twmc.html', txt=sign, form=form)
+    return render_template('l3_twmc.html', txt=sign, form=form, roomname=rmsign)
 
 @app.route("/twmc_ajax", methods=["post"])
 def twmc_ajax():
@@ -427,13 +453,42 @@ def twmc_ajax():
             return jsonify({'output':form})
 
 
+
 app.config['SECRET_KEY'] = 'mysecret'
 socketio = SocketIO(app, cors_allowed_origins='*')
 
-@socketio.on('message')
-def handleMessage(msg):
-	# print('Message: ' + msg)
-	send(msg, broadcast=True)
+# @socketio.on("join", namespace='/jimin')
+@socketio.on("join") 
+def join(roomname):
+    print(f"A user is joining. roomname is {roomname}")
+    join_room(roomname)
+
+@socketio.on("parting")
+def parting(roomname):
+
+    room_list = pd.read_pickle("rm.csv")
+    try:
+        num = room_list.index(roomname)
+        room_list.pop(num)
+
+        pd.to_pickle(room_list, "rm.csv")
+    except ValueError:
+        pass
+
+#namespaceが部屋番号っぽい
+class test(Namespace):
+
+    roomname = '/'+l3_twmc.roomname()
+
+    @socketio.on('message', namespace=roomname)
+    # @socketio.on('message', namespace=x)
+    def handleMessage(msg, roomname):
+        print('['+ roomname +'] Message: ' + msg )
+        send(msg,
+            broadcast=True,
+            # namespace=roomname
+        )
+
 
 
 
@@ -442,8 +497,86 @@ def handleMessage(msg):
 @app.route("/own_p")
 def own():
 
-    return render_template('own.html')
+    try:
+        rm_list = pd.read_pickle("rm.csv")
 
+        rm_list.insert(0,len(rm_list)+1)
+        # print(rm_list) #[3, 'yjc9sPHkIW', 'yjc9sPHkIW', 'a']
+
+    except EOFError:
+        rm_list = ''
+
+    roomsign = 0
+
+    form = ''
+
+    return render_template('own.html', rooms=rm_list, roomsign=roomsign, form=form)
+
+@app.route("/own_p", methods=["post"])
+def own_post():
+
+    #XSS対策 validation
+    form = TwmcForm()
+
+    roomsign = 1
+    tenta_val = ''
+
+    in_use = pd.read_pickle("rm.csv")
+
+    num=0
+    for i in range(len(in_use)):
+        num += 1
+
+        try:
+            tenta_val = request.form['%s'%num]
+        except KeyError:
+            tenta_val = None
+        
+        if tenta_val != None:
+            break 
+
+    pd.to_pickle(tenta_val, "own_rm.csv")
+    # print(pd.read_pickle("wtf.csv"))
+
+    return render_template('own.html', rooms=tenta_val, roomsign=roomsign, form=form)
+
+@app.route("/own_ajax", methods=["post"])
+def own_ajax():
+
+    #XSS対策 validation
+    # form = TwmcForm()
+    # if request.method == "POST":
+    #     if form.validate_on_submit():
+
+    sign = request.form['sign']
+
+    # #XSS対策
+    # sign = bleach.clean(sign)
+
+    if len(sign) > 0: #ifの中に書かないと起動しない
+
+        print('いま',sign)
+        sign = l3_twmc.twmc(sign)
+        print('こうなったよ',sign)
+
+        return jsonify({'output':sign})
+
+    else:
+        return jsonify({'output':form})
+
+# これは必要なのか
+# @socketio.on("joins") 
+# def joins(roomname):
+#     print(f"A user is joining. roomname is {roomname}")
+#     join_room(roomname)
+
+@socketio.on('message', namespace=l3_twmc.owner())
+# @socketio.on('message', namespace=x)
+def handleMessage(msg, roomname):
+    print('['+ roomname +'] Message: ' + msg )
+    send(msg,
+        broadcast=True,
+    )
 
 
 

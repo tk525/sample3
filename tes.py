@@ -1,12 +1,23 @@
-import bleach, database, l1_login
+app.config['SECRET_KEY'] = 'mysecret'
+socketio = SocketIO(app, cors_allowed_origins='*')
 
+@socketio.on("tes")
+def tes(roomname):
+    print('んあああ',roomname)
+    return roomname
 
-# ip = l1_login.get_ip().pop()
-# x = database.l1_user_last_record(ip)
+#namespaceが部屋番号っぽい
+@socketio.on('message', namespace='/jimin')
+# @socketio.on('message')
+def handleMessage(msg, roomname):
+	print('['+ roomname +'] Message: ' + msg )
+	send(msg,
+        broadcast=True,
+        # namespace=roomname
+    )
 
-x = bleach.clean('anko')
-print(x)
-#SQL攻撃対策
-
-# sql = "SELECT * FROM l1_user where user_id = %s;"
-# para = (ip,)
+# @socketio.on("join", namespace='/jimin')
+@socketio.on("join")
+def join(roomname):
+    print(f"A user is joining. roomname is {roomname}")
+    join_room(roomname)

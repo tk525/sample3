@@ -31,20 +31,25 @@ def get_ip() -> list:
 
 
 ip = get_ip().pop()
-l1_login_last_record = database.l1_login_show(ip).pop()
+l1_login_last_record = database.l1_login_show(ip)
 
+if len(l1_login_last_record) == 0:
 
-
-#すでにログインしているかどうか判定
-time = datetime.datetime.now().strftime('%Y-%m-%d')
-l1_login_last_time = l1_login_last_record[2].strftime('%Y-%m-%d')
-
-if time != l1_login_last_time:
-    # IPアドレス+ログインタイム挿入
     database.l1_login_connect(ip)
 
+else:
+    
+    l1_login_last_record = l1_login_last_record.pop()
+
+    #すでにログインしているかどうか判定
+    time = datetime.datetime.now().strftime('%Y-%m-%d')
+    l1_login_last_time = l1_login_last_record[2].strftime('%Y-%m-%d')
+
+    if time != l1_login_last_time:
+        # IPアドレス+ログインタイム挿入
+        database.l1_login_connect(ip)
 
 
-#IPアドレスが一致したデータの最終更新されたもので、ログインポイント付与判定
-# login_point_judge = 'ログインポイント付与' if l1_login_last_record[0] % 3 == 0 else '' #計算
-# print(login_point_judge)
+    #IPアドレスが一致したデータの最終更新されたもので、ログインポイント付与判定
+    login_point_judge = 'ログインポイント付与' if l1_login_last_record[0] % 3 == 0 else '' #計算
+    print(login_point_judge)
