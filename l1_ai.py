@@ -1,13 +1,13 @@
 import re
-import mglearn
-import psutil
+# import mglearn
+# import psutil
 import os
 import socket
 import itertools
 import pandas as pd
 import numpy as np
-import netifaces as ni
-import matplotlib.pyplot as plt
+# import netifaces as ni
+# import matplotlib.pyplot as plt
 from sklearn.pipeline import make_pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.linear_model import LogisticRegression

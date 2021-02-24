@@ -467,8 +467,10 @@ def join(roomname):
 def parting(roomname):
 
     room_list = pd.read_pickle("rm.csv")
+    print(room_list)
     try:
         num = room_list.index(roomname)
+        print(num)
         room_list.pop(num)
 
         pd.to_pickle(room_list, "rm.csv")

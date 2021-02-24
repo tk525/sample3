@@ -70,7 +70,7 @@ namespace Aws
             inline Scheme GetScheme() const { return m_scheme; }
 
             /**
-            * Sets scheme, if the port is incompaitible with this scheme, the port will automatically be set as well.
+            * Sets scheme, if the port is incompatible with this scheme, the port will automatically be set as well.
             */
             void SetScheme(Scheme value);
 
@@ -124,7 +124,7 @@ namespace Aws
             Aws::String GetFormParameters() const;
 
             /**
-            * Cannonicalizes the query string.
+            * Canonicalizes the query string.
             */
             void CanonicalizeQueryString();
 
@@ -151,6 +151,7 @@ namespace Aws
 
             /**
              * URLEncodes the path portions of path (doesn't encode the "/" portion)
+             * Keeps the first and the last "/".
              */
             static Aws::String URLEncodePath(const Aws::String& path);
 

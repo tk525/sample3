@@ -75,10 +75,10 @@ template<Index n> struct NumTraits<type2index<n> >
     MulCost = 1
   };
 
-  EIGEN_DEVICE_FUNC static EIGEN_STRONG_INLINE Real epsilon() { return 0; }
-  EIGEN_DEVICE_FUNC static EIGEN_STRONG_INLINE Real dummy_precision() { return 0; }
-  EIGEN_DEVICE_FUNC static EIGEN_STRONG_INLINE Real highest() { return n; }
-  EIGEN_DEVICE_FUNC static EIGEN_STRONG_INLINE Real lowest() { return n; }
+  EIGEN_DEVICE_FUNC static EIGEN_CONSTEXPR EIGEN_STRONG_INLINE Real epsilon() { return 0; }
+  EIGEN_DEVICE_FUNC static EIGEN_CONSTEXPR EIGEN_STRONG_INLINE Real dummy_precision() { return 0; }
+  EIGEN_DEVICE_FUNC static EIGEN_CONSTEXPR EIGEN_STRONG_INLINE Real highest() { return n; }
+  EIGEN_DEVICE_FUNC static EIGEN_CONSTEXPR EIGEN_STRONG_INLINE Real lowest() { return n; }
 };
 
 namespace internal {
@@ -279,7 +279,7 @@ struct tuple_coeff<0, ValueT> {
   }
   template <typename... T>
   EIGEN_DEVICE_FUNC static constexpr bool value_known_statically(const Index i, const IndexTuple<T...>&) {
-    return is_compile_time_constant<typename IndexTupleExtractor<0, T...>::ValType>::value & (i == 0);
+    return is_compile_time_constant<typename IndexTupleExtractor<0, T...>::ValType>::value && (i == 0);
   }
 
   template <typename... T>

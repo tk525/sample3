@@ -33,3 +33,7 @@ lib/python3.6/site-packages/tensorflow/python/_pywrap_tensorflow_internal.so fil
 lib/python3.6/site-packages/tensorflow/python/_pywrap_tf_item.so filter=lfs diff=lfs merge=lfs -text
 lib/python3.6/site-packages/widgetsnbextension/static/extension.js.map filter=lfs diff=lfs merge=lfs -text
 share/jupyter/nbextensions/jupyter-js-widgets/extension.js.map filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/scipy/.dylibs/libopenblas.0.dylib filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow/libtensorflow_framework.2.4.1.dylib filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow/lite/python/interpreter_wrapper/_pywrap_tensorflow_interpreter_wrapper.so filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow/lite/python/optimize/_pywrap_tensorflow_lite_calibration_wrapper.so filter=lfs diff=lfs merge=lfs -text

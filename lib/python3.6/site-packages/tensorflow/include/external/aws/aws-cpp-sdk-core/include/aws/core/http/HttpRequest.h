@@ -26,8 +26,6 @@
 #include <memory>
 #include <functional>
 
-using namespace Aws::Monitoring;
-
 namespace Aws
 {
     namespace Http
@@ -51,13 +49,15 @@ namespace Aws
         extern AWS_CORE_API const char X_AMZ_EXPIRES_HEADER[];
         extern AWS_CORE_API const char CONTENT_MD5_HEADER[];
         extern AWS_CORE_API const char API_VERSION_HEADER[];
+        extern AWS_CORE_API const char SDK_INVOCATION_ID_HEADER[];
+        extern AWS_CORE_API const char SDK_REQUEST_HEADER[];
         extern AWS_CORE_API const char CHUNKED_VALUE[];
 
         class HttpRequest;
         class HttpResponse;
 
         /**
-         * closure type for recieving notifications that data has been recieved.
+         * closure type for receiving notifications that data has been received.
          */
         typedef std::function<void(const HttpRequest*, HttpResponse*, long long)> DataReceivedEventHandler;
         /**
@@ -89,7 +89,7 @@ namespace Aws
              */
             virtual HeaderValueCollection GetHeaders() const = 0;
             /**
-             * Get the value for a Header based on its name. (in default StandardHttpRequest implementation, an empty string will be returned if headerName dosen't exist)
+             * Get the value for a Header based on its name. (in default StandardHttpRequest implementation, an empty string will be returned if headerName doesn't exist)
              */
             virtual const Aws::String& GetHeaderValue(const char* headerName) const = 0;
             /**
@@ -517,12 +517,12 @@ namespace Aws
             /**
             * Sets the request metrics
             */
-            virtual void SetRequestMetrics(const HttpClientMetricsCollection& collection) { m_httpRequestMetrics = collection; }
+            virtual void SetRequestMetrics(const Aws::Monitoring::HttpClientMetricsCollection& collection) { m_httpRequestMetrics = collection; }
 
             /**
             * Gets the request metrics
             */
-            virtual const HttpClientMetricsCollection& GetRequestMetrics() const { return m_httpRequestMetrics; }
+            virtual const Aws::Monitoring::HttpClientMetricsCollection& GetRequestMetrics() const { return m_httpRequestMetrics; }
 
             /**
              * Returns the IP address of the remote host the request was made out to.
@@ -542,7 +542,7 @@ namespace Aws
             Aws::String m_signingRegion;
             Aws::String m_signingAccessKey;
             Aws::String m_resolvedRemoteHost;
-            HttpClientMetricsCollection m_httpRequestMetrics;
+            Aws::Monitoring::HttpClientMetricsCollection m_httpRequestMetrics;
         };
 
     } // namespace Http

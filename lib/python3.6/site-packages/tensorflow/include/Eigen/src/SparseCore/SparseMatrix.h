@@ -329,7 +329,8 @@ class SparseMatrix
           m_outerIndex[j] = newOuterIndex[j];
           m_innerNonZeros[j] = innerNNZ;
         }
-        m_outerIndex[m_outerSize] = m_outerIndex[m_outerSize-1] + m_innerNonZeros[m_outerSize-1] + reserveSizes[m_outerSize-1];
+        if(m_outerSize>0)
+          m_outerIndex[m_outerSize] = m_outerIndex[m_outerSize-1] + m_innerNonZeros[m_outerSize-1] + reserveSizes[m_outerSize-1];
         
         m_data.resize(m_outerIndex[m_outerSize]);
       }
@@ -782,6 +783,9 @@ class SparseMatrix
     template<typename OtherDerived>
     inline SparseMatrix& operator=(const EigenBase<OtherDerived>& other)
     { return Base::operator=(other.derived()); }
+
+    template<typename Lhs, typename Rhs>
+    inline SparseMatrix& operator=(const Product<Lhs,Rhs,AliasFreeProduct>& other);
 #endif // EIGEN_PARSED_BY_DOXYGEN
 
     template<typename OtherDerived>

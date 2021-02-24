@@ -36,11 +36,6 @@ class RenamedDevice : public Device {
 
   ~RenamedDevice() override;
 
-  // Below are virtual methods defined on DeviceBase
-  bool RequiresRecordingAccessedTensors() const override {
-    return underlying_device_->RequiresRecordingAccessedTensors();
-  }
-
   const DeviceBase* UnderlyingDevice() const override {
     return underlying_device_->UnderlyingDevice();
   }
@@ -96,11 +91,6 @@ class RenamedDevice : public Device {
     return underlying_device_->has_eigen_cpu_device();
   }
 
-#ifdef TENSORFLOW_USE_SYCL
-  const Eigen::SyclDevice* eigen_sycl_device() const override {
-    return underlying_device_->eigen_sycl_device();
-  }
-#endif
 
   PerOpGpuDevice* MakeGpuDevice() override {
     return underlying_device_->MakeGpuDevice();
@@ -136,11 +126,6 @@ class RenamedDevice : public Device {
   void ComputeAsync(AsyncOpKernel* op_kernel, OpKernelContext* context,
                     AsyncOpKernel::DoneCallback done) override {
     underlying_device_->ComputeAsync(op_kernel, context, std::move(done));
-  }
-
-  void ConsumeListOfAccessedTensors(
-      DeviceContext* context, const TensorReferenceVector& tensors) override {
-    underlying_device_->ConsumeListOfAccessedTensors(context, tensors);
   }
 
   Status Sync() override { return underlying_device_->Sync(); }
