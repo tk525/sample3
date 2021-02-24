@@ -94,7 +94,6 @@ psycopg2==2.8.4
 ptyprocess==0.7.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
-PyAudio==0.2.11
 pycparser==2.20
 pycryptodome==3.9.9
 pygame==2.0.1
