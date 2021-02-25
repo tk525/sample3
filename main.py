@@ -12,7 +12,7 @@ from werkzeug.utils import secure_filename
 from flask_paginate import Pagination, get_page_parameter
 
 
-import database, l1_ai, l1_login , l2_pd, l2_ai, l2_record, l3_record, l2_endg, l3_create_user, l3_quest, l3_bbs, l3_twmc
+import database, l1_ai, l1_login , l2_pd, l2_ai, l2_record, l3_record, l2_endg, l3_create_user, l3_bbs, l3_twmc
 
 from validation import *
 
@@ -315,9 +315,7 @@ def quest():
         if new_fgs[i] == '':
             new_fgs.pop(i)
 
-    sug = l3_quest.suggest()
-
-    return render_template('l3_quest.html', fgs=new_fgs, sug=sug)
+    return render_template('l3_quest.html', fgs=new_fgs)
 
 
 
