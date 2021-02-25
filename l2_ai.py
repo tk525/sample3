@@ -8,8 +8,8 @@ from sklearn.cluster import DBSCAN
 import database, l1_login, l2_pd
 
 
-recommend = pd.read_excel('/Users/takipon/Desktop/dprapp/sample.xlsx', index_col=0, header=0, sheet_name='recommend')
-recommend_concrete = pd.read_excel('/Users/takipon/Desktop/dprapp/sample.xlsx', index_col=0, header=0, sheet_name='recommend_concrete')
+recommend = pd.read_excel('./sample.xlsx', index_col=0, header=0, sheet_name='recommend')
+recommend_concrete = pd.read_excel('./sample.xlsx', index_col=0, header=0, sheet_name='recommend_concrete')
 
     #最終スコアから性格の得点を合わせる
 def personal_score(ip):

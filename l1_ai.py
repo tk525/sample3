@@ -25,7 +25,7 @@ def l1_ai(text):
     dp_list = pd.read_excel('depression_wrod_list.xlsx', index_col=0, header=0)
     # tester = pd.read_csv('/Users/takipon/Desktop/dprapp/tester.csv')
     tester = text.split()
-    enco_list = pd.read_excel('/Users/takipon/Desktop/dprapp/sample.xlsx', index_col=None, header=1, sheet_name='encouraging_list')
+    enco_list = pd.read_excel('./sample.xlsx', index_col=None, header=1, sheet_name='encouraging_list')
 
 
 

@@ -36,7 +36,7 @@ class user_info():
         if user_personality_pre is not None:
             user_personality_pre = user_personality_pre.pop()
             user_personality_pre = user_personality_pre[2].translate(str.maketrans({'[': '', ']': '', ' ': ''})) #101110001110101010010001101
-            personality_name = np.array(pd.read_excel('/Users/takipon/Desktop/dprapp/sample.xlsx', index_col=0, header=0, sheet_name='personality_x2').columns)
+            personality_name = np.array(pd.read_excel('./sample.xlsx', index_col=0, header=0, sheet_name='personality_x2').columns)
 
             user_personality = []
             for num in range(len(user_personality_pre)):
