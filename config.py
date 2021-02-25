@@ -17,7 +17,7 @@ def config(section='postgresql'):
     parser = ConfigParser()
 
     # parser.read(filename)
-    parser.read(db)
+    parser.read(db())
 
     # get section, default to postgresql
     db = {}
@@ -27,6 +27,6 @@ def config(section='postgresql'):
             db[param[0]] = param[1]
     else:
         # raise Exception('Section {0} not found in the {1} file'.format(section, filename))
-        raise Exception('Section {0} not found in the {1} file'.format(section, db))
+        raise Exception('Section {0} not found in the {1} file'.format(section, db()))
 
     return db
