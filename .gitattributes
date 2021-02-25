@@ -37,3 +37,16 @@ lib/python3.6/site-packages/scipy/.dylibs/libopenblas.0.dylib filter=lfs diff=lf
 lib/python3.6/site-packages/tensorflow/libtensorflow_framework.2.4.1.dylib filter=lfs diff=lfs merge=lfs -text
 lib/python3.6/site-packages/tensorflow/lite/python/interpreter_wrapper/_pywrap_tensorflow_interpreter_wrapper.so filter=lfs diff=lfs merge=lfs -text
 lib/python3.6/site-packages/tensorflow/lite/python/optimize/_pywrap_tensorflow_lite_calibration_wrapper.so filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow_core/libtensorflow_framework.1.15.3.dylib filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow_core/libtensorflow_framework.1.dylib filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow_core/libtensorflow_framework.dylib filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow_core/contrib/bigtable/python/ops/_bigtable.so filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow_core/contrib/fused_conv/python/ops/_fused_conv2d_bias_activation_op.so filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow_core/contrib/ignite/_ignite_ops.so filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow_core/contrib/image/python/ops/_single_image_random_dot_stereograms.so filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow_core/contrib/kafka/_dataset_ops.so filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow_core/contrib/kinesis/_dataset_ops.so filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow_core/contrib/tensor_forest/libforestprotos.so filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow_core/lite/python/interpreter_wrapper/_tensorflow_wrap_interpreter_wrapper.so filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow_core/lite/python/optimize/_tensorflow_lite_wrap_calibration_wrapper.so filter=lfs diff=lfs merge=lfs -text
+lib/python3.6/site-packages/tensorflow_core/python/_pywrap_tensorflow_internal.so filter=lfs diff=lfs merge=lfs -text
