@@ -15,11 +15,15 @@ def db():
 def config(section='postgresql'):
 
     parser = ConfigParser()
-    db = db()
-    print(db)
 
     # parser.read(filename)
-    parser.read(db)
+    parser.read(
+        host = os.environ['DB_HOSTNAME'],
+        database = os.environ['DB_NAME'],
+        user = os.environ['DB_USERNAME'],
+        password = os.environ['DB_PASSWORD'],
+        port=5432
+    )
 
     # get section, default to postgresql
     db = {}
@@ -29,6 +33,11 @@ def config(section='postgresql'):
             db[param[0]] = param[1]
     else:
         # raise Exception('Section {0} not found in the {1} file'.format(section, filename))
-        raise Exception('Section {0} not found in the {1} file'.format(section, db))
+        raise Exception('Section {0} not found in the {1} file'.format(section,
+            host = os.environ['DB_HOSTNAME'],
+            database = os.environ['DB_NAME'],
+            user = os.environ['DB_USERNAME'],
+            password = os.environ['DB_PASSWORD'],
+            port=5432))
 
     return db
