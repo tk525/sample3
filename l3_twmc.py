@@ -128,5 +128,8 @@ def roomname():
 
 def owner():
 
-    roomname = '/'+pd.read_pickle("own_rm.csv")
+    try:
+        roomname = '/'+pd.read_pickle("own_rm.csv")
+    except EOFError:
+        roomname  = '/'
     return roomname
