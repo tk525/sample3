@@ -1,17 +1,8 @@
 from configparser import ConfigParser
 import os
 
-def db():
-    
-    host = os.environ['DB_HOSTNAME']
-    database = os.environ['DB_NAME']
-    user = os.environ['DB_USERNAME']
-    password = os.environ['DB_PASSWORD']
-    port = 5432
-    
-    return host, database, user, password, port
 
-def config(filename=db(), section='postgresql'):
+def config(filename='heroku.ini', section='postgresql'):
     # create a parser
     parser = ConfigParser()
     # read config file
