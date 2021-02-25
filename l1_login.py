@@ -31,7 +31,11 @@ def get_ip() -> list:
 
 
 ip = get_ip().pop()
-l1_login_last_record = database.l1_login_show(ip)
+try:
+    l1_login_last_record = database.l1_login_show(ip)
+except:
+    l1_login_last_record = ''
+
 
 if len(l1_login_last_record) == 0:
 
