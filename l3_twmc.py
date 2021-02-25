@@ -117,10 +117,8 @@ def twmc(sign):
 def roomname():
 
     ip = l1_login.get_ip().pop()
-    try:
-        results_pre = database.l3_create_user_show_all(ip)
-    except EOFError:
-        results_pre = ''
+    
+    results_pre = database.l3_create_user_show_all(ip)
 
     if len(results_pre) > 0:
         roomname = results_pre[5]
