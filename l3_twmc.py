@@ -117,7 +117,10 @@ def twmc(sign):
 def roomname():
 
     ip = l1_login.get_ip().pop()
-    results_pre = database.l3_create_user_show_all(ip)
+    try:
+        results_pre = database.l3_create_user_show_all(ip)
+    except EOFError:
+        results_pre = ''
 
     if len(results_pre) > 0:
         roomname = results_pre[5]
@@ -132,4 +135,5 @@ def owner():
         roomname = '/'+pd.read_pickle("own_rm.csv")
     except EOFError:
         roomname  = '/'
+
     return roomname
