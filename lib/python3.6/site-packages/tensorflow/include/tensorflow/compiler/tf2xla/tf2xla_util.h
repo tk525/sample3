@@ -212,8 +212,6 @@ Status PruneUnreachableFunctionsFromGraph(const Graph& g,
 Status RewriteTensorListWithConstElement(Graph* g,
                                          FunctionLibraryDefinition* fld);
 
-extern const char kTpuReplicateAttrName[];
-
 }  // namespace tensorflow
 
 #endif  // TENSORFLOW_COMPILER_TF2XLA_TF2XLA_UTIL_H_

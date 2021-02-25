@@ -22,7 +22,6 @@ import numpy as np
 from six.moves import xrange  # pylint: disable=redefined-builtin
 
 from tensorflow.core.protobuf.tpu import topology_pb2
-from tensorflow.python.util.tf_export import tf_export
 
 
 def _tpu_device_name(job, task, device):
@@ -41,7 +40,6 @@ def _tpu_host_device_name(job, task):
     return "/job:%s/task:%d/device:CPU:0" % (job, task)
 
 
-@tf_export("tpu.experimental.Topology")
 class Topology(object):
   """Describes a set of TPU devices.
 
@@ -59,19 +57,19 @@ class Topology(object):
     Args:
       serialized: A serialized `TopologyProto`, or `None`. If not `None`, the
         serialized proto is parsed to discover the topology.
-      mesh_shape: A sequence of 4 positive integers, or `None`. If not `None`,
+      mesh_shape: A sequence of 3 positive integers, or `None`. If not `None`,
         the shape of the TPU topology, in number of cores. Ignored if
         `serialized` is not `None`.
-      device_coordinates: A rank 4 numpy array that describes the mapping from
+      device_coordinates: A rank 3 numpy array that describes the mapping from
         TensorFlow TPU devices to TPU fabric coordinates, or `None`. Ignored
         if `serialized is not `None`.
 
     Raises:
       ValueError: If `serialized` does not describe a well-formed topology.
       ValueError: If `serialized` is `None` and `mesh_shape` is not a sequence
-        of 4 positive integers.
+        of 3 positive integers.
       ValueError: If `serialized` is `None` and `device_coordinates` is not a
-        rank 4 numpy int32 array that describes a valid coordinate mapping.
+        rank 3 numpy int32 array that describes a valid coordinate mapping.
     """
 
     self._serialized = serialized
@@ -81,19 +79,14 @@ class Topology(object):
     else:
       self._mesh_shape = np.asarray(mesh_shape, dtype=np.int32)
       self._device_coordinates = np.asarray(device_coordinates, np.int32)
-      if len(self._mesh_shape) != 4 or any(self._mesh_shape < 1):
-        raise ValueError("`mesh_shape` must be a sequence of 4 positive "
+      if len(self._mesh_shape) != 3 or any(self._mesh_shape < 1):
+        raise ValueError("`mesh_shape` must be a sequence of 3 positive "
                          "entries; got {}".format(self._mesh_shape))
 
       if (len(self._device_coordinates.shape) != 3 or
           self._device_coordinates.shape[2] != len(self._mesh_shape)):
         raise ValueError("`device_coordinates` must be a rank 3 int32 array "
-                         "with minor dimension equal to the mesh shape rank"
-                         "got {} {} {} mesh_shape={},len {}".format(
-                             self._device_coordinates.shape,
-                             len(self._device_coordinates.shape),
-                             self._device_coordinates.shape[2],
-                             self._mesh_shape, len(self._mesh_shape)))
+                         "with minor dimension equal to the mesh shape rank")
 
     self._topology_tasks, self._topology_devices = self._invert_topology()
 
@@ -106,8 +99,8 @@ class Topology(object):
     proto.ParseFromString(serialized)
 
     self._mesh_shape = np.array(proto.mesh_shape, dtype=np.int32)
-    if len(self._mesh_shape) != 4 or any(self._mesh_shape < 1):
-      raise ValueError("`mesh_shape` must be a vector of size 4 with positive "
+    if len(self._mesh_shape) != 3 or any(self._mesh_shape < 1):
+      raise ValueError("`mesh_shape` must be a vector of size 3 with positive "
                        "entries; got {}".format(self._mesh_shape))
 
     if proto.num_tasks < 0:
@@ -141,9 +134,9 @@ class Topology(object):
     devices = np.full(list(self.mesh_shape), -1, dtype=np.int32)
     for task in xrange(self.device_coordinates.shape[0]):
       for device in xrange(self.device_coordinates.shape[1]):
-        x, y, z, core = self.device_coordinates[task, device, :]
-        tasks[x, y, z, core] = task
-        devices[x, y, z, core] = device
+        x, y, z = self.device_coordinates[task, device, :]
+        tasks[x, y, z] = task
+        devices[x, y, z] = device
     return tasks, devices
 
   @property
@@ -165,8 +158,8 @@ class Topology(object):
       `tasks` is the number of tasks in the TPU cluster, `devices` is the number
       of TPU devices per task, and `axis` is the number of axes in the TPU
       cluster topology. Each entry gives the `axis`-th coordinate in the
-      topology of a task/device pair. TPU topologies are 4-dimensional, with
-      dimensions `(x, y, z, core number)`.
+      topology of a task/device pair. TPU topologies are 3-dimensional, with
+      dimensions `(x, y, core number)`.
     """
     return self._device_coordinates
 

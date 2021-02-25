@@ -19,17 +19,20 @@ limitations under the License.
 #include "tensorflow/core/common_runtime/device_mgr.h"
 #include "tensorflow/core/framework/collective.h"
 #include "tensorflow/core/framework/rendezvous.h"
+#include "tensorflow/core/platform/unbounded_work_queue.h"
 
 namespace tensorflow {
 
 // Basic implementation of PerStepCollectiveRemoteAccess.
-class CollectiveRemoteAccessLocal : public CollectiveRemoteAccess {
+class CollectiveRemoteAccessLocal : public PerStepCollectiveRemoteAccess {
  public:
   CollectiveRemoteAccessLocal(const DeviceMgr* dev_mgr,
                               DeviceResolverInterface* dev_resolver,
+                              std::shared_ptr<UnboundedWorkQueue> work_queue,
                               int64 step_id)
       : dev_mgr_(dev_mgr),
         dev_resolver_(dev_resolver),
+        work_queue_(std::move(work_queue)),
         buf_rendezvous_(step_id, dev_mgr),
         step_id_(step_id) {}
 
@@ -43,7 +46,6 @@ class CollectiveRemoteAccessLocal : public CollectiveRemoteAccess {
                     const AllocatorAttributes& to_alloc_attr, Tensor* to_tensor,
                     const DeviceLocality& client_locality,
                     int dev_to_dev_stream_index,
-                    CancellationManager* cancellation_manager,
                     const StatusCallback& done) override;
 
   void PostToPeer(const string& peer_device, const string& peer_task,
@@ -52,11 +54,31 @@ class CollectiveRemoteAccessLocal : public CollectiveRemoteAccess {
                   const AllocatorAttributes& from_alloc_attr,
                   const Tensor* from_tensor,
                   const DeviceLocality& client_locality,
-                  CancellationManager* cancellation_manager,
                   const StatusCallback& done) override;
 
-  void CheckPeerHealth(const string& peer_task, int64 timeout_in_ms,
-                       const StatusCallback& done) override;
+  void RunClosure(std::function<void()> closure) override {
+    work_queue_->Schedule(std::move(closure));
+  }
+
+  void GetAllDeviceAttributesAsync(const std::vector<string>& devices,
+                                   const std::vector<string>& tasks,
+                                   std::vector<DeviceAttributes>* attributes,
+                                   const StatusCallback& done) override {
+    dev_resolver_->GetAllDeviceAttributesAsync(devices, tasks, attributes,
+                                               done);
+  }
+
+  void GetDeviceAttributesAsync(const string& device, const string& task,
+                                DeviceAttributes* attributes,
+                                const StatusCallback& done) override {
+    dev_resolver_->GetDeviceAttributesAsync(device, task, attributes, done);
+  }
+
+  void ClearTask(const string& task) override {
+    dev_resolver_->ClearTask(task);
+  }
+
+  void ClearCache() override { dev_resolver_->ClearCache(); }
 
   BufRendezvous* buf_rendezvous() override { return &buf_rendezvous_; }
 
@@ -74,6 +96,9 @@ class CollectiveRemoteAccessLocal : public CollectiveRemoteAccess {
  protected:
   const DeviceMgr* dev_mgr_;               // not owned
   DeviceResolverInterface* dev_resolver_;  // not owned
+  // Ownership of `work_queue_` is shared between `this` and
+  // `CollectiveExecutorMgr`.
+  std::shared_ptr<UnboundedWorkQueue> work_queue_;
   BufRendezvous buf_rendezvous_;
   int64 step_id_;
 };

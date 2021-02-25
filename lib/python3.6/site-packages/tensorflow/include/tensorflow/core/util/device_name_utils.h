@@ -46,8 +46,8 @@ namespace tensorflow {
 class DeviceNameUtils {
  public:
   // Returns a fully qualified device name given the parameters.
-  static std::string FullName(const std::string& job, int replica, int task,
-                              const std::string& type, int id);
+  static string FullName(const string& job, int replica, int task,
+                         const string& type, int id);
 
   struct ParsedName {
     void Clear() {
@@ -74,26 +74,17 @@ class DeviceNameUtils {
              (has_id ? (other.has_id && id == other.id) : !other.has_id);
     }
 
-    bool operator!=(const ParsedName& other) const {
-      return !operator==(other);
-    }
-
     bool has_job = false;
-    std::string job;
+    string job;
     bool has_replica = false;
     int replica = 0;
     bool has_task = false;
     int task = 0;
     bool has_type = false;
-    std::string type;
+    string type;
     bool has_id = false;
     int id = 0;
   };
-
-  // Parses the device name, first as a full name, then, if it fails, as a
-  // global one. Returns `false` if both attempts fail.
-  static bool ParseFullOrLocalName(StringPiece fullname, ParsedName* parsed);
-
   // Parses "fullname" into "*parsed". Returns true iff succeeds.
   // Legacy names like "/cpu:0" that don't contain "device",
   // are parsed to mean their current counterparts "/device:CPU:0". More
@@ -112,7 +103,7 @@ class DeviceNameUtils {
   // an error and *canonical_name is set to "".
   static Status CanonicalizeDeviceName(StringPiece fullname,
                                        StringPiece basename,
-                                       std::string* canonical_name);
+                                       string* canonical_name);
 
   // Returns true if "name" specifies any non-trivial constraint on the device.
   static bool HasSomeDetails(const ParsedName& name) {
@@ -168,11 +159,11 @@ class DeviceNameUtils {
   static const ParsedName AddressSpace(const ParsedName& name);
 
   // Returns the local device given its "type" and "id".
-  static std::string LocalName(StringPiece type, int id);
+  static string LocalName(StringPiece type, int id);
 
   // Returns a short local device name (cpu:0, gpu:1, etc) based on
   // the given fullname.
-  static std::string LocalName(StringPiece fullname);
+  static string LocalName(StringPiece fullname);
 
   // If "name" is a valid local device name (cpu:0, gpu:1, etc.),
   // fills in parsed.type and parsed.id accordingly. Returns true iff
@@ -186,14 +177,13 @@ class DeviceNameUtils {
   // component into *device.  This function will still return true if
   // the task component is empty, but it requires the relative device
   // component to be fully specified.
-  static bool SplitDeviceName(StringPiece name, std::string* task,
-                              std::string* device);
+  static bool SplitDeviceName(StringPiece name, string* task, string* device);
 
   // Get the task name from ParsedName. Return false if the task component is
   // not fully specified.
-  static bool GetTaskName(const ParsedName& pn, std::string* task);
+  static bool GetTaskName(const ParsedName& pn, string* task);
 
-  static std::string ParsedNameToString(const ParsedName& pn);
+  static string ParsedNameToString(const ParsedName& pn);
 
   // Returns canonical and legacy full names for the given parsed
   // device name 'pn'. The returned string names are often useful to
@@ -208,8 +198,8 @@ class DeviceNameUtils {
 
   // Returns name of the CPU:0 device on the same host as the device
   // `device_name`.
-  static Status DeviceNameToCpuDeviceName(const std::string& device_name,
-                                          std::string* host_device_name);
+  static Status DeviceNameToCpuDeviceName(const string& device_name,
+                                          string* host_device_name);
 };
 
 std::ostream& operator<<(std::ostream& os,

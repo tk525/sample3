@@ -24,9 +24,10 @@ from tensorflow.python.autograph.pyct import origin_info
 
 
 class FrameInfo(
-    collections.namedtuple('FrameInfo',
-                           ('filename', 'lineno', 'function_name', 'code',
-                            'is_converted', 'is_allowlisted'))):
+    collections.namedtuple(
+        'FrameInfo',
+        ('filename', 'lineno', 'function_name', 'code', 'is_converted',
+         'is_whitelisted'))):
 
   __slots__ = ()
 
@@ -74,7 +75,7 @@ def _stack_trace_inside_mapped_code(tb, source_map, converter_filename):
       origin_info.create_source_map.
     converter_filename: str, the file path of the converted module. Call frames
       corresponding to this module are elided and their preceding frames are
-      marked as allowlisted. Note that frames enclosing converted code are
+      marked as whitelisted. Note that frames enclosing converted code are
       dropped using a different mechanism.
 
   Returns:
@@ -92,7 +93,7 @@ def _stack_trace_inside_mapped_code(tb, source_map, converter_filename):
           function_name=origin.function_name,
           code=origin.source_code_line,
           is_converted=True,
-          is_allowlisted=False)
+          is_whitelisted=False)
       result_frames.append(fi)
       break
 
@@ -106,7 +107,7 @@ def _stack_trace_inside_mapped_code(tb, source_map, converter_filename):
             function_name=prev.function_name,
             code=prev.code,
             is_converted=False,
-            is_allowlisted=True)
+            is_whitelisted=True)
         result_frames[-1] = fi
       continue
 
@@ -116,7 +117,7 @@ def _stack_trace_inside_mapped_code(tb, source_map, converter_filename):
         function_name=function_name,
         code=text,
         is_converted=False,
-        is_allowlisted=False)
+        is_whitelisted=False)
     result_frames.append(fi)
 
   return tuple(result_frames)
@@ -130,7 +131,6 @@ KNOWN_STRING_CONSTRUCTOR_ERRORS = (
     RuntimeError,
     StopIteration,
     TypeError,
-    UnboundLocalError,
     ValueError,
 )
 
@@ -187,7 +187,7 @@ class ErrorMetadataBase(object):
                                              frame_info.function_name)
       if frame_info.is_converted:
         formatted_line += '  *'
-      elif frame_info.is_allowlisted:
+      elif frame_info.is_whitelisted:
         formatted_line += '  **'
       lines.append(formatted_line)
 

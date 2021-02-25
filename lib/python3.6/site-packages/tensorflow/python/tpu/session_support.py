@@ -418,7 +418,7 @@ class ResetComputation(object):
 
   def __call__(self, run_context, all_workers, lame_workers):
     del run_context, lame_workers
-    all_workers.shutdown(exit_code=42)
+    all_workers.shutdown()
 
     logging.info('Resetting coordinator.')
     raise CoordinatorResetError()
@@ -435,7 +435,7 @@ class ShutdownLameWorkers(object):
     pass
 
   def __call__(self, run_context, all_workers, lame_workers):
-    lame_workers.shutdown(exit_code=42)
+    lame_workers.shutdown()
 
 
 class ShutdownAllWorkers(object):
@@ -449,4 +449,4 @@ class ShutdownAllWorkers(object):
     pass
 
   def __call__(self, run_context, all_workers, lame_workers):
-    all_workers.shutdown(exit_code=42)
+    all_workers.shutdown()

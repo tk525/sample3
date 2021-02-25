@@ -28,21 +28,19 @@ from tensorflow.python import tf2
 from tensorflow.python.eager import context
 from tensorflow.python.framework import ops
 from tensorflow.python.framework import test_combinations
-from tensorflow.python.util.tf_export import tf_export
 
 
 class EagerGraphCombination(test_combinations.TestCombination):
-  """Run the test in Graph or Eager mode.
+  """Run the test in Graph or Eager mode.  Graph is the default.
 
   The optional `mode` parameter controls the test's execution mode.  Its
   accepted values are "graph" or "eager" literals.
   """
 
   def context_managers(self, kwargs):
-    mode = kwargs.pop("mode", None)
-    if mode is None:
-      return []
-    elif mode == "eager":
+    # TODO(isaprykin): Switch the default to eager.
+    mode = kwargs.pop("mode", "graph")
+    if mode == "eager":
       return [context.eager_mode()]
     elif mode == "graph":
       return [ops.Graph().as_default(), context.graph_mode()]
@@ -82,5 +80,3 @@ generate = functools.partial(
 combine = test_combinations.combine
 times = test_combinations.times
 NamedObject = test_combinations.NamedObject
-
-tf_export("__internal__.test.combinations.generate", v1=[])(generate)

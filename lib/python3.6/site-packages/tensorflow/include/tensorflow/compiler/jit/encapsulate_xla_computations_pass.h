@@ -34,6 +34,8 @@ namespace tensorflow {
 // XlaLaunch operators.
 class EncapsulateXlaComputationsPass : public GraphOptimizationPass {
  public:
+  static const char* const kXlaClusterAttr;  // _xla_compile_id
+
   Status Run(const GraphOptimizationPassOptions& options) override;
 
   // The following methods are public only for unit tests.

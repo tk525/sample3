@@ -151,8 +151,7 @@ class TensorList {
 
 #if defined(PLATFORM_GOOGLE)
 // TODO(ebrevdo): Identify why Variant inline size is smaller on mobile devices.
-// For 32-bit devices, it's acceptable not to inline.
-static_assert(Variant::CanInlineType<TensorList>() || sizeof(void*) < 8,
+static_assert(Variant::CanInlineType<TensorList>(),
               "Must be able to inline TensorList into a Variant");
 #endif
 }  // namespace tensorflow

@@ -41,6 +41,9 @@ enum class GradientAccumulationSupport {
   // Accumulation cannot be used with this optimizer.
   kNotSupported,
 
+  // Accumulation is unnecessary because optimizer application is commutative.
+  kUnnecessary,
+
   // Accumulation is allowed and changes optimizer behavior.
   kSupported,
 };
@@ -48,19 +51,18 @@ enum class GradientAccumulationSupport {
 // Returns the number of optimization parameter vectors used by the optimization
 // algorithm, excluding the weights themselves and assuming no gradient
 // accumulation.
-Status GetBaseAuxiliaryParameterCount(const OptimizationParameters &params,
-                                      int *count);
+Status GetBaseAuxiliaryParameterCount(OptimizationAlgorithm alg, int *count);
 
 // Returns whether (and how) an optimization algorithm supports gradient
 // accumulation.
-Status GetGradientAccumulationSupport(const OptimizationParameters &params,
+Status GetGradientAccumulationSupport(OptimizationAlgorithm alg,
                                       GradientAccumulationSupport *support);
 
 // Returns the parameter specifications for the optimization algorithm (the main
 // parameters first, followed by any auxiliary parameters such as Adagrad
 // accumulators).
 Status GetOptimizationAlgorithmStateVariables(
-    const OptimizationParameters &params, bool use_gradient_accumulation,
+    OptimizationAlgorithm alg, bool use_gradient_accumulation,
     std::vector<StateVariableSpecification> *state_variables);
 
 // Maximum value of auxiliar_parameter_count for any optimization algorithm.
@@ -86,19 +88,22 @@ inline float GradientAccumulatorInitialValue() {
   return absl::bit_cast<float, uint32>(1);
 }
 
-// Generic shape function for per-optimization-algorithm load ops.
-class LoadOpShapeFunction {
- public:
-  // Computes resulting shape and does parameter checking.
-  Status operator()(shape_inference::InferenceContext *c) const;
-};
+// Computes registration data for per table load Op. Each load Op transfers
+// the embedding parameters from the host memory to the TPU memory.
+Status RegisterPerTableLoadOpsForAlgorithmBody(OptimizationAlgorithm alg,
+                                               bool is_debug_op,
+                                               OpRegistrationData *op_reg_data);
 
-// Generic shape function for per-optimization-algorithm retrieve ops.
-class RetrieveOpShapeFunction {
- public:
-  // Computes resulting shape and does parameter checking.
-  Status operator()(shape_inference::InferenceContext *c) const;
-};
+// Computes registration data for per table retrieve Op. Each retrieve Op
+// transfers the embedding parameters from the TPU memory to the host memory.
+Status RegisterPerTableRetrieveOpsForAlgorithmBody(
+    OptimizationAlgorithm alg, bool is_debug_op,
+    OpRegistrationData *op_reg_data);
+
+// Returns whether an optimization algorithm is only supported internally.
+// Returns an error if the algorithm is not recognized at all.
+Status IsOptimizationAlgorithmInternal(OptimizationAlgorithm alg,
+                                       bool *internal);
 
 }  // namespace tpu
 }  // namespace tensorflow

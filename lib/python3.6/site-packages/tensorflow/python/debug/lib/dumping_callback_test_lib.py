@@ -21,7 +21,6 @@ from __future__ import print_function
 import os
 import shutil
 import tempfile
-import uuid
 
 from tensorflow.python.debug.lib import check_numerics_callback
 from tensorflow.python.debug.lib import debug_events_reader
@@ -36,7 +35,6 @@ class DumpingCallbackTestBase(test_util.TensorFlowTestCase):
   def setUp(self):
     super(DumpingCallbackTestBase, self).setUp()
     self.dump_root = tempfile.mkdtemp()
-    self.tfdbg_run_id = str(uuid.uuid4())
 
   def tearDown(self):
     if os.path.isdir(self.dump_root):
@@ -48,6 +46,7 @@ class DumpingCallbackTestBase(test_util.TensorFlowTestCase):
   def _readAndCheckMetadataFile(self):
     """Read and check the .metadata debug-events file."""
     with debug_events_reader.DebugEventsReader(self.dump_root) as reader:
-      self.assertTrue(reader.tfdbg_run_id())
-      self.assertEqual(reader.tensorflow_version(), versions.__version__)
-      self.assertTrue(reader.tfdbg_file_version().startswith("debug.Event"))
+      metadata_iter = reader.metadata_iterator()
+      metadata = next(metadata_iter).debug_event.debug_metadata
+      self.assertEqual(metadata.tensorflow_version, versions.__version__)
+      self.assertTrue(metadata.file_version.startswith("debug.Event"))

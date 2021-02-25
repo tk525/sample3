@@ -40,8 +40,6 @@ class TakeDataset : public DatasetBase {
 
   int64 Cardinality() const override;
 
-  Status InputDatasets(std::vector<const DatasetBase*>* inputs) const override;
-
   Status CheckExternalState() const override;
 
  protected:

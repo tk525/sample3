@@ -20,9 +20,7 @@ from __future__ import print_function
 
 from tensorflow.python.autograph.core import converter
 from tensorflow.python.autograph.pyct import anno
-from tensorflow.python.autograph.pyct import qual_names
 from tensorflow.python.autograph.pyct import templates
-from tensorflow.python.autograph.pyct.static_analysis import activity
 from tensorflow.python.autograph.pyct.static_analysis.annos import NodeAnno
 
 
@@ -85,7 +83,7 @@ class ContinueCanonicalizationTransformer(converter.Base):
       block.create_guard_next = False
       if should_wrap_current:
         template = """
-          if not var_name:
+          if ag__.not_(var_name):
             original_node
         """
         cond, = templates.replace(
@@ -161,8 +159,6 @@ class ContinueCanonicalizationTransformer(converter.Base):
 
 
 def transform(node, ctx):
-  node = qual_names.resolve(node)
-  node = activity.resolve(node, ctx, None)
-
-  node = ContinueCanonicalizationTransformer(ctx).visit(node)
+  transformer = ContinueCanonicalizationTransformer(ctx)
+  node = transformer.visit(node)
   return node

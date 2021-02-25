@@ -26,22 +26,12 @@ namespace tensorflow {
 
 namespace functor {
 
-template <typename Device, typename Tidx, typename T, bool binary_count>
+template <typename Device, typename T>
 struct BincountFunctor {
   static Status Compute(OpKernelContext* context,
-                        const typename TTypes<Tidx, 1>::ConstTensor& arr,
+                        const typename TTypes<int32, 1>::ConstTensor& arr,
                         const typename TTypes<T, 1>::ConstTensor& weights,
-                        typename TTypes<T, 1>::Tensor& output,
-                        const Tidx num_bins);
-};
-
-template <typename Device, typename Tidx, typename T, bool binary_count>
-struct BincountReduceFunctor {
-  static Status Compute(OpKernelContext* context,
-                        const typename TTypes<Tidx, 2>::ConstTensor& in,
-                        const typename TTypes<T, 2>::ConstTensor& weights,
-                        typename TTypes<T, 2>::Tensor& out,
-                        const Tidx num_bins);
+                        typename TTypes<T, 1>::Tensor& output);
 };
 
 }  // end namespace functor

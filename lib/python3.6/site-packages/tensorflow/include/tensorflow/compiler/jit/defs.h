@@ -35,9 +35,6 @@ extern const char* const kXlaCompileAttr;  // "_XlaCompile"
 extern const char* const kXlaScopeAttr;    // "_XlaScope"
 extern const char* const kXlaInternalScopeAttr;  // "_XlaInternalScope"
 
-// The id of the compiled cluster.
-extern const char* const kXlaClusterIdAttr;  // "_xla_compile_id"
-
 }  // namespace tensorflow
 
 #endif  // TENSORFLOW_COMPILER_JIT_DEFS_H_

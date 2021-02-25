@@ -76,7 +76,6 @@ class GrapplerFunctionItem : public GrapplerItem {
   const std::size_t control_output_size() const;
 
   const AttrSlice& func_attr() const;
-  const std::vector<const FunctionDef::ArgAttrs*>& arg_attr() const;
   const GraphDef& function_body() const;
   GraphDef& mutable_function_body();
 
@@ -96,7 +95,6 @@ class GrapplerFunctionItem : public GrapplerItem {
 
   GrapplerFunctionItem(string func_name, string description,
                        AttrSlice func_attr,
-                       std::vector<const FunctionDef::ArgAttrs*> arg_attr,
                        std::vector<InputArgInstantiation> input_args,
                        std::vector<OutputArgInstantiation> output_args,
                        std::vector<ControlOutput> control_outputs,
@@ -106,9 +104,6 @@ class GrapplerFunctionItem : public GrapplerItem {
   string description_;
   AttrSlice func_attr_;  // Attributes specific to function definition that
                          // produced this item (FuncDef.attr field).
-
-  // Attributes of function arguments
-  std::vector<const FunctionDef::ArgAttrs*> arg_attr_;
 
   std::vector<InputArgInstantiation> input_args_;
   std::vector<OutputArgInstantiation> output_args_;

@@ -74,12 +74,12 @@ size_t DoubleToBuffer(double value, char* buffer);
 size_t FloatToBuffer(float value, char* buffer);
 
 // Convert a 64-bit fingerprint value to an ASCII representation.
-std::string FpToString(Fprint fp);
+string FpToString(Fprint fp);
 
 // Attempt to parse a fingerprint in the form encoded by FpToString.  If
 // successful, stores the fingerprint in *fp and returns true.  Otherwise,
 // returns false.
-bool StringToFp(const std::string& s, Fprint* fp);
+bool StringToFp(const string& s, Fprint* fp);
 
 // Convert a 64-bit fingerprint value to an ASCII representation that
 // is terminated by a '\0'.
@@ -157,12 +157,12 @@ bool SafeStringToNumeric(StringPiece s, T* value) {
 
 // Converts from an int64 to a human readable string representing the
 // same number, using decimal powers.  e.g. 1200000 -> "1.20M".
-std::string HumanReadableNum(int64 value);
+string HumanReadableNum(int64 value);
 
 // Converts from an int64 representing a number of bytes to a
 // human readable string representing the same number.
 // e.g. 12345678 -> "11.77MiB".
-std::string HumanReadableNumBytes(int64 num_bytes);
+string HumanReadableNumBytes(int64 num_bytes);
 
 // Converts a time interval as double to a human readable
 // string. For example:
@@ -171,7 +171,7 @@ std::string HumanReadableNumBytes(int64 num_bytes);
 //   933120.0    -> "10.8 days"
 //   39420000.0  -> "1.25 years"
 //   -10         -> "-10 s"
-std::string HumanReadableElapsedTime(double seconds);
+string HumanReadableElapsedTime(double seconds);
 
 }  // namespace strings
 }  // namespace tensorflow

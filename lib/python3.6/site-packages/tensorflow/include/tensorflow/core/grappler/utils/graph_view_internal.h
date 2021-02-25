@@ -172,8 +172,7 @@ class NodeViewInternal {
   // Returns a regular fanin based on input index. If no such fanin exist, a
   // missing fanin is returned, with no NodeView set and an index of -2.
   const FanoutViewT& GetRegularFanin(int i) const {
-    int regular_fanins_size = regular_fanins_.size();
-    if (i < 0 || i >= regular_fanins_size) {
+    if (i < 0 || i >= regular_fanins_.size()) {
       return GetMissingFanin();
     }
     return regular_fanins_[i];
@@ -192,8 +191,7 @@ class NodeViewInternal {
   // Returns a regular fanout(s) based on output index. If no such output index
   // exists, no fanouts will be returned.
   const std::vector<FaninViewT>& GetRegularFanout(int i) const {
-    int regular_fanouts_by_port_size = regular_fanouts_by_port_.size();
-    if (i < 0 || i >= regular_fanouts_by_port_size) {
+    if (i < 0 || i >= regular_fanouts_by_port_.size()) {
       return GetMissingFanout();
     }
     return regular_fanouts_by_port_[i];
@@ -291,16 +289,14 @@ class GraphViewInternal {
   // Finds node by index in the graph. If no such node exists in the graph, a
   // `nullptr` is returned.
   const NodeViewT* GetNode(int node_index) const {
-    int nodes_size = nodes_.size();
-    if (node_index < 0 || node_index >= nodes_size) {
+    if (node_index < 0 || node_index >= nodes_.size()) {
       return nullptr;
     }
     return &nodes_[node_index];
   }
 
   NodeViewT* GetNode(int node_index) {
-    int nodes_size = nodes_.size();
-    if (node_index < 0 || node_index >= nodes_size) {
+    if (node_index < 0 || node_index >= nodes_.size()) {
       return nullptr;
     }
     return &nodes_[node_index];
@@ -448,14 +444,13 @@ inline bool UpdateDevice(NodeViewDiff<GraphViewT>* diff,
 template <typename T, typename U>
 inline bool AddOrUpdateAtIndex(std::vector<T>* v, int i, const U& value,
                                const T& default_value) {
-  int v_size = v->size();
-  if (i > v_size) {
+  if (i > v->size()) {
     // Resize to include `value`, filling the newly introduced gap with
     // `default_value` for later checks of validity (gaps in vector).
     v->reserve(i + 1);
     v->resize(i, default_value);
     v->push_back({value});
-  } else if (i == v_size) {
+  } else if (i == v->size()) {
     // Vector is large enough, simply append `value` to the end.
     v->push_back({value});
   } else {
@@ -499,9 +494,7 @@ inline bool AddOrUpdateRegularFanin(NodeViewDiff<GraphViewT>* diff, int index,
     // index from beginning of regular fanins.
     const int relative_removal_index = num_regular_fanins - index - 1;
     // Check if at relative index fanin was already marked for removal.
-    int diff_regular_inputs_to_remove_size =
-        diff->regular_inputs_to_remove.size();
-    if (relative_removal_index < diff_regular_inputs_to_remove_size &&
+    if (relative_removal_index < diff->regular_inputs_to_remove.size() &&
         diff->regular_inputs_to_remove[relative_removal_index]) {
       // Unmark fanin for removal.
       diff->regular_inputs_to_remove[relative_removal_index] = false;
@@ -550,8 +543,7 @@ inline bool RemoveRegularFanin(NodeViewDiff<GraphViewT>* diff, int index) {
   } else {
     // Relative index from end of regular fanins.
     const int relative_add_index = index - num_regular_fanins;
-    int diff_regular_inputs_to_add_size = diff->regular_inputs_to_add.size();
-    if (relative_add_index >= diff_regular_inputs_to_add_size ||
+    if (relative_add_index >= diff->regular_inputs_to_add.size() ||
         IsEmptyTensorId(diff->regular_inputs_to_add[relative_add_index])) {
       // At relative index, appended regular fanin was already marked for
       // removal.
@@ -679,8 +671,7 @@ inline bool IsWellFormed(
     const absl::flat_hash_map<absl::string_view, int>& updated_node_names) {
   ResizeByTrimmingEndForValue(&diff->regular_inputs_to_remove, false);
   ResizeByTrimmingEndForValue(&diff->regular_inputs_to_add, EmptyTensorId());
-  int diff_regular_inputs_to_add_size = diff->regular_inputs_to_add.size();
-  if (diff_regular_inputs_to_add_size != diff->num_regular_inputs_to_add) {
+  if (diff->regular_inputs_to_add.size() != diff->num_regular_inputs_to_add) {
     // Missing regular fanins in between appended fanins.
     return false;
   } else if (diff->num_regular_inputs_to_add > 0 &&
@@ -688,7 +679,7 @@ inline bool IsWellFormed(
     // Appending new fanins while removing existing fanins, resulting in missing
     // regular fanins in between.
     return false;
-  } else if (static_cast<int>(diff->regular_inputs_to_remove.size()) !=
+  } else if (diff->regular_inputs_to_remove.size() !=
              diff->num_regular_inputs_to_remove) {
     // Regular fanins exist in between removed fanins.
     return false;
@@ -839,8 +830,7 @@ inline void AddOrUpdateRegularFanin(NewNode<GraphViewT>* new_node, int index,
 // remove existing fanins and updated/added fanins via AddOrUpdateRegularFanins.
 template <typename GraphViewT>
 inline void RemoveRegularFanin(NewNode<GraphViewT>* new_node, int index) {
-  int new_node_regular_fanins_size = new_node->regular_fanins.size();
-  if (index < 0 || index >= new_node_regular_fanins_size ||
+  if (index < 0 || index >= new_node->regular_fanins.size() ||
       IsEmptyTensorId(new_node->regular_fanins[index])) {
     return;
   }
@@ -884,8 +874,7 @@ inline bool IsWellFormed(
     NewNode<GraphViewT>* new_node,
     const absl::flat_hash_map<absl::string_view, int>& updated_node_names) {
   ResizeByTrimmingEndForValue(&new_node->regular_fanins, EmptyTensorId());
-  int new_node_regular_fanins_size = new_node->regular_fanins.size();
-  if (new_node_regular_fanins_size != new_node->num_regular_fanins) {
+  if (new_node->regular_fanins.size() != new_node->num_regular_fanins) {
     return false;
   }
 

@@ -15,11 +15,7 @@ limitations under the License.
 #ifndef TENSORFLOW_CORE_PROFILER_LIB_ANNOTATED_TRACEME_H_
 #define TENSORFLOW_CORE_PROFILER_LIB_ANNOTATED_TRACEME_H_
 
-#include <utility>
-
 #include "absl/strings/string_view.h"
-#include "absl/types/optional.h"
-#include "tensorflow/core/platform/logging.h"
 #include "tensorflow/core/platform/macros.h"
 #include "tensorflow/core/platform/types.h"
 #include "tensorflow/core/profiler/lib/scoped_annotation.h"
@@ -38,12 +34,12 @@ class AnnotatedTraceMe {
     bool annotation_enabled = ScopedAnnotation::IsEnabled();
     bool traceme_enabled = TraceMe::Active(level);
     if (TF_PREDICT_FALSE(annotation_enabled || traceme_enabled)) {
-      string name = name_generator();
+      string label = name_generator();
       if (annotation_enabled) {
-        scoped_annotation_.emplace(absl::string_view(name));
+        scoped_annotation_.emplace(absl::string_view(label));
       }
       if (TF_PREDICT_TRUE(traceme_enabled)) {
-        trace_me_.emplace([&name] { return std::move(name); }, level);
+        trace_me_.emplace(std::move(label), level);
       }
     }
   }

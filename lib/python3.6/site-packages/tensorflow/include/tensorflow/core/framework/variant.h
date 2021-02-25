@@ -32,10 +32,10 @@ limitations under the License.
 namespace tensorflow {
 
 template <typename T>
-std::string TypeNameVariant(const T& value);
+string TypeNameVariant(const T& value);
 
 template <typename T>
-std::string DebugStringVariant(const T& value);
+string DebugStringVariant(const T& value);
 
 // Allows for specializations of Variant Decoding.  `data` may be modified in
 // the process of decoding to `value`.
@@ -43,13 +43,13 @@ template <typename T>
 bool DecodeVariant(VariantTensorData* data, T* value);
 
 template <typename T>
-bool DecodeVariant(std::string* buf, T* value);
+bool DecodeVariant(string* buf, T* value);
 
 template <typename T>
 void EncodeVariant(const T& value, VariantTensorData* data);
 
 template <typename T>
-void EncodeVariant(const T& value, std::string* buf);
+void EncodeVariant(const T& value, string* buf);
 
 // This is an implementation of a type-erased container that can store an
 // object of any type. The implementation is very similar to std::any, but has
@@ -144,7 +144,7 @@ void EncodeVariant(const T& value, std::string* buf);
 //   Variant y_type_unknown = serialized_proto_f;  // Store serialized Variant.
 //
 //   EXPECT_EQ(x.TypeName(), y_type_unknown.TypeName());  // Looks like Foo.
-//   EXPECT_EQ(TypeIndex::Make<VariantTensorDataProto>(),
+//   EXPECT_EQ(MakeTypeIndex<VariantTensorDataProto>(),
 //             y_type_unknown.TypeId());
 //
 class Variant {
@@ -227,14 +227,14 @@ class Variant {
   // of the original type when a TensorValueDataProto is stored as the
   // value.  In this case, it returns the TypeIndex of TensorValueDataProto.
   TypeIndex TypeId() const {
-    const TypeIndex VoidTypeIndex = TypeIndex::Make<void>();
+    const TypeIndex VoidTypeIndex = MakeTypeIndex<void>();
     if (is_empty()) {
       return VoidTypeIndex;
     }
     return GetValue()->TypeId();
   }
 
-  std::string DebugString() const {
+  string DebugString() const {
     return strings::StrCat(
         "Variant<type: ", TypeName(),
         " value: ", is_empty() ? "[empty]" : GetValue()->DebugString(), ">");
@@ -244,7 +244,7 @@ class Variant {
   // otherwise.
   template <typename T>
   T* get() {
-    const TypeIndex TTypeIndex = TypeIndex::Make<T>();
+    const TypeIndex TTypeIndex = MakeTypeIndex<T>();
     if (is_empty() || (TTypeIndex != TypeId())) return nullptr;
     return std::addressof(static_cast<Variant::Value<T>*>(GetValue())->value);
   }
@@ -253,7 +253,7 @@ class Variant {
   // otherwise.
   template <typename T>
   const T* get() const {
-    const TypeIndex TTypeIndex = TypeIndex::Make<T>();
+    const TypeIndex TTypeIndex = MakeTypeIndex<T>();
     if (is_empty() || (TTypeIndex != TypeId())) return nullptr;
     return std::addressof(
         static_cast<const Variant::Value<T>*>(GetValue())->value);
@@ -264,7 +264,7 @@ class Variant {
   // In the special case that a serialized Variant is stored (value
   // is a VariantTensorDataProto), returns value.TypeName(), the
   // TypeName field stored in the VariantTensorDataProto buffer.
-  std::string TypeName() const {
+  string TypeName() const {
     if (is_empty()) {
       return "";
     }
@@ -282,12 +282,12 @@ class Variant {
   bool Decode(VariantTensorData data);
 
   // Helper methods to directly serialize/deserialize from strings.
-  void Encode(std::string* buf) const {
+  void Encode(string* buf) const {
     if (!is_empty()) {
       GetValue()->Encode(buf);
     }
   }
-  bool Decode(std::string buf) {
+  bool Decode(string buf) {
     if (!is_empty()) {
       return GetValue()->Decode(std::move(buf));
     }
@@ -313,12 +313,12 @@ class Variant {
     virtual void CloneInto(ValueInterface* memory) const = 0;
     virtual void MoveAssign(ValueInterface* memory) = 0;
     virtual void MoveInto(ValueInterface* memory) = 0;
-    virtual std::string TypeName() const = 0;
-    virtual std::string DebugString() const = 0;
+    virtual string TypeName() const = 0;
+    virtual string DebugString() const = 0;
     virtual void Encode(VariantTensorData* data) const = 0;
     virtual bool Decode(VariantTensorData data) = 0;
-    virtual void Encode(std::string* buf) const = 0;
-    virtual bool Decode(std::string data) = 0;
+    virtual void Encode(string* buf) const = 0;
+    virtual bool Decode(string data) = 0;
   };
 
   template <typename T>
@@ -333,7 +333,7 @@ class Variant {
 
     TypeIndex TypeId() const final {
       const TypeIndex value_type_index =
-          TypeIndex::Make<typename std::decay<T>::type>();
+          MakeTypeIndex<typename std::decay<T>::type>();
       return value_type_index;
     }
 
@@ -359,9 +359,9 @@ class Variant {
       new (memory) Value(InPlace(), std::move(value));
     }
 
-    std::string TypeName() const final { return TypeNameVariant(value); }
+    string TypeName() const final { return TypeNameVariant(value); }
 
-    std::string DebugString() const final { return DebugStringVariant(value); }
+    string DebugString() const final { return DebugStringVariant(value); }
 
     void Encode(VariantTensorData* data) const final {
       EncodeVariant(value, data);
@@ -371,9 +371,9 @@ class Variant {
       return DecodeVariant(&data, &value);
     }
 
-    void Encode(std::string* buf) const final { EncodeVariant(value, buf); }
+    void Encode(string* buf) const final { EncodeVariant(value, buf); }
 
-    bool Decode(std::string buf) final { return DecodeVariant(&buf, &value); }
+    bool Decode(string buf) final { return DecodeVariant(&buf, &value); }
 
     T value;
   };

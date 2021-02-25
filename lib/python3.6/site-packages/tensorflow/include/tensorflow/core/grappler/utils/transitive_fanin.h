@@ -25,17 +25,13 @@ namespace tensorflow {
 namespace grappler {
 
 // Computes the transitive fanin of the graph based on reachability from the
-// specified terminal nodes. Returns the set of nodes comprising the
-// transitive fanin into fanin_nodes. Optionally returns a map of name->node
-// for that graph into name_to_fanin_node if that is not set to nullptr.
-Status ComputeTransitiveFanin(
+// specified terminal nodes. ill_formed will be set to true if the graph is
+// deemed structurally invalid. Returns the set of nodes comprising the
+// transitive fanin.
+std::vector<const NodeDef*> ComputeTransitiveFanin(
     const GraphDef& graph, const std::vector<string>& terminal_nodes,
     std::unordered_map<string, const NodeDef*>* name_to_fanin_node,
-    std::vector<const NodeDef*>* fanin_nodes);
-
-Status ComputeTransitiveFanin(const GraphDef& graph,
-                              const std::vector<string>& terminal_nodes,
-                              std::vector<const NodeDef*>* fanin_nodes);
+    bool* ill_formed);
 
 // Creates output_graph from input_graph using the transitive fanin from the
 // specified terminal nodes. Returns error if the input_graph is deemed

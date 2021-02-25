@@ -22,8 +22,6 @@ limitations under the License.
 namespace tensorflow {
 namespace grappler {
 
-constexpr char kUseChooseFastest[] = "use_choose_fastest";
-
 // This optimizer rewrites dataset.map(map_fn, ...).batch(...) and
 // dataset.apply(tf.data.experimental.map_and_batch(map_fn, ...)) patterns in an
 // input pipeline. It vectorizes the map_fn, such that this segment can be
@@ -56,15 +54,15 @@ class MapVectorization : public TFDataOptimizerBase {
     if (!config) return Status::OK();
 
     const string& choose_fastest_param =
-        config->parameter_map().at(kUseChooseFastest).s();
+        config->parameter_map().at("use_choose_fastest").s();
     if (choose_fastest_param == "true") {
       use_choose_fastest_ = true;
     } else if (choose_fastest_param == "false") {
       use_choose_fastest_ = false;
     } else {
-      return errors::InvalidArgument("Received an invalid value for parameter ",
-                                     kUseChooseFastest, ": ",
-                                     choose_fastest_param);
+      return errors::Internal(
+          "Received an invalid value for parameter \"use_choose_fastest\"",
+          choose_fastest_param);
     }
     return Status::OK();
   }

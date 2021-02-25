@@ -44,7 +44,7 @@ namespace gif {
 
 uint8* Decode(const void* srcdata, int datasize,
               const std::function<uint8*(int, int, int, int)>& allocate_output,
-              string* error_string, bool expand_animations = true);
+              string* error_string);
 
 }  // namespace gif
 }  // namespace tensorflow

@@ -66,7 +66,6 @@ class BufferedInputStream : public InputStreamInterface {
   // file, we return an OUT_OF_RANGE error.  Otherwise, we return
   // some other non-OK status.
   tensorflow::Status ReadLine(string* result);
-  tensorflow::Status ReadLine(tstring* result);
 
   // Returns one text line of data until end-of-file or a '\n' is read. The '\n'
   // is included in the result.
@@ -87,8 +86,7 @@ class BufferedInputStream : public InputStreamInterface {
 
  private:
   tensorflow::Status FillBuffer();
-  template <typename StringType>
-  tensorflow::Status ReadLineHelper(StringType* result, bool include_eol);
+  tensorflow::Status ReadLineHelper(string* result, bool include_eol);
 
   InputStreamInterface* input_stream_;  // not owned.
   size_t size_;                         // buffer size.
