@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 
-import database, l1_login, main
+import database, l1_login, app
 
 
 

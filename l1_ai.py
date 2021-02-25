@@ -17,7 +17,7 @@ from sklearn.svm import LinearSVC
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.neighbors import KNeighborsClassifier
 
-import database, l1_login, main, main
+import database, l1_login, app
 
 
 def l1_ai(text):

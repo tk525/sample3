@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-import database, l1_login, main
+import database, l1_login, app
 
 
 
