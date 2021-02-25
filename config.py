@@ -22,7 +22,7 @@ def config(section='postgresql'):
         database = os.environ['DB_NAME'],
         user = os.environ['DB_USERNAME'],
         password = os.environ['DB_PASSWORD'],
-        port=5432
+        # port=5432
     )
 
     # get section, default to postgresql
@@ -38,6 +38,7 @@ def config(section='postgresql'):
             database = os.environ['DB_NAME'],
             user = os.environ['DB_USERNAME'],
             password = os.environ['DB_PASSWORD'],
-            port=5432))
+            # port=5432)
+            )
 
     return db
