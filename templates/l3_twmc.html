@@ -6,13 +6,13 @@
     $(document).ready(function() {
     
         var x = $('#rn').val();
-        console.log('ここ',x);
+        // console.log('ここ',x);
 
         // アドレスに+α追加するとemit系が死ぬ
         //flask接続アドレスと同じにしなければならぬ...
         // urlを指定するとemitが死ぬが、指定しなければ公開になる。
-        var socket_emi = io.connect('http://127.0.0.1:5000');
-        var socket = io.connect('http://127.0.0.1:5000'+'/'+x);
+        var socket_emi = io.connect('https://sample301-20210223.herokuapp.com');
+        var socket = io.connect('https://sample301-20210223.herokuapp.com'+'/'+x);
         
         // どうも１つづつ個別で存在しないといけないらしい。
         // オブジェクト思考みたいな書き方したら死んだ
@@ -24,7 +24,7 @@
 
         socket.on('message', function(msg) {
             $("#messages").append('<li>'+msg+'</li>');
-            console.log('Received message');
+            // console.log('Received message');
         });
                 
         $('#sendbutton').on('click', function() {

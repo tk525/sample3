@@ -8,8 +8,8 @@
         var x = $('#rmid').val();
         // console.log('ここ',x);
 
-        var socket_emi = io.connect('http://127.0.0.1:5000');
-        var socket = io.connect('http://127.0.0.1:5000'+'/'+x);
+        var socket_emi = io.connect('https://sample301-20210223.herokuapp.com');
+        var socket = io.connect('https://sample301-20210223.herokuapp.com'+'/'+x);
         
         $('#enter').on('click', function() {
             var value = $('#enter').val();
