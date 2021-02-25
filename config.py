@@ -40,5 +40,6 @@ def config(section='postgresql'):
             password = os.environ['DB_PASSWORD'],
             # port=5432)
             )
+        )
 
     return db
