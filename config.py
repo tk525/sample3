@@ -1,7 +1,7 @@
 from configparser import ConfigParser
 import os
 
-def db():
+def db_setting():
 
     host = os.environ['DB_HOSTNAME']
     database = os.environ['DB_NAME']
@@ -18,11 +18,12 @@ def config(section='postgresql'):
 
     # parser.read(filename)
     parser.read(
-        host = os.environ['DB_HOSTNAME'],
-        database = os.environ['DB_NAME'],
-        user = os.environ['DB_USERNAME'],
-        password = os.environ['DB_PASSWORD'],
+        # host = os.environ['DB_HOSTNAME'],
+        # database = os.environ['DB_NAME'],
+        # user = os.environ['DB_USERNAME'],
+        # password = os.environ['DB_PASSWORD'],
         # port=5432
+        db_setting()
     )
 
     # get section, default to postgresql
@@ -34,11 +35,12 @@ def config(section='postgresql'):
     else:
         # raise Exception('Section {0} not found in the {1} file'.format(section, filename))
         raise Exception('Section {0} not found in the {1} file'.format(section,
-            host = os.environ['DB_HOSTNAME'],
-            database = os.environ['DB_NAME'],
-            user = os.environ['DB_USERNAME'],
-            password = os.environ['DB_PASSWORD'],
+            # host = os.environ['DB_HOSTNAME'],
+            # database = os.environ['DB_NAME'],
+            # user = os.environ['DB_USERNAME'],
+            # password = os.environ['DB_PASSWORD'],
             # port=5432)
+            db_setting()
             )
         )
 
