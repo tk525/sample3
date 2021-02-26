@@ -1,1 +1,1 @@
-web：gunicorn dprapp.wsgi --log-file -
+web: gunicorn dprapp.wsgi --log-file=-
