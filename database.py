@@ -1,5 +1,6 @@
 import psycopg2
 import config
+import optparse
 import numpy as np
 import datetime
 
