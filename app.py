@@ -478,7 +478,7 @@ def parting(roomname):
 #namespaceが部屋番号っぽい
 class test(Namespace):
 
-    roomname = '/'+l3_twmc.roomname()
+    roomname = l3_twmc.roomname()
 
     @socketio.on('message', namespace=roomname)
     # @socketio.on('message', namespace=x)

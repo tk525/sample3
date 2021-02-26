@@ -121,9 +121,9 @@ def roomname():
     results_pre = database.l3_create_user_show_all(ip)
 
     if len(results_pre) > 0:
-        roomname = results_pre[5]
+        roomname = '/'+results_pre[5]
     else:
-        roomname = 0
+        roomname = '/'
 
     return roomname
 

@@ -1,5 +1,4 @@
 import psycopg2
-# import config
 import os
 import numpy as np
 import datetime
@@ -9,7 +8,7 @@ DATABASE_URL = os.environ.get('DATABASE_URL')
 
 #l1_user 表示
 def l1_user_show(ip):
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -37,7 +36,7 @@ def l1_user_show(ip):
 
 #l1_userのipが一致する最終レコードを取得 表示
 def l1_user_last_record(ip):
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -58,7 +57,7 @@ def l1_user_connect(ip, once_neg_percent, text):
     conn = None
 
     try:
-        # params = config.config()
+    
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -106,7 +105,7 @@ def l1_user_connect_with_bw(ip, once_neg_percent, text, num_of_bw):
 
 
     try:
-        # params = config.config()
+    
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -136,7 +135,7 @@ def l1_login_connect(ip):
     conn = None
 
     try:
-        # params = config.config()
+    
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -158,7 +157,7 @@ def l1_login_connect(ip):
 
 #l1_loginの最終レコードのみ 表示
 def l1_login_show(ip):
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -186,7 +185,7 @@ def l2_personality(ip, record, personality_result):
     conn = None
 
     try:
-        # params = config.config()
+    
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -208,7 +207,7 @@ def l2_personality(ip, record, personality_result):
 
 #l2_personalityの全てのレコードを取得 表示
 def l2_personality_all_record():
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -225,7 +224,7 @@ def l2_personality_all_record():
 
 #l2_personalityの最終レコードを取得 表示
 def l2_personality_last_record(ip):
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -253,7 +252,7 @@ def l2_dairy(ip, mind, re_text, img):
     conn = None
 
     try:
-        # params = config.config()
+    
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -275,7 +274,7 @@ def l2_dairy(ip, mind, re_text, img):
 
 #l2_dairy 表示
 def l2_dairy_show(ip):
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -295,7 +294,7 @@ def l2_dairy_show(ip):
 
 #l2_dairy 表示
 def l2_dairy_show_text_encode(ip):
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -319,7 +318,7 @@ def l2_dairy_update(ip):
     conn = None
 
     try:
-        # params = config.config()
+    
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -358,7 +357,7 @@ def l2_endg(ip, end_goal, end_goal_tasks):
     conn = None
 
     try:
-        # params = config.config()
+    
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -412,7 +411,7 @@ def l2_endg(ip, end_goal, end_goal_tasks):
 
 #l2_endg 表示
 def l2_endg_show(ip):
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -436,7 +435,7 @@ def l2_endg_show(ip):
 
 #l3_dairy ID一致・最終更新されたものを表示
 def l3_dairy(ip):
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -461,7 +460,7 @@ def l3_dairy(ip):
 
 #l3_bbs_txt 全て表示
 def l3_bbs_all_txt():
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -476,7 +475,7 @@ def l3_bbs_all_txt():
 
 #l3_bbs_txt 全て表示
 def l3_bbs_txt(ip):
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -496,7 +495,7 @@ def l3_bbs_txt(ip):
 
 #l3_bbs_txt 指定した日付表示
 def l3_bbs_txt_show_date(date):
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -513,7 +512,7 @@ def l3_bbs_txt_show_date(date):
 
 #l3_bbs_txt 指定したid表示
 def l3_bbs_txt_show_id(id):
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -533,7 +532,7 @@ def l3_bbs_txt_show_id(id):
 
 #l3_bbs_txt 指定したid表示
 def l3_bbs_txt_show_post_id(id):
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -557,7 +556,7 @@ def l3_bbs_txt_insert(ip, text):
     conn = None
 
     try:
-        # params = config.config()
+    
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -582,7 +581,7 @@ def l3_bbs_txt_insert(ip, text):
 
 #l3_bbs_act 指定した日付のアクション表示
 def l3_bbs_act_show_date(date):
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -599,7 +598,7 @@ def l3_bbs_act_show_date(date):
 
 #l3_bbs_act 表示
 def l3_bbs_act_show_id(id):
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -619,7 +618,7 @@ def l3_bbs_act_show_id(id):
 
 #l3_bbs_act 表示
 def l3_bbs_act_show_all():
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
@@ -640,7 +639,7 @@ def l3_bbs_act_insert(ip, act):
     conn = None
 
     try:
-        # params = config.config()
+    
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -665,7 +664,7 @@ def l3_bbs_act_delete(ip, act):
     conn = None
 
     try:
-        # params = config.config()
+    
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -694,7 +693,7 @@ def l3_mc_insert(ip, memo):
     conn = None
 
     try:
-        # params = config.config()
+    
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -719,7 +718,7 @@ def l3_mc_update(ip):
     conn = None
 
     try:
-        # params = config.config()
+    
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -756,7 +755,7 @@ def l3_create_user_show():
     """ Connect to the PostgreSQL database server """
     conn = None
 
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()        
 
@@ -775,7 +774,7 @@ def l3_create_user_show_all(ip):
     """ Connect to the PostgreSQL database server """
     conn = None
 
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()        
 
@@ -818,7 +817,7 @@ def l3_create_user_show_ip(ip):
     """ Connect to the PostgreSQL database server """
     conn = None
 
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()        
 
@@ -848,7 +847,7 @@ def l3_create_user_show_idnum(ip):
     """ Connect to the PostgreSQL database server """
     conn = None
 
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()        
 
@@ -877,7 +876,7 @@ def l3_create_user_insert(user_name, birth, mail, tel, credit_card, ip, roomname
     conn = None
 
     try:
-        # params = config.config()
+    
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -904,7 +903,7 @@ def l3_uc_update(lists, id_num, roomname):
     conn = None
 
     try:
-        # params = config.config()
+    
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
         
@@ -956,7 +955,7 @@ def suspended_and_baned(ip, level):
     conn = None
 
     try:
-        # params = config.config()
+    
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -977,7 +976,7 @@ def suspended_and_baned_show(ip):
     """ Connect to the PostgreSQL database server """
     conn = None
 
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()        
 
@@ -1000,7 +999,7 @@ def suspended_and_baned_delete(ip):
     """ Connect to the PostgreSQL database server """
     conn = None
 
-    # params = config.config()
+
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()        
 
