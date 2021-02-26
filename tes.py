@@ -4,12 +4,10 @@ import numpy as np
 import datetime
 
 
-DATABASE_URL = os.environ.get('DATABASE_URL')
-
 #l1_user 表示
 def l1_user_show(ip):
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     #全て取得
@@ -37,7 +35,7 @@ def l1_user_show(ip):
 #l1_userのipが一致する最終レコードを取得 表示
 def l1_user_last_record(ip):
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     sql = "SELECT login_user_id, text_score, created_on, num_of_times_using_bad_word FROM l1_login JOIN l1_user ON l1_login.login_user_id=l1_user.user_id ORDER BY created_on DESC LIMIT 1;" #IDが一致したデータの最後に更新されたものを取得
@@ -58,7 +56,7 @@ def l1_user_connect(ip, once_neg_percent, text):
 
     try:
         params = config.config()
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
         sql = "SELECT login_user_id, text_score, created_on, num_of_times_using_bad_word FROM l1_login JOIN l1_user ON l1_login.login_user_id=l1_user.user_id ORDER BY created_on DESC LIMIT 1;" #IDが一致したデータの最後に更新されたものを取得
@@ -106,7 +104,7 @@ def l1_user_connect_with_bw(ip, once_neg_percent, text, num_of_bw):
 
     try:
         params = config.config()
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
         # sql = "INSERT INTO l1_user (user_id, text_score, text, num_of_times_using_bad_word) VALUES ('%s', '%s', '%s', '%s');"%(ip, once_neg_percent, text, num_of_bw)
@@ -136,7 +134,7 @@ def l1_login_connect(ip):
 
     try:
         params = config.config()
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
         # sql = "INSERT INTO l1_login (login_user_id) VALUES ('%s');"%(ip)
@@ -158,7 +156,7 @@ def l1_login_connect(ip):
 #l1_loginの最終レコードのみ 表示
 def l1_login_show(ip):
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     # sql = "SELECT * FROM l1_login where login_user_id = '%s' ORDER BY id DESC LIMIT 1;"%(ip,) #IDが一致したデータの最後に更新されたものを取得
@@ -186,7 +184,7 @@ def l2_personality(ip, record, personality_result):
 
     try:
         params = config.config()
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
         # sql = "INSERT INTO l2_personality (personality_user_id, record, personality_result) VALUES ('%s', '%s', '%s');"%(ip, record, personality_result)
@@ -208,7 +206,7 @@ def l2_personality(ip, record, personality_result):
 #l2_personalityの全てのレコードを取得 表示
 def l2_personality_all_record():
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     sql = "SELECT * FROM l2_personality;"
@@ -225,7 +223,7 @@ def l2_personality_all_record():
 #l2_personalityの最終レコードを取得 表示
 def l2_personality_last_record(ip):
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     # sql = "SELECT * FROM l2_personality where personality_user_id = '%s' ORDER BY id DESC LIMIT 1;"%(ip,) #IDが一致したデータの最後に更新されたものを取得
@@ -253,7 +251,7 @@ def l2_dairy(ip, mind, re_text, img):
 
     try:
         params = config.config()
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
         # sql = "INSERT INTO l2_dairy (dairy_user_id, dairy_mind, dairy_text, img) VALUES ('%s', '%s', '%s', '%s');"%(ip, mind, re_text, img)
@@ -275,7 +273,7 @@ def l2_dairy(ip, mind, re_text, img):
 #l2_dairy 表示
 def l2_dairy_show(ip):
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     # sql = "SELECT * FROM l2_dairy where dairy_user_id = '%s' ORDER BY dairy_created_on DESC;"%(ip,)
@@ -295,7 +293,7 @@ def l2_dairy_show(ip):
 #l2_dairy 表示
 def l2_dairy_show_text_encode(ip):
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     # sql = "SELECT encode(dairy_text::bytea, 'escape') FROM l2_dairy where dairy_user_id = '%s' ORDER BY dairy_created_on DESC;"%(ip,)
@@ -319,7 +317,7 @@ def l2_dairy_update(ip):
 
     try:
         params = config.config()
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
         # sql = "SELECT encode(pm_user_name::bytea, 'escape') FROM paid_members;"
@@ -358,7 +356,7 @@ def l2_endg(ip, end_goal, end_goal_tasks):
 
     try:
         params = config.config()
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
         """DBに同じIPアドレスがある場合はend_goal_tasksのみを更新させるために、
@@ -412,7 +410,7 @@ def l2_endg(ip, end_goal, end_goal_tasks):
 #l2_endg 表示
 def l2_endg_show(ip):
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     # sql = "SELECT * FROM l2_endg where endg_user_id = '%s';"%(ip,)
@@ -436,7 +434,7 @@ def l2_endg_show(ip):
 #l3_dairy ID一致・最終更新されたものを表示
 def l3_dairy(ip):
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     #IDが一致したデータの最後に更新されたものを取得
@@ -461,7 +459,7 @@ def l3_dairy(ip):
 #l3_bbs_txt 全て表示
 def l3_bbs_all_txt():
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     sql = "SELECT * FROM l3_bullentin_board_text ORDER BY id DESC;"
@@ -476,7 +474,7 @@ def l3_bbs_all_txt():
 #l3_bbs_txt 全て表示
 def l3_bbs_txt(ip):
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     # sql = "SELECT * FROM l3_bullentin_board_text where bbs_txt_user_id = '%s';"%(ip,)
@@ -496,7 +494,7 @@ def l3_bbs_txt(ip):
 #l3_bbs_txt 指定した日付表示
 def l3_bbs_txt_show_date(date):
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     sql = "SELECT * FROM l3_bullentin_board_text WHERE bbs_txt_created_on::text LIKE '{}%';".format(date)
@@ -513,7 +511,7 @@ def l3_bbs_txt_show_date(date):
 #l3_bbs_txt 指定したid表示
 def l3_bbs_txt_show_id(id):
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     # sql = "SELECT * FROM l3_bullentin_board_text WHERE bbs_txt_user_id = '%s';"%(id,)
@@ -533,7 +531,7 @@ def l3_bbs_txt_show_id(id):
 #l3_bbs_txt 指定したid表示
 def l3_bbs_txt_show_post_id(id):
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     # sql = "SELECT * FROM l3_bullentin_board_text where id = '%s';"%(id,)
@@ -557,7 +555,7 @@ def l3_bbs_txt_insert(ip, text):
 
     try:
         params = config.config()
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
         # sql = "INSERT INTO l3_bullentin_board_text (bbs_txt_user_id, bbs_txt_text) VALUES ('%s', '%s');"%(ip, text)
@@ -582,7 +580,7 @@ def l3_bbs_txt_insert(ip, text):
 #l3_bbs_act 指定した日付のアクション表示
 def l3_bbs_act_show_date(date):
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     sql = "SELECT * FROM l3_bullentin_board_act WHERE bbs_act_created_on::text LIKE '{}%';".format(date)
@@ -599,7 +597,7 @@ def l3_bbs_act_show_date(date):
 #l3_bbs_act 表示
 def l3_bbs_act_show_id(id):
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     # sql = "SELECT * FROM l3_bullentin_board_act WHERE bbs_act_user_id = '%s';"%(id,)
@@ -619,7 +617,7 @@ def l3_bbs_act_show_id(id):
 #l3_bbs_act 表示
 def l3_bbs_act_show_all():
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor() 
 
     sql = "SELECT * FROM l3_bullentin_board_act;"
@@ -640,7 +638,7 @@ def l3_bbs_act_insert(ip, act):
 
     try:
         params = config.config()
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
         # sql = "INSERT INTO l3_bullentin_board_act (bbs_act_user_id, bbs_act) VALUES ('%s', '%s');"%(ip, act)
@@ -665,7 +663,7 @@ def l3_bbs_act_delete(ip, act):
 
     try:
         params = config.config()
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
         # sql = "DELETE FROM l3_bullentin_board_act WHERE bbs_act_user_id = '%s' AND bbs_act = '%s';"%(ip, act)
@@ -694,7 +692,7 @@ def l3_mc_insert(ip, memo):
 
     try:
         params = config.config()
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
         # sql = "INSERT INTO l3_mc (mc_user_id, memo) VALUES ('%s', '%s');"%(ip, memo)
@@ -719,7 +717,7 @@ def l3_mc_update(ip):
 
     try:
         params = config.config()
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
         # sql = "SELECT encode(pm_user_name::bytea, 'escape') FROM paid_members;"
@@ -756,7 +754,7 @@ def l3_create_user_show():
     conn = None
 
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor()        
 
     sql = "SELECT encode(pm_user_name::bytea, 'escape') FROM paid_members;"
@@ -775,7 +773,7 @@ def l3_create_user_show_all(ip):
     conn = None
 
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor()        
 
     sql = "SELECT encode(pm_user_id::bytea, 'escape') FROM paid_members;"
@@ -818,7 +816,7 @@ def l3_create_user_show_ip(ip):
     conn = None
 
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor()        
 
     sql = "SELECT encode(pm_user_id::bytea, 'escape') FROM paid_members;"
@@ -848,7 +846,7 @@ def l3_create_user_show_idnum(ip):
     conn = None
 
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor()        
 
     sql = "SELECT encode(pm_user_id::bytea, 'escape') FROM paid_members;"
@@ -877,7 +875,7 @@ def l3_create_user_insert(user_name, birth, mail, tel, credit_card, ip, roomname
 
     try:
         params = config.config()
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
         # sql = "INSERT INTO paid_members (pm_user_name, pm_birth, pm_mail, pm_tel, pm_credit_card, pm_user_id) VALUES ('%s'::bytea, '%s'::bytea, '%s'::bytea, '%s'::bytea, '%s'::bytea, '%s'::bytea);"%(user_name, birth, mail, tel, credit_card, ip)
@@ -904,7 +902,7 @@ def l3_uc_update(lists, id_num, roomname):
 
     try:
         params = config.config()
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(**params)
         cur = conn.cursor()        
         
         if len(lists) == 1:
@@ -956,7 +954,7 @@ def suspended_and_baned(ip, level):
 
     try:
         params = config.config()
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+        conn = psycopg2.connect(**params)
         cur = conn.cursor()        
 
         sql = "INSERT INTO suspended_and_baned (sb_user_id, sb_level) VALUES ('%s', '%s');"%(ip, level)
@@ -977,7 +975,7 @@ def suspended_and_baned_show(ip):
     conn = None
 
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor()        
 
     # sql = "SELECT * FROM suspended_and_baned WHERE sb_user_id = '%s';"%(ip,)
@@ -1000,7 +998,7 @@ def suspended_and_baned_delete(ip):
     conn = None
 
     params = config.config()
-    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    conn = psycopg2.connect(**params)
     cur = conn.cursor()        
 
     # sql = "delete from suspended_and_baned where sb_user_id = '%s';"%(ip,)
