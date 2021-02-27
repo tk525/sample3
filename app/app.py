@@ -1,6 +1,7 @@
 import csv
 import datetime
 import os
+import sys
 import math
 import bleach
 import pandas as pd
@@ -11,6 +12,7 @@ from flask_socketio import join_room, leave_room, SocketIO, send, Namespace, emi
 from werkzeug.utils import secure_filename
 from flask_paginate import Pagination, get_page_parameter
 
+sys.path.append('../')
 
 import database, l1_ai, l1_login , l2_pd, l2_ai, l2_record, l3_record, l2_endg, l3_create_user, l3_bbs, l3_twmc
 
