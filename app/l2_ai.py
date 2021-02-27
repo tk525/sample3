@@ -19,10 +19,13 @@ recommend_concrete = pd.read_excel('app/sample.xlsx', index_col=0, header=0, she
 def personal_score(ip):
     
     ip = l1_login.get_ip().pop()
-    score = np.ravel(database.l1_user_last_record(ip))[1] #ユーザーの最終スコア取得
+    try:
+        score = np.ravel(database.l1_user_last_record(ip))[1] #ユーザーの最終スコア取得
+    except IndexError:
+        score = 0.0
 
-    # personality_judge = database.l2_personality_last_record(ip).pop()[3] #0.185185185185185
-    personality_judge = 0.185185185185185
+    personality_judge = database.l2_personality_last_record(ip).pop()[3] #0.185185185185185
+    # personality_judge = 0.185185185185185
     total_score_personality = float(score) + -personality_judge #0.144814814814815
     return total_score_personality
 
