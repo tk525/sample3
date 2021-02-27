@@ -59,7 +59,7 @@ def post():
             word1 = ''
             word2 = ''
 
-    return render_template('templates/l1_l2_ai.html', word1=word1, word2=word2, form=form)#word1=understanding, word2=empathy
+    return render_template('l1_l2_ai.html', word1=word1, word2=word2, form=form)#word1=understanding, word2=empathy
 
 
 
@@ -77,7 +77,7 @@ def diagnosis():
 
     message='can you tell me youself?'
 
-    return render_template('templates/l2_pd.html', question=question, message=message)#word1=understanding, word2=empathy
+    return render_template('l2_pd.html', question=question, message=message)#word1=understanding, word2=empathy
 
 @app.route("/diagnosis_p", methods=["post"])
 def diagnosis_post():
@@ -102,7 +102,7 @@ def diagnosis_post():
 
     message = 'I can know yourself thank to you.'+ '{:.0%}'.format(result) #🌟本番ではresultは非表示で
 
-    return render_template('templates/l2_pd.html', question=question, message=message)#word1=understanding, word2=empathy
+    return render_template('l2_pd.html', question=question, message=message)#word1=understanding, word2=empathy
 
 
 
@@ -117,7 +117,7 @@ def dairy():
     dairy_pre = l2_record.l2_show_more()
     pagination, res = pagination_func(dairy_pre)
 
-    return render_template('templates/l2_l3_dairy.html', text=res, pagination=pagination, form=form)
+    return render_template('l2_l3_dairy.html', text=res, pagination=pagination, form=form)
 
 @app.route("/dairy", methods=["post"])
 def dairy_post():
@@ -165,7 +165,7 @@ def dairy_post():
             pagination=''
             d_comment=''
 
-    return render_template('templates/l2_l3_dairy.html', text=res, pagination=pagination, d_comment=d_comment, form=form)
+    return render_template('l2_l3_dairy.html', text=res, pagination=pagination, d_comment=d_comment, form=form)
 
 def allwed_file(filename):
     # .があるかどうかのチェックと、拡張子の確認
@@ -200,7 +200,7 @@ def endg():
     new_fgs = [fgs[0] + ' is your end goal.']
     new_fgs.append(fgs[1] + ' are your tasks.')
 
-    return render_template('templates/l2_endg.html', our_text=question, fgs=new_fgs, form=form)
+    return render_template('l2_endg.html', our_text=question, fgs=new_fgs, form=form)
 
 @app.route("/fg_p", methods=["post"])
 def endg_post():
@@ -233,7 +233,7 @@ def endg_post():
             question=''
             new_fgs=''
 
-    return render_template('templates/l2_endg.html', our_text=question, fgs=new_fgs, form=form)
+    return render_template('l2_endg.html', our_text=question, fgs=new_fgs, form=form)
 
 
 
@@ -251,7 +251,7 @@ def ur():
     if len(datas) > 0:
         sample = np.ravel(datas)
 
-    return render_template('templates/l3_user_create.html', sample=sample, form=form)
+    return render_template('l3_user_create.html', sample=sample, form=form)
 
 @app.route("/uregistration_p", methods=["post"])
 def ur_post():
@@ -297,7 +297,7 @@ def ur_post():
             # #データがあれば、以前入力したものを下書きに入れる
             sample = l3_create_user.l3_user_show()
 
-    return render_template('templates/l3_user_create.html', sample=sample, form=form)
+    return render_template('l3_user_create.html', sample=sample, form=form)
 
 def show():
     sample = ['Louis Brown', '19901201', 'pasta@pizza.com','00011118888' ,'xxx111dddd']
@@ -317,7 +317,7 @@ def quest():
         if new_fgs[i] == '':
             new_fgs.pop(i)
 
-    return render_template('templates/l3_quest.html', fgs=new_fgs)
+    return render_template('l3_quest.html', fgs=new_fgs)
 
 
 
@@ -335,7 +335,7 @@ def bbs():
 
     pagination, txt, date, act, bbs_id = bbs_pagination_func(txt, date, act, bbs_id) #paginationでデータを調整
 
-    return render_template('templates/l3_bbs.html', bbs_id=bbs_id, act=act, txt=txt, date=date, warn=warn, pagination=pagination, form=form)
+    return render_template('l3_bbs.html', bbs_id=bbs_id, act=act, txt=txt, date=date, warn=warn, pagination=pagination, form=form)
 
 @app.route("/bbs_p", methods=["post"])
 def bbs_post():
@@ -364,7 +364,7 @@ def bbs_post():
             warn=''
             pagination=''
 
-    return render_template('templates/l3_bbs.html', bbs_id=bbs_id, act=act, txt=txt, date=date, warn=warn, pagination=pagination, form=form)
+    return render_template('l3_bbs.html', bbs_id=bbs_id, act=act, txt=txt, date=date, warn=warn, pagination=pagination, form=form)
 
 @app.route("/bbs_ajax", methods=["post"])
 def bbs_ajax():
@@ -404,7 +404,7 @@ def twmc():
 
     rmsign = l3_twmc.roomname()
 
-    return render_template('templates/l3_twmc.html', roomname=rmsign, txt=txt, form=form)
+    return render_template('l3_twmc.html', roomname=rmsign, txt=txt, form=form)
 
 @app.route("/twmc_p", methods=["post"])
 def twmc_post():
@@ -426,7 +426,7 @@ def twmc_post():
     form = TwmcForm()
     sign = request.form['action']
 
-    return render_template('templates/l3_twmc.html', txt=sign, form=form, roomname=rmsign)
+    return render_template('l3_twmc.html', txt=sign, form=form, roomname=rmsign)
 
 @app.route("/twmc_ajax", methods=["post"])
 def twmc_ajax():
@@ -512,7 +512,7 @@ def own():
 
     form = ''
 
-    return render_template('templates/own.html', rooms=rm_list, roomsign=roomsign, form=form)
+    return render_template('own.html', rooms=rm_list, roomsign=roomsign, form=form)
 
 @app.route("/own_p", methods=["post"])
 def own_post():
@@ -540,7 +540,7 @@ def own_post():
     pd.to_pickle(tenta_val, "app/own_rm.csv")
     # print(pd.read_pickle("wtf.csv"))
 
-    return render_template('templates/own.html', rooms=tenta_val, roomsign=roomsign, form=form)
+    return render_template('own.html', rooms=tenta_val, roomsign=roomsign, form=form)
 
 @app.route("/own_ajax", methods=["post"])
 def own_ajax():
