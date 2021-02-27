@@ -1,3 +1,7 @@
+import os
+import sys
+sys.path.append('../')
+
 import random
 import math
 import numpy as np
@@ -5,7 +9,7 @@ import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.cluster import DBSCAN
 
-import database, l1_login, l2_pd
+from app import database, l1_login, l2_pd
 
 
 recommend = pd.read_excel('./sample.xlsx', index_col=0, header=0, sheet_name='recommend')

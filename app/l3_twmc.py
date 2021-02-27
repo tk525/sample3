@@ -1,7 +1,11 @@
+import os
+import sys
+sys.path.append('../')
+
 import numpy as np
 import pandas as pd
 
-import database, l1_login, app
+from app import database, l1_login, app
 
 
 

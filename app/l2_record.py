@@ -1,9 +1,13 @@
+import os
+import sys
+sys.path.append('../')
+
 import pandas as pd
 import numpy as np
 # import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
-import database, l1_login
+from app import database, l1_login
 
 
 def l2_show_more():

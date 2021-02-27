@@ -1,8 +1,12 @@
+import os
+import sys
+sys.path.append('../')
+
 import datetime
 import numpy as np
 import random, string
 
-import database, l1_login
+from app import database, l1_login
 
 def user_check():
 

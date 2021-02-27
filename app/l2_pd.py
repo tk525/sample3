@@ -1,10 +1,14 @@
+import os
+import sys
+sys.path.append('../')
+
 import math
 import itertools
 import pandas as pd
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 
-import database, l1_login, app
+from app import database, l1_login, app
 
 
 

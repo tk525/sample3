@@ -1,10 +1,14 @@
+import os
+import sys
+sys.path.append('../')
+
 import pandas as pd
 import numpy as np
 import datetime
 import random
 from collections import Counter
 
-import database, l1_login
+from app import database, l1_login
 
 
 

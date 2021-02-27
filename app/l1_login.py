@@ -1,10 +1,13 @@
+import os
+import sys
+sys.path.append('../')
+
 import netifaces as ni
 import psutil
-import os
 import socket
 import datetime
 
-import database
+from app import database
 
 
 

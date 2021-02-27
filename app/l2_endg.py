@@ -1,7 +1,12 @@
+import os
+import sys
+sys.path.append('../')
+
 import re
 import pandas as pd
-import database, l2_ai, l1_login
 import numpy as np
+
+from app import database, l2_ai, l1_login
 
 def endg_show():
     ip = l1_login.get_ip().pop()

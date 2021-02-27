@@ -1,13 +1,12 @@
-import re
-# import mglearn
-# import psutil
 import os
+import sys
+sys.path.append('../')
+
+import re
 import socket
 import itertools
 import pandas as pd
 import numpy as np
-# import netifaces as ni
-# import matplotlib.pyplot as plt
 from sklearn.pipeline import make_pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -17,7 +16,7 @@ from sklearn.svm import LinearSVC
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.neighbors import KNeighborsClassifier
 
-import database, l1_login, app
+from app import database, l1_login, app
 
 
 def l1_ai(text):

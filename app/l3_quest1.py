@@ -1,5 +1,8 @@
+# import os
+# import sys
+# sys.path.append('../')
+
 # import re
-# import os 
 # import time
 # import itertools
 # import datetime
@@ -10,7 +13,7 @@
 # from keras.models import Sequential
 # from keras.layers import Dense, LSTM
 
-# import database, l1_login
+# from app import database, l1_login
 
 
 # personality_features_pre = np.array(pd.read_excel('/Users/takipon/Desktop/dprapp/sample.xlsx', index_col=0, header=0, sheet_name='personality_x2').columns)
