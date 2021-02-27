@@ -414,14 +414,14 @@ def twmc_post():
 
     #部屋番号一時記録
     try:
-        rms = pd.read_pickle("rm.csv")
+        rms = pd.read_pickle("app/rm.csv")
     except EOFError:
         rms = None
     if rms == None:
         rms = [rmsign]
     else:
         rms.append(rmsign)
-    pd.to_pickle(rms, "rm.csv")
+    pd.to_pickle(rms, "app/rm.csv")
     # print(pd.read_pickle("rm.csv"))
 
     form = TwmcForm()
@@ -467,14 +467,14 @@ def join(roomname):
 @socketio.on("parting")
 def parting(roomname):
 
-    room_list = pd.read_pickle("rm.csv")
+    room_list = pd.read_pickle("app/rm.csv")
     print(room_list)
     try:
         num = room_list.index(roomname)
         print(num)
         room_list.pop(num)
 
-        pd.to_pickle(room_list, "rm.csv")
+        pd.to_pickle(room_list, "app/rm.csv")
     except ValueError:
         pass
 
@@ -501,7 +501,7 @@ class test(Namespace):
 def own():
 
     try:
-        rm_list = pd.read_pickle("rm.csv")
+        rm_list = pd.read_pickle("app/rm.csv")
 
         rm_list.insert(0,len(rm_list)+1)
         # print(rm_list) #[3, 'yjc9sPHkIW', 'yjc9sPHkIW', 'a']
@@ -524,7 +524,7 @@ def own_post():
     roomsign = 1
     tenta_val = ''
 
-    in_use = pd.read_pickle("rm.csv")
+    in_use = pd.read_pickle("app/rm.csv")
 
     num=0
     for i in range(len(in_use)):
@@ -538,7 +538,7 @@ def own_post():
         if tenta_val != None:
             break 
 
-    pd.to_pickle(tenta_val, "own_rm.csv")
+    pd.to_pickle(tenta_val, "app/own_rm.csv")
     # print(pd.read_pickle("wtf.csv"))
 
     return render_template('own.html', rooms=tenta_val, roomsign=roomsign, form=form)

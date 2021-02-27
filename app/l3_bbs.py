@@ -71,7 +71,7 @@ def bbs_act_insert_remove(act):
 class program:
 
     def anger_program():
-        calm_mind_pre = list(pd.read_excel('./sample.xlsx', sheet_name='calm_the_mind_pg')['text'])
+        calm_mind_pre = list(pd.read_excel('app/sample.xlsx', sheet_name='calm_the_mind_pg')['text'])
         
         calm_mind = random.choice(calm_mind_pre)
 
@@ -82,7 +82,7 @@ def bbs(txt):
     text_pre = txt
     text = txt.split()
 
-    bad_words_pre = list(pd.read_excel('./sample.xlsx', sheet_name='bad_word')['text'])
+    bad_words_pre = list(pd.read_excel('app/sample.xlsx', sheet_name='bad_word')['text'])
 
 
     #ユーザーの最終スコア呼び出し

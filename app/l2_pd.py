@@ -14,7 +14,7 @@ from app import database, l1_login, app
 
 def personality_judge(tester_x):
 
-    personality = pd.read_excel('./sample.xlsx', index_col=0, header=0, sheet_name='personality_x2')
+    personality = pd.read_excel('app/sample.xlsx', index_col=0, header=0, sheet_name='personality_x2')
 
 
     personality_except_dep = personality.drop(['鬱度', '鬱度判定'], axis=1)
