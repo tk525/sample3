@@ -69,7 +69,7 @@ def post():
 def diagnosis():
 
     question = []
-    with open('/Users/takipon/Desktop/dprapp/question.csv') as f:
+    with open('question.csv') as f:
         reader = csv.reader(f)
         for row in reader:
             question.append(row)
@@ -83,7 +83,7 @@ def diagnosis():
 def diagnosis_post():
 
     question = []
-    with open('/Users/takipon/Desktop/dprapp/question.csv') as f:
+    with open('question.csv') as f:
         reader = csv.reader(f)
         for row in reader:
             question.append(row)
