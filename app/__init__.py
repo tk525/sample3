@@ -1,3 +1,5 @@
-from .. import app
+import os
+import sys
+sys.path.append('../')
 
-app()
+import app
