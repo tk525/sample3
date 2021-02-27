@@ -19,7 +19,7 @@ from app import database, l1_ai, l1_login , l2_pd, l2_ai, l2_record, l3_record, 
 
 from app.validation import *
 
-
+from app.templates import *
 
 app = Flask(__name__)
 
@@ -32,7 +32,7 @@ def index():
     form = AiForm()
 
     text = 'can you tell me your day?'
-    return render_template('templates/l1_l2_ai.html', word2=text, form=form)#word1=understanding, word2=empathy
+    return render_template('l1_l2_ai.html', word2=text, form=form)#word1=understanding, word2=empathy
 
 @app.route("/", methods=["post"])
 def post():
