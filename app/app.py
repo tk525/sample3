@@ -19,7 +19,6 @@ from app import database, l1_ai, l1_login , l2_pd, l2_ai, l2_record, l3_record, 
 
 from app.validation import *
 
-from app.templates import *
 
 app = Flask(__name__)
 
