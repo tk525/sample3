@@ -24,7 +24,11 @@ def personal_score(ip):
     except IndexError:
         score = 0.0
 
-    personality_judge = database.l2_personality_last_record(ip).pop()[3] #0.185185185185185
+    try:
+        personality_judge = database.l2_personality_last_record(ip).pop()[3] #0.185185185185185
+    except IndexError:
+        personality_judge = 0
+        
     # personality_judge = 0.185185185185185
     total_score_personality = float(score) + -personality_judge #0.144814814814815
     return total_score_personality
