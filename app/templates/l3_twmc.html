@@ -30,8 +30,8 @@
 
 
 
-        var socket_emi = io.connect(ws_scheme+location.host, {transports: ['websocket']});
-        var socket = io.connect(ws_scheme+location.host+x, {transports: ['websocket']});
+        var socket_emi = io.connect('https://'+location.host, {transports: ['websocket']});
+        var socket = io.connect('https://'+location.host+x, {transports: ['websocket']});
 
         console.log(socket);
         // console.log(ws_scheme+location.host+x);
