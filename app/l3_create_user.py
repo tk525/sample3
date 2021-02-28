@@ -36,7 +36,7 @@ def l3_cuser(user_name, birth, mail, tel, credit_card):
     ip = l1_login.get_ip().pop()
 
     database.l2_dairy_update(ip)
-    database.l3_mc_update(ip)
+    # database.l3_mc_update(ip)
 
 def cuser_update(lists):
 

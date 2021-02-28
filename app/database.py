@@ -713,38 +713,38 @@ def l3_mc_insert(ip, memo):
             print('l3_mher Database connection closed.')
 
 #l3_mc 更新
-def l3_mc_update(ip):
-    """ Connect to the PostgreSQL database server """
-    conn = None
+# def l3_mc_update(ip):
+#     """ Connect to the PostgreSQL database server """
+#     conn = None
 
-    try:
+#     try:
     
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-        cur = conn.cursor()        
+#         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+#         cur = conn.cursor()        
 
-        # sql = "SELECT encode(pm_user_name::bytea, 'escape') FROM paid_members;"
-        # sql = "SELECT memo FROM l3_mc WHERE mc_user_id = '%s';"%(ip,)
-        #SQL攻撃対策
-        sql = "SELECT memo FROM l3_mc WHERE mc_user_id = %s;"
-        para = (ip,)
-        cur.execute(sql, para)
-        show = np.array(cur.fetchall())
-        show = np.ravel(show)
+#         # sql = "SELECT encode(pm_user_name::bytea, 'escape') FROM paid_members;"
+#         # sql = "SELECT memo FROM l3_mc WHERE mc_user_id = '%s';"%(ip,)
+#         #SQL攻撃対策
+#         sql = "SELECT memo FROM l3_mc WHERE mc_user_id = %s;"
+#         para = (ip,)
+#         cur.execute(sql, para)
+#         show = np.array(cur.fetchall())
+#         show = np.ravel(show)
 
-        #l3_mcのmemoだけ暗号化
-        for text in show:
-            sql = "UPDATE l3_mc SET memo = '{}'::bytea WHERE mc_user_id ='{}';".format(text,ip)
+#         #l3_mcのmemoだけ暗号化
+#         for text in show:
+#             sql = "UPDATE l3_mc SET memo = '{}'::bytea WHERE mc_user_id ='{}';".format(text,ip)
 
-        cur.execute(sql)
-        conn.commit()
+#         cur.execute(sql)
+#         conn.commit()
 
-        cur.close()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-            print('l3_mc Database connection closed.')
+#         cur.close()
+#     except (Exception, psycopg2.DatabaseError) as error:
+#         print(error)
+#     finally:
+#         if conn is not None:
+#             conn.close()
+#             print('l3_mc Database connection closed.')
 
 
 

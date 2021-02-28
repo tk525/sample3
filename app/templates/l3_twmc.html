@@ -62,7 +62,7 @@
             console.log('入力されたよ',$('#myMessage').val());
 
             $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
-            socket_emi.emit("join", value);
+            socket_emi.emit("join", roomname);
 
             socket.send($('#myMessage').val(), roomname);
             $('#myMessage').val('');
