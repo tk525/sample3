@@ -48,7 +48,7 @@
         socket.onmessage = function(msg) { //メッセージ受信
             $("#messages").append('<li>'+msg+'</li>');
             console.log('Received message');
-        });
+        };
                 
         $('#sendbutton').on('click', function() {
 
