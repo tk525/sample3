@@ -49,7 +49,7 @@ def post():
             word1 = 'I see your think of ' + word1[0]
             word2 = [word2.pop()]
 
-            print(score)
+            print('んほほほ',score)
             if float(score)> 0.8:
                 recommend = l2_ai.l2_ai()
                 txt = 'I can reccomend to you'
@@ -134,7 +134,7 @@ def dairy_post():
             new_text = bleach.clean(new_text)
 
             admit = l3_record.l3_record()
-            if admit is 'OK':
+            if admit == 'OK':
 
                 UPLOAD_FOLDER = os.path.join('static', 'img')
                 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
