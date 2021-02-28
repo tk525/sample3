@@ -50,24 +50,23 @@
         // socket.on('message', function(msg) {
         socket.onmessage = function(msg) { //メッセージ受信 後で
             var data = JSON.parse(msg.data);
-            console.log('う',data);
-            $("#messages").append('<li>'+msg+'</li>');
+            console.log('受信値',data);
+
+            $("#messages").append('<li>'+msg.data+'</li>');
+            // $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
+            
             console.log('Received message');
         };
                 
         $('#sendbutton').on('click', function() {
 
             var roomname = $('#rn').val();
-            console.log('い',roomname);
-            console.log('入力されたよ',$('#myMessage').val());
-
-            $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
-            socket_emi.emit("join", roomname);
+            console.log('入力値/roomname',$('#myMessage').val(), roomname);
 
             // socket.send($('#myMessage').val(), roomname);
             socket.send(JSON.stringify({ handle: roomname, text: $('#myMessage').val() }));
 
-            $('#myMessage').val('');
+            $('#myMessage').val(''); //できてる
 
         });
         
