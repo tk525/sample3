@@ -43,20 +43,22 @@
 
         $('#choice').on('click', function() { 
             var value = $('#twmc_rn').val();
-            console.log(value);
+            console.log('あ',value);
             socket_emi.emit("join", value);
         });
 
         // socket.on('message', function(msg) {
         socket.onmessage = function(msg) { //メッセージ受信
+            var data = JSON.parse(msg.data);
+            console.log('う',data);
             $("#messages").append('<li>'+msg+'</li>');
             console.log('Received message');
         };
                 
         $('#sendbutton').on('click', function() {
 
-            var roomname = '/'+$('#rn').val();
-            console.log(roomname);
+            var roomname = $('#rn').val();
+            console.log('い',roomname);
             console.log('入力されたよ',$('#myMessage').val());
 
             socket.send($('#myMessage').val(), roomname);
