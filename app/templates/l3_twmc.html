@@ -6,21 +6,21 @@
     $(document).ready(function() {
     
         var x = $('#rn').val();
-        // console.log('ここ',x);
+        console.log('ここ',x);
 
         // アドレスに+α追加するとemit系が死ぬ
         //flask接続アドレスと同じにしなければならぬ...
         // urlを指定するとemitが死ぬが、指定しなければ公開になる。
         // var socket_emi = io.connect('https://sample301-20210223.herokuapp.com');
         // var socket = io.connect('https://sample301-20210223.herokuapp.com'+'/'+x);
-        if (window.location.protocol == "https:") {
-            var ws_scheme = "wss://";
-            } else {
-            var ws_scheme = "ws://"
+
+        const options = { 
+            transports: ['websocket', 'polling' ]
         };
 
-        var socket_emi = io.connect(ws_scheme + location.host);
-        var socket = io.connect(ws_scheme + location.host + '/' + x);
+        var socket_emi = io.connect('https://sample301-20210223.herokuapp.com', options);
+        var socket = io.connect('https://sample301-20210223.herokuapp.com'+'/'+x, options);
+
         
 
 
