@@ -248,8 +248,8 @@ def ur():
     sample = show()
 
     datas = l3_create_user.l3_user_show()
-    if len(datas) > 0:
-        sample = np.ravel(datas)
+    # if len(datas) > 0:
+    #     sample = np.ravel(datas)
 
     return render_template('l3_user_create.html', sample=sample, form=form)
 
