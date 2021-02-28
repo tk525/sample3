@@ -23,13 +23,15 @@
             var ws_scheme = "ws://"
         };
 
-        var socket_emi = io.connect('https://'+location.host, options);
+        var socket_emi = io.connect(ws_scheme+location.host, options);
         // var socket_emi = io.connect('https://'+location.host);
-        var socket = io.connect('https://'+location.host+x, options);
+        var socket = io.connect(ws_scheme+location.host+x, options);
         // var socket = io.connect('https://'+location.host+x);
         console.log('https://'+location.host);
         console.log(ws_scheme+location.host+x);
         
+
+
 
 
 
