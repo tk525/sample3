@@ -41,7 +41,7 @@
         // どうも１つづつ個別で存在しないといけないらしい。
         // オブジェクト思考みたいな書き方したら死んだ
 
-        $('#choice').on('click', function() { 
+        $('#choice').on('click', function() { //部屋チョイス
             var value = $('#twmc_rn').val();
             console.log('あ',value);
             socket_emi.emit("join", value);
@@ -60,6 +60,9 @@
             var roomname = $('#rn').val();
             console.log('い',roomname);
             console.log('入力されたよ',$('#myMessage').val());
+
+            $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
+            socket_emi.emit("join", value);
 
             socket.send($('#myMessage').val(), roomname);
             $('#myMessage').val('');
