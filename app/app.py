@@ -245,11 +245,14 @@ def ur():
     #XSS対策 validation
     form = UserCreateForm()
 
-    sample = show()
 
-    datas = l3_create_user.l3_user_show()
+    try:
+        datas = l3_create_user.l3_user_show()
+        sample = np.ravel(datas)
+    except ValueError:
+        sample = show()
+
     # if len(datas) > 0:
-    #     sample = np.ravel(datas)
 
     return render_template('l3_user_create.html', sample=sample, form=form)
 
@@ -300,7 +303,8 @@ def ur_post():
     return render_template('l3_user_create.html', sample=sample, form=form)
 
 def show():
-    sample = ['Louis Brown', '19901201', 'pasta@pizza.com','00011118888' ,'xxx111dddd']
+    # sample = ['Louis Brown', '19901201', 'pasta@pizza.com','00011118888' ,'xxx111dddd']
+    sample = ['empty', 'empty', 'empty', 'empty', 'empty']
     return sample
 
 
