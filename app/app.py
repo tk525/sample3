@@ -420,6 +420,7 @@ def twmc_post():
         rms = pd.read_pickle("app/rm.csv")
     except EOFError:
         rms = None
+        
     if rms == None:
         rms = [rmsign]
     else:
