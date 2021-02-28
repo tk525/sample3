@@ -24,12 +24,14 @@
             // var ws_scheme = "ws://"
             var ws_scheme = "ws://"
         };
-        // wss://sample301-20210223.herokuapp.com/socket.io/?EIO=3&transport=websocket
+        
+
+
         var socket_emi = io.connect(ws_scheme+location.host);
         var socket = io.connect(ws_scheme+location.host+x);
         // var socket_emi = io.connect('https://'+location.host, options);
         // var socket = io.connect('https://'+location.host+x, options);
-        console.log('https://'+location.host);
+        console.log(scoket);
         // console.log(ws_scheme+location.host+x);
         
 
@@ -42,17 +44,19 @@
 
         $('#choice').on('click', function() {
             var value = $('#twmc_rn').val();
+            console.log(value);
             socket_emi.emit("join", value);
         });
 
         socket.on('message', function(msg) {
             $("#messages").append('<li>'+msg+'</li>');
-            // console.log('Received message');
+            console.log('Received message');
         });
                 
         $('#sendbutton').on('click', function() {
 
             var roomname = '/'+$('#rn').val();
+            console.log(roomname);
 
             socket.send($('#myMessage').val(), roomname);
             $('#myMessage').val('');
