@@ -49,6 +49,7 @@ def post():
             word1 = 'I see your think of ' + word1[0]
             word2 = [word2.pop()]
 
+            print(score)
             if float(score)> 0.8:
                 recommend = l2_ai.l2_ai()
                 txt = 'I can reccomend to you'
@@ -420,7 +421,7 @@ def twmc_post():
         rms = pd.read_pickle("app/rm.csv")
     except EOFError:
         rms = None
-        
+
     if rms == None:
         rms = [rmsign]
     else:
