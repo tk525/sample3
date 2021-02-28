@@ -38,6 +38,11 @@ def post():
     #XSS対策 validation
     form = AiForm()
     if request.method == "POST":
+
+        if request.form['cheat']:
+            print('あ')
+            # l1_ai.cheat()
+
         if form.validate_on_submit():
 
             text = request.form['ai_txt']
@@ -49,7 +54,6 @@ def post():
             word1 = 'I see your think of ' + word1[0]
             word2 = [word2.pop()]
 
-            print('んほほほ',score)
             if float(score)> 0.8:
                 recommend = l2_ai.l2_ai()
                 txt = 'I can reccomend to you'

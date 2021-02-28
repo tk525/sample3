@@ -46,8 +46,8 @@
             socket_emi.emit("join", value);
         });
 
-        // socket.on('message', function(msg) {
-        socket_receive.onmessage = function(msg) { //メッセージ受信 後で
+        socket.on('message', function(msg) {
+        // socket_receive.onmessage = function(msg) { //メッセージ受信 後で
             var data = JSON.parse(msg.data);
             console.log('受信値',data);
 
