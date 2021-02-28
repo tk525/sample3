@@ -31,7 +31,7 @@
         var socket = io.connect(ws_scheme+location.host+x);
         // var socket_emi = io.connect('https://'+location.host, options);
         // var socket = io.connect('https://'+location.host+x, options);
-        console.log(scoket);
+        console.log(socket);
         // console.log(ws_scheme+location.host+x);
         
 
@@ -65,19 +65,12 @@
         
 
         // ページ離れる時の処理
-        window.onload = function(){
-            //ページを離れる直前にメッセージを表示する
-            // window.onbeforeunload = function(){
-            //     return "OK?";
-            // }
+        window.onload = function(){//🌟OK
 
-            //ページを離れた時に新規ウィンドウを開く
+            //ページを離れた時に新規ウィンドウを開く 
             window.onunload = function(){
-                // window.open();
                 var roomname = $('#rn').val();
-
                 socket_emi.emit("parting", roomname);
-
             }
         }
 
