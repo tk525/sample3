@@ -7,7 +7,6 @@
     
         var x = $('#rn').val();
         console.log('ここ',x);
-        console.log(location.host);
 
         // アドレスに+α追加するとemit系が死ぬ
         //flask接続アドレスと同じにしなければならぬ...
@@ -18,10 +17,15 @@
         const options = { 
             transports: ['websocket', 'polling' ]
         };
+        if (window.location.protocol == "https:") {
+            var ws_scheme = "wss://";
+            } else {
+            var ws_scheme = "ws://"
+        };
 
-        var socket_emi = io.connect('https://sample301-20210223.herokuapp.com', options);
-        var socket = io.connect('https://sample301-20210223.herokuapp.com'+'/'+x, options);
-
+        var socket_emi = io.connect(ws_scheme+location.host, options);
+        var socket = io.connect(ws_scheme+location.host+x, options);
+        console.log(ws_scheme+location.host+x);
         
 
 
