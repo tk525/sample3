@@ -18,13 +18,14 @@ from sklearn.neighbors import KNeighborsClassifier
 
 from app import database, l1_login, app
 
+
+
 def cheat():
     ip = l1_login.get_ip().pop()
     once_neg_percent = 1
     text = 'cheating'
-    
-    database.l1_user_connect(ip, once_neg_percent, text)
 
+    database.l1_user_connect(ip, once_neg_percent, text)
 
 def l1_ai(text):
 
