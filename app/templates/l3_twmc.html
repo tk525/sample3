@@ -48,7 +48,7 @@
         });
 
         // socket.on('message', function(msg) {
-        socket.onmessage = function(msg) { //メッセージ受信
+        socket.onmessage = function(msg) { //メッセージ受信 後で
             var data = JSON.parse(msg.data);
             console.log('う',data);
             $("#messages").append('<li>'+msg+'</li>');
@@ -64,7 +64,9 @@
             $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
             socket_emi.emit("join", roomname);
 
-            socket.send($('#myMessage').val(), roomname);
+            // socket.send($('#myMessage').val(), roomname);
+            socket.send(JSON.stringify({ handle: roomname, text: $('#myMessage').val() }));
+
             $('#myMessage').val('');
 
         });
