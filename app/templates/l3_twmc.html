@@ -23,18 +23,12 @@
             var ws_scheme = "ws://"
         };
         
-
-
         // var socket_emi = io.connect(ws_scheme+location.host);
         // var socket = io.connect(ws_scheme+location.host+x);
 
+        var socket_emi = new ReconnectingWebSocket(ws_scheme + location.host);
+        var socket = new ReconnectingWebSocket(ws_scheme + location.host + x);
 
-
-        var socket_emi = io.connect('https://'+location.host, {transports: ['websocket']});
-        var socket = io.connect('https://'+location.host+x, {transports: ['websocket']});
-
-        console.log(location.host);
-        // console.log(ws_scheme+location.host+x);
         
 
 
@@ -44,13 +38,14 @@
         // どうも１つづつ個別で存在しないといけないらしい。
         // オブジェクト思考みたいな書き方したら死んだ
 
-        $('#choice').on('click', function() {
+        $('#choice').on('click', function() { 
             var value = $('#twmc_rn').val();
             console.log(value);
             socket_emi.emit("join", value);
         });
 
-        socket.on('message', function(msg) {
+        // socket.on('message', function(msg) {
+        socket.onmessage = function(msg) { //メッセージ受信
             $("#messages").append('<li>'+msg+'</li>');
             console.log('Received message');
         });
@@ -59,6 +54,7 @@
 
             var roomname = '/'+$('#rn').val();
             console.log(roomname);
+            console.log('入力されたよ',$('#myMessage').val());
 
             socket.send($('#myMessage').val(), roomname);
             $('#myMessage').val('');
