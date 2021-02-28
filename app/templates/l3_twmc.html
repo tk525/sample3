@@ -45,7 +45,8 @@
             console.log('あ',value);
             socket_emi.emit("join", value);
         });
-
+        
+        var socket = io.connect(ws_scheme+location.host+x);
         socket.on('message', function(msg) {
         // socket_receive.onmessage = function(msg) { //メッセージ受信 後で
             var data = JSON.parse(msg.data);
@@ -58,10 +59,12 @@
         });
                 
         $('#sendbutton').on('click', function() {
+            event.preventDefault();
 
             var roomname = $('#rn').val();
             console.log('入力値/roomname',$('#myMessage').val(), roomname);
 
+            var socket = io.connect(ws_scheme+location.host+roomname);
             // socket.send($('#myMessage').val(), roomname);
             socket.send(JSON.stringify({ handle: roomname, text: $('#myMessage').val() }));
 

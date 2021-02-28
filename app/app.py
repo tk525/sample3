@@ -45,6 +45,8 @@ def post():
             if text == 'cheat':
                 l1_ai.cheat()
 
+                word1 = ''
+                word2 = ''
             else:
 
                 #XSS対策 sanitizing
@@ -495,7 +497,7 @@ class test(Namespace):
     @socketio.on('message', namespace=roomname)
     # @socketio.on('message', namespace=x)
     def handleMessage(msg, roomname):
-        print('['+ roomname +'] Message: ' + msg )
+        print('['+ roomname +'あん？] Message: ' + msg )
         send(msg,
             broadcast=True,
             # namespace=roomname
