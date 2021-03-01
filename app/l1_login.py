@@ -6,6 +6,7 @@ import netifaces as ni
 import psutil
 import socket
 import datetime
+import pandas as pd
 
 from app import database
 
