@@ -12,10 +12,14 @@ from app import database, l1_login
 
 def l2_show_more():
     ip = l1_login.get_ip().pop()
+    print('ここ', ip)
     dairys_pre = np.array(database.l2_dairy_show(ip))
+    print('ここ', dairys_pre)
     # dairys_date = np.ravel(dairys_date)
     dairys_text_pre = np.array(database.l2_dairy_show_text_encode(ip))
+    print('ここ', dairys_text_pre)
     dairys_text = np.ravel(dairys_text_pre)
+    print('ここ', dairys_text)
 
     txt_date = []
     # print(dairys_pre[0])

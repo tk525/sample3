@@ -276,7 +276,7 @@ def l2_dairy(ip, mind, re_text, img):
 def l2_dairy_show(ip):
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-    cur = conn.cursor() 
+    cur = conn.cursor(cursor_factory=DictCursor) 
 
     # sql = "SELECT * FROM l2_dairy where dairy_user_id = '%s' ORDER BY dairy_created_on DESC;"%(ip,)
     #SQL攻撃対策
@@ -286,6 +286,7 @@ def l2_dairy_show(ip):
 
      #全て取得
     show = cur.fetchall()
+    print('でーたべえす', show)
 
     cur.close()
     conn.close() 
