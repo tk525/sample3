@@ -89,7 +89,8 @@ def bbs(txt):
     ip = l1_login.get_ip().pop()
     score_pre = np.array(database.l1_user_last_record(ip))
     score_pre = np.ravel(score_pre)
-    print('んあああ',score_pre)
+
+    print('ここ', score_pre)
     score = float(score_pre[1])
     try:
         num_of_bw = int(score_pre[3])

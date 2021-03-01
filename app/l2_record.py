@@ -29,6 +29,8 @@ def l2_show_more():
             # img = ''
             txt_date.append([dairys_text[num], date])
 
+    print('ここ', txt_date)
+
     return txt_date
 
 def l2_dairy(new_text, new_mood, img):

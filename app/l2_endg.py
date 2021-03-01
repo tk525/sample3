@@ -9,14 +9,14 @@ import numpy as np
 from app import database, l2_ai, l1_login
 
 def endg_show():
+    endg = 'what'
+    task = 'what'
+
     ip = l1_login.get_ip().pop()
     show = np.array(database.l2_endg_show(ip))
+    show = np.ravel(show)
 
-    if len(show) == 0:
-        endg = 'what'
-        task = 'what'
-    else:
-        show = np.ravel(show)
+    if len(show) > 0:
         endg = show[2]
         task = show[3]
 

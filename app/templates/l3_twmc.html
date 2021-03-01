@@ -11,9 +11,6 @@
         var x = $('#rn').val();
         console.log('ここ',x);
 
-        // アドレスに+α追加するとemit系が死ぬ
-        //flask接続アドレスと同じにしなければならぬ...
-        // urlを指定するとemitが死ぬが、指定しなければ公開になる。
         // var socket_emi = io.connect('https://sample301-20210223.herokuapp.com');
         // var socket = io.connect('https://sample301-20210223.herokuapp.com'+'/'+x);
 
@@ -30,33 +27,25 @@
         var socket = io.connect(ws_scheme+location.host+x);
         // var socket_emi = new ReconnectingWebSocket(ws_scheme + location.host);
         var socket_receive = new ReconnectingWebSocket(ws_scheme + location.host + x);
-
         
+        // 課金料金が超えるので一旦コメントアウト
+        // $('#choice').on('click', function() { //部屋チョイス
+        //     var value = $('#twmc_rn').val();
+        //     socket_emi.emit("join", value);
+        // });
 
+        // 課金料金が超えるので一旦コメントアウト
+        // var socket = io.connect(ws_scheme+location.host+x);
+        // socket.on('message', function(msg) {
+        // // socket_receive.onmessage = function(msg) { //メッセージ受信 後で
+        //     var data = JSON.parse(msg.data);
+        //     console.log('受信値',data);
 
+        //     $("#messages").append('<li>'+data+'</li>');
+        //     // $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
 
-
-
-        // どうも１つづつ個別で存在しないといけないらしい。
-        // オブジェクト思考みたいな書き方したら死んだ
-
-        $('#choice').on('click', function() { //部屋チョイス
-            var value = $('#twmc_rn').val();
-            console.log('あ',value);
-            socket_emi.emit("join", value);
-        });
-        
-        var socket = io.connect(ws_scheme+location.host+x);
-        socket.on('message', function(msg) {
-        // socket_receive.onmessage = function(msg) { //メッセージ受信 後で
-            var data = JSON.parse(msg.data);
-            console.log('受信値',data);
-
-            $("#messages").append('<li>'+data+'</li>');
-            // $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
-
-            console.log('Received message');
-        });
+        //     console.log('Received message');
+        // });
                 
         $('#sendbutton').on('click', function() {
             event.preventDefault();
@@ -68,13 +57,16 @@
             // socket.send($('#myMessage').val(), roomname);
             socket.send(JSON.stringify({ handle: roomname, text: $('#myMessage').val() }));
 
-            $('#myMessage').val(''); //できてる
+            // 課金料金が超えるので一旦これで
+            $("#messages").append('<li>'+data+'</li>');
+
+            $('#myMessage').val(''); 
 
         });
         
 
         // ページ離れる時の処理
-        window.onload = function(){//🌟OK
+        window.onload = function(){
 
             //ページを離れた時に新規ウィンドウを開く 
             window.onunload = function(){

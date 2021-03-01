@@ -42,26 +42,19 @@ def post():
 
             text = request.form['ai_txt']
 
-            if text == 'cheat':
-                l1_ai.cheat()
+            #XSS対策 sanitizing
+            text = bleach.clean(text)
 
-                word1 = ''
-                word2 = ''
-            else:
+            word1, word2, score = l1_ai.l1_ai(text)
+            word1 = 'I see your think of ' + word1[0]
+            word2 = [word2.pop()]
 
-                #XSS対策 sanitizing
-                text = bleach.clean(text)
-
-                word1, word2, score = l1_ai.l1_ai(text)
-                word1 = 'I see your think of ' + word1[0]
-                word2 = [word2.pop()]
-
-                if float(score)> 0.8:
-                    recommend = l2_ai.l2_ai()
-                    txt = 'I can reccomend to you'
-                    for reco in recommend:
-                        txt = txt +', '+ reco
-                    word2.append(txt + 'and so on.')
+            if float(score)> 0.0:
+                recommend = l2_ai.l2_ai()
+                txt = 'I can reccomend to you'
+                for reco in recommend:
+                    txt = txt +', '+ reco
+                word2.append(txt + 'and so on.')
         else:
             word1 = ''
             word2 = ''
@@ -455,9 +448,9 @@ def twmc_ajax():
 
             if len(sign) > 0: #ifの中に書かないと起動しない
 
-                print('いま',sign)
+                print('before',sign)
                 sign = l3_twmc.twmc(sign)
-                print('こうなったよ',sign)
+                print('after',sign)
 
                 return jsonify({'output':sign})
 
@@ -569,9 +562,9 @@ def own_ajax():
 
     if len(sign) > 0: #ifの中に書かないと起動しない
 
-        print('いま',sign)
+        print('before',sign)
         sign = l3_twmc.twmc(sign)
-        print('こうなったよ',sign)
+        print('after',sign)
 
         return jsonify({'output':sign})
 
