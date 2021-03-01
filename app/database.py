@@ -2,7 +2,7 @@ import psycopg2
 import os
 import numpy as np
 import datetime
-
+from psycopg2.extras import DictCursor
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
