@@ -23,18 +23,37 @@ from app.validation import *
 app = Flask(__name__)
 
 
-
-#L1/L2愚痴聞き AI Listening
+#急遽login作成。ipアドレスが変わるとしらなかったので
 @app.route("/")
 def index():
+    return render_template('login.html')
+
+@app.route("/", methods=["post"])
+def post():
+
+    if request.method == "POST":
+
+        name = request.form['name']
+        pd.to_pickle(name, "app/login.pkl")
+
+        form = AiForm()
+        text = 'can you tell me your day?'
+
+    return render_template('l1_l2_ai.html', word2=text, form=form)
+
+
+
+#L1/L2愚痴聞き AI Listening
+@app.route("/ai")
+def ai_p():
     #XSS対策 validation
     form = AiForm()
 
     text = 'can you tell me your day?'
     return render_template('l1_l2_ai.html', word2=text, form=form)#word1=understanding, word2=empathy
 
-@app.route("/", methods=["post"])
-def post():
+@app.route("/ai", methods=["post"])
+def ai_post():
     #XSS対策 validation
     form = AiForm()
     if request.method == "POST":
