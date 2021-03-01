@@ -280,9 +280,11 @@ def l2_dairy_show(ip):
 
     # sql = "SELECT * FROM l2_dairy where dairy_user_id = '%s' ORDER BY dairy_created_on DESC;"%(ip,)
     #SQL攻撃対策
-    sql = "SELECT * FROM l2_dairy where dairy_user_id = %s ORDER BY dairy_created_on DESC;"
-    para = (ip,)
-    cur.execute(sql, para)
+    sql = "SELECT * FROM l2_dairy where dairy_user_id = %s ORDER BY dairy_created_on DESC;"%(ip,)
+    # para = (ip,)
+    cur.execute(sql,
+    # para
+    )
 
      #全て取得
     show = cur.fetchall()
