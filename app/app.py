@@ -34,7 +34,7 @@ def post():
     if request.method == "POST":
 
         name = request.form['name']
-        pd.to_pickle(name, "app/login.pkl")
+        pd.to_pickle(name, "app/login.csv")
 
         form = AiForm()
         text = 'can you tell me your day?'

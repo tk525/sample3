@@ -32,7 +32,7 @@ from app import database
 #                 pass
 #         return result
 def get_ip():
-    name_pre = pd.read_pickle("login.pkl")
+    name_pre = pd.read_pickle("app/login.csv")
     name = list(name_pre) #ipアドレスの代用。.pop()対策
     return name
 
