@@ -278,9 +278,9 @@ def l2_dairy_show(ip):
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor(cursor_factory=DictCursor) 
 
-    # sql = "SELECT * FROM l2_dairy where dairy_user_id = '%s' ORDER BY dairy_created_on DESC;"%(ip,)
+    sql = "SELECT * FROM l2_dairy where dairy_user_id = '%s' ORDER BY dairy_created_on DESC;"%(ip,)
     #SQL攻撃対策
-    sql = "SELECT * FROM l2_dairy where dairy_user_id = %s ORDER BY dairy_created_on DESC;"%("'"+ip+"'",)
+    # sql = "SELECT * FROM l2_dairy where dairy_user_id = %s ORDER BY dairy_created_on DESC;"%("'"+ip+"'",)
     # para = (ip,)
     cur.execute(sql,
     # para
