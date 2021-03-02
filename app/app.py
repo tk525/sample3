@@ -319,7 +319,7 @@ def ur_post():
             
             #すでにDBにあるかチェック
             result = l3_create_user.user_check()
-            print('有料委員か否か',result)
+            print('app.py 有料委員か否か',result)
             
             if result == 'OK': #部分更新
 

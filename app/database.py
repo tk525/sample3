@@ -925,7 +925,6 @@ def l3_create_user_show_all():
 
 #paid_mambers ipアドレス 表示
 def l3_create_user_show_ip():
-    """ Connect to the PostgreSQL database server """
 
     ip = pd.read_pickle("app/login.csv")
     pd.to_pickle(ip, "app/login.csv")
@@ -949,7 +948,7 @@ def l3_create_user_show_ip():
                 show = ''
             num = num + 1 #配列番号になる
     else:
-        show = ''
+        show = 'NO'
 
 
     cur.close()
