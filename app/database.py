@@ -58,6 +58,7 @@ def l1_user_connect(ip, once_neg_percent, text):
 
     try:
     
+        print('ip_pd', pd.read_pickle("app/login.csv"))
         print('ip', ip)
         print('neg_percent', once_neg_percent)
         print('txt', text)

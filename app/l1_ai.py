@@ -116,13 +116,14 @@ def l1_ai(text):
     #新規データ内にあるネガティブワードを、単語リストを参照しながらカウント
     badwords=0
     see_badwords = [badwords+dp_list_eachwords.count(new_tester_words[i]) for i in range(len(new_tester_words))]
-    # print(see_badwords) #リスト型、単語があれば１/なければ0 #[0, 1, 1, 0, 0, 0]
+    print('badwords',see_badwords) #リスト型、単語があれば１/なければ0 #[0, 1, 1, 0, 0, 0]
 
 
 
     #新規テキストに対するネガティブワードの計算を小数点で実行
     once_neg_percent = '{:.2}'.format(sum(see_badwords) / len(see_badwords))
     # print(once_neg_percent) #0.33
+    print('percentage',sum(see_badwords) / len(see_badwords)) #0.33
 
 
 
