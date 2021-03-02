@@ -129,8 +129,9 @@ def l1_ai(text):
     #ipアドレスがブラウザを閉じると随時変わる、csvで一時的受け渡しはできないので
     #loginでipアドレスと名前を挿入、loginでipアドレスが一致する名前を抜き出して、それをipとして使う
     ip_address = l1_login.ip_address().pop()
-    ip_pre = np.array(database.l1_login_show(ip_address))
-    ip = np.ravel(x)
+    print('ip_address', ip_address)
+    ip_pre = np.array(database.l1_login_show_by_ip_address(ip_address))
+    ip = np.ravel(x)[1]
     # ip = l1_login.get_ip().pop()
 
     # text = ''.join(tester_list)
