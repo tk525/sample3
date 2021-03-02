@@ -126,12 +126,17 @@ def l1_ai(text):
     print('percentage',sum(see_badwords) / len(see_badwords)) #0.33
 
 
+    #ipアドレスがブラウザを閉じると随時変わる、csvで一時的受け渡しはできないので
+    #loginでipアドレスと名前を挿入、loginでipアドレスが一致する名前を抜き出して、それをipとして使う
+    ip_address = l1_login.ip_address().pop()
+    ip_pre = np.array(database.l1_login_show(ip_address))
+    ip = np.ravel(x)[1]
+    # ip = l1_login.get_ip().pop()
 
-    ip = l1_login.get_ip().pop()
     # text = ''.join(tester_list)
     text = [text]
 
-    print('ipここはai', ip)
+    print('ここはaiのip', ip)
     #データベース.pyにIPアドレスとネガティブパーセンテージ＋テキスト受け渡し
     database.l1_user_connect(ip, once_neg_percent, text)
 

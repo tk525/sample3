@@ -181,6 +181,25 @@ def l1_login_show(ip):
     conn.close() 
     print('l1_login_show Database connection closed.')
     return show
+#l1_loginの最終レコードのみ 表示
+def l1_login_show_by_ip_address(ip):
+
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+    cur = conn.cursor() 
+
+    # sql = "SELECT * FROM l1_login where login_user_id = '%s' ORDER BY id DESC LIMIT 1;"%(ip,) #IDが一致したデータの最後に更新されたものを取得
+    #SQL攻撃対策
+    sql = "SELECT * FROM l1_login where ip = %s ORDER BY id DESC LIMIT 1;" #IDが一致したデータの最後に更新されたものを取得
+    para = (ip,)
+    cur.execute(sql, para)
+
+     #全て取得
+    show = cur.fetchall()
+
+    cur.close()
+    conn.close() 
+    print('l1_login_show Database connection closed.')
+    return show
 
 
 

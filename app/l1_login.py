@@ -47,7 +47,7 @@ def login(name):
 
     ip = name
     print('nameですよ',ip)
-    address = ip_address()
+    address = ip_address().pop()
     print('ログイン', address)
 
     try:
