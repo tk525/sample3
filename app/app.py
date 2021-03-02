@@ -69,16 +69,19 @@ def ai_post():
 
             word1, word2, score = l1_ai.l1_ai(text)
             word1 = 'I see your think of ' + word1[0]
-            word2 = [word2.pop()]
+            word2 = word2.pop()
 
             print('word2の値',word2) #good job
 
             if float(score)> 0.0:
                 word3 = l2_ai.l2_ai()
                 recommend = l2_ai.l2_ai()
+                print('推奨内容', recommend)
+
                 word3 = 'I can reccomend to you'
                 for reco in recommend:
                     word3 = word3 +', '+ reco
+                print('word3の値',word3)
             else:
                 word3=''
 

@@ -12,7 +12,7 @@ from app import database, l1_login
 
 def l2_show_more():
     # ip = l1_login.get_ip().pop()
-    print('ここ', ip)
+
     dairys_pre = np.array(database.l2_dairy_show())
     print('ここ', dairys_pre)
     # dairys_date = np.ravel(dairys_date)
