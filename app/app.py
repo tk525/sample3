@@ -80,7 +80,8 @@ def ai_post():
                     txt = txt +', '+ reco
                 text = txt + 'and so on.'
 
-                word2.append(text)
+                word2 = word2 + [text]
+                print('加工したword2',word2)
         else:
             word1 = ''
             word2 = ''
