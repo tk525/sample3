@@ -16,9 +16,12 @@ recommend = pd.read_excel('app/sample.xlsx', index_col=0, header=0, sheet_name='
 recommend_concrete = pd.read_excel('app/sample.xlsx', index_col=0, header=0, sheet_name='recommend_concrete')
 
     #最終スコアから性格の得点を合わせる
-def personal_score(ip):
+def personal_score():
     
-    ip = l1_login.get_ip().pop()
+    # ip = l1_login.get_ip().pop()
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
+
     try:
         score = np.ravel(database.l1_user_last_record(ip))[1] #ユーザーの最終スコア取得
     except IndexError:
@@ -37,6 +40,9 @@ def l2_ai():
 
     #l2_personalityDBからrecord取得して、操作可能の二次元配列に変換
     # ip = l1_login.get_ip().pop()
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
+
     try:
         score = np.ravel(database.l1_user_last_record())[2] #ユーザーの最終スコア取得
         print('ユーザーの最終スコア', score)
@@ -86,7 +92,7 @@ def l2_ai():
 
 
 
-        x = math.ceil(len(recommend_all_options) * personal_score(ip)) #3.62を切り上げ
+        x = math.ceil(len(recommend_all_options) * personal_score()) #3.62を切り上げ
         # recommend_random = random.choices(recommend_all_options, k=len(recommend_all_options)-x) #選択肢の中からランダムに１つ選択する 21選択/total25
         recommend_random = random.choices(recommend_all_options, k=math.ceil(42/(len(recommend_all_options)-x))) #あまりにも多いので、万物の回答42を割った
 
