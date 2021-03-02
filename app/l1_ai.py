@@ -136,7 +136,8 @@ def l1_ai(text):
     # text = ''.join(tester_list)
     text = [text]
 
-    print('ここはaiのip', ip)
+    print('ここはaiのip', ip_pre)
+    # print('ここはaiのip', ip) #ここはaiのip [<25x218 sparse matrix of type '<class 'numpy.float64'>'
     #データベース.pyにIPアドレスとネガティブパーセンテージ＋テキスト受け渡し
     database.l1_user_connect(ip, once_neg_percent, text)
 
