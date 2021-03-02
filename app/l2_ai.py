@@ -36,9 +36,10 @@ def personal_score(ip):
 def l2_ai():
 
     #l2_personalityDBからrecord取得して、操作可能の二次元配列に変換
-    ip = l1_login.get_ip().pop()
-    score = np.ravel(database.l1_user_last_record(ip))[1] #ユーザーの最終スコア取得
-    record_list = np.ravel(database.l2_personality_last_record(ip))[2] #l2パーソナリティの最終レコード取得
+    # ip = l1_login.get_ip().pop()
+
+    score = np.ravel(database.l1_user_last_record())[1] #ユーザーの最終スコア取得
+    record_list = np.ravel(database.l2_personality_last_record())[2] #l2パーソナリティの最終レコード取得
     record_replace = record_list.translate(str.maketrans({' ':'', '[':'', ']':''})) #大量置換
     record_intlist = [int(record_replace[i]) for i in range(len(record_replace))] #intの[1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1]
     record_2_deminsion = np.array(record_intlist).reshape(1,len(record_intlist)) #データの二次元配列化

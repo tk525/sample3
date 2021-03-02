@@ -39,16 +39,24 @@ def l1_user_show():
     return show
 
 #l1_userのipが一致する最終レコードを取得 表示
-def l1_user_last_record(ip):
+def l1_user_last_record():
+
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
-    sql = "SELECT login_user_id, text_score, created_on, num_of_times_using_bad_word FROM l1_login JOIN l1_user ON l1_login.login_user_id=l1_user.user_id ORDER BY created_on DESC LIMIT 1;" #IDが一致したデータの最後に更新されたものを取得
-    cur.execute(sql)
+    # sql = "SELECT login_user_id, text_score, created_on, num_of_times_using_bad_word FROM l1_login JOIN l1_user ON l1_login.login_user_id=l1_user.user_id ORDER BY created_on DESC LIMIT 1;" #IDが一致したデータの最後に更新されたものを取得
+
+    sql = "SELECT * FROM l1_user where user_id = %s ORDER BY created_on DESC LIMIT 1;"
+    para = (ip,)
+
+    cur.execute(sql, para)
 
      #全て取得
     show = cur.fetchall()
+    print('l1_user最後に更新された値',show)
 
     cur.close()
     conn.close()  
@@ -259,7 +267,10 @@ def l2_personality_all_record():
     return show 
 
 #l2_personalityの最終レコードを取得 表示
-def l2_personality_last_record(ip):
+def l2_personality_last_record():
+
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
