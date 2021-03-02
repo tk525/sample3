@@ -7,7 +7,7 @@ class AiForm(FlaskForm):
     ai_txt = TextAreaField('ai_txt', 
         validators=[
             DataRequired(),
-            Length(max=70),
+            # Length(max=140),
         ]
     )
 

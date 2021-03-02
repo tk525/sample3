@@ -131,7 +131,7 @@ def l1_ai(text):
     # text = ''.join(tester_list)
     text = [text]
 
-
+    print('ipここはai', ip)
     #データベース.pyにIPアドレスとネガティブパーセンテージ＋テキスト受け渡し
     database.l1_user_connect(ip, once_neg_percent, text)
 
