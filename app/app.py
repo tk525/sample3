@@ -36,6 +36,8 @@ def post():
         name = request.form['name']
         pd.to_pickle(name, "app/login.csv")
 
+        l1_login.login()
+
         form = AiForm()
         text = 'can you tell me your day?'
 
