@@ -8,7 +8,10 @@ from psycopg2.extras import DictCursor
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 #l1_user 表示
-def l1_user_show(ip):
+def l1_user_show():
+
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
@@ -53,16 +56,14 @@ def l1_user_last_record(ip):
     return show
 
 #l1_user 挿入
-def l1_user_connect(ip, once_neg_percent, text):
+def l1_user_connect(once_neg_percent, text):
     """ Connect to the PostgreSQL database server """
     conn = None
 
     try:
     
-        print('ip_pd', pd.read_pickle("app/login.csv"))
-        print('ip', ip)
-        print('neg_percent', once_neg_percent)
-        print('txt', text)
+        ip = pd.read_pickle("app/login.csv")
+        pd.to_pickle(ip, "app/login.csv")
 
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
@@ -79,7 +80,7 @@ def l1_user_connect(ip, once_neg_percent, text):
 
         #l1_user データ挿入 バッドワード使用履歴の有無
         # if type(show[len(show)-1]) == datetime.datetime:
-        if show[len(show)-1] == None or len(show) == 0: #最後のレコードの挿入されてるデータ型が日付であれば。つまり、初回であれば
+        if show[len(show)-1] == None or show == []: #最後のレコードの挿入されてるデータ型が日付であれば。つまり、初回であれば
 
             # sql = "INSERT INTO l1_user (user_id, text_score, text) VALUES ('%s', '%s', '%s');"%(ip, once_neg_percent, text)
             # SQL攻撃対策
@@ -137,7 +138,7 @@ def l1_user_connect_with_bw(ip, once_neg_percent, text, num_of_bw):
 
 
 #l1_login 挿入
-def l1_login_connect(ip, address):
+def l1_login_connect(ip):
     """ Connect to the PostgreSQL database server """
     conn = None
 
@@ -148,8 +149,8 @@ def l1_login_connect(ip, address):
 
         # sql = "INSERT INTO l1_login (login_user_id) VALUES ('%s');"%(ip)
         #SQL攻撃対策
-        sql = "INSERT INTO l1_login (login_user_id, ip) VALUES (%s, %s);"
-        para = (ip, address)
+        sql = "INSERT INTO l1_login (login_user_id) VALUES (%s);"
+        para = (ip,)
 
         cur.execute(sql, para)
         conn.commit() #挿入

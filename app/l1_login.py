@@ -13,24 +13,24 @@ from app import database
 
 
 #ipアドレス取得
-def ip_address() -> list:
-    if os.name == "nt":
-        # Windows
-        return socket.gethostbyname_ex(socket.gethostname())[2]
-        pass
-    else:
-        # それ以外
-        result = []
-        address_list = psutil.net_if_addrs()
-        for nic in address_list.keys():
-            ni.ifaddresses(nic)
-            try:
-                ip = ni.ifaddresses(nic)[ni.AF_INET][0]['addr']
-                if ip not in ["127.0.0.1"]:
-                    result.append(ip)
-            except KeyError as err:
-                pass
-        return result
+# def ip_address() -> list:
+#     if os.name == "nt":
+#         # Windows
+#         return socket.gethostbyname_ex(socket.gethostname())[2]
+#         pass
+#     else:
+#         # それ以外
+#         result = []
+#         address_list = psutil.net_if_addrs()
+#         for nic in address_list.keys():
+#             ni.ifaddresses(nic)
+#             try:
+#                 ip = ni.ifaddresses(nic)[ni.AF_INET][0]['addr']
+#                 if ip not in ["127.0.0.1"]:
+#                     result.append(ip)
+#             except KeyError as err:
+#                 pass
+#         return result
 
 def get_ip():
 
@@ -47,8 +47,6 @@ def login(name):
 
     ip = name
     print('nameですよ',ip)
-    address = ip_address().pop()
-    print('ログイン', address)
 
     try:
         l1_login_last_record = database.l1_login_show(ip)
@@ -59,7 +57,7 @@ def login(name):
 
     if len(l1_login_last_record) == 0:
 
-        database.l1_login_connect(ip, address)
+        database.l1_login_connect(ip)
 
     else:
         

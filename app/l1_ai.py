@@ -25,7 +25,7 @@ def cheat():
     once_neg_percent = 1
     text = 'cheating'
 
-    database.l1_user_connect(ip, once_neg_percent, text)
+    database.l1_user_connect(once_neg_percent, text)
 
 def l1_ai(text):
 
@@ -128,25 +128,16 @@ def l1_ai(text):
 
     #ipアドレスがページが変わると随時変わる、csvも消えるので一時的受け渡しはできないので
     #loginでipアドレスと名前を挿入、loginでipアドレスが一致する名前を抜き出して、それをipとして使う
-    ip_address = l1_login.ip_address().pop()
-    print('ip_address', ip_address)
-    ip_pre = np.array(database.l1_login_show_by_ip_address(ip_address))
-    ip = np.ravel(x)
     # ip = l1_login.get_ip().pop()
-
     # text = ''.join(tester_list)
     text = [text]
 
-    print('ここはaiのip_pre', ip_pre)
-    print('ここはaiのip', ip)
-    print('どうか', pd.read_pickle("app/login.csv"))
-    # print('ここはaiのip', ip) #ここはaiのip [<25x218 sparse matrix of type '<class 'numpy.float64'>'
     #データベース.pyにIPアドレスとネガティブパーセンテージ＋テキスト受け渡し
-    database.l1_user_connect(ip, once_neg_percent, text)
+    database.l1_user_connect(once_neg_percent, text)
 
 
     # データベース.pyでデータベースの中身を取得
-    l1_ip_df = pd.DataFrame(database.l1_user_show(ip))
+    l1_ip_df = pd.DataFrame(database.l1_user_show())
     try:
         l1_ip_df_col = list(l1_ip_df[2])
     except KeyError:
