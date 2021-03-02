@@ -902,12 +902,14 @@ def l3_create_user_show_all():
                 break
         num = num + 1 #配列は0からだけど、DBは1からなので
 
-        sql = ["SELECT encode(pm_user_name::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";",
+        sql = [
+            "SELECT encode(pm_user_name::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";",
             "SELECT encode(pm_birth::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";",
             "SELECT encode(pm_mail::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";",
             "SELECT encode(pm_tel::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";",
             "SELECT encode(pm_credit_card::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";",
-            "SELECT pm_room_name FROM paid_members WHERE id = "+ str(num) +";"
+            "SELECT pm_room_name FROM paid_members WHERE id = "+ str(num) +";",
+            "SELECT encode(pm_user_id::bytea, 'escape') FROM paid_members WHERE id = "+ str(num) +";"
         ]
 
         datas_pre = []

@@ -168,8 +168,8 @@ def dairy_post():
             print('admitは', admit)
             if admit == 'OK':
 
-                UPLOAD_FOLDER = sys.path.append('../app/static/img')
-                # UPLOAD_FOLDER = os.path.join('static', 'img')
+                # UPLOAD_FOLDER = sys.path.append('../app/static/img')
+                UPLOAD_FOLDER = os.path.join('static', 'img')
 
                 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -280,11 +280,19 @@ def ur():
     #XSS対策 validation
     form = UserCreateForm()
 
-    try:
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
+
+    try: #会員登録1号目か否か
+
         datas = l3_create_user.l3_user_show()
         print('app.pyの会員登録最初のページ' ,datas)
-        
-        sample = np.ravel(datas)
+
+        if datas[6] == ip:
+            sample = np.ravel(datas)
+        else:
+            sample = show()
+
     except ValueError:
         sample = show()
 
