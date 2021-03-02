@@ -58,6 +58,10 @@ def l1_user_connect(ip, once_neg_percent, text):
 
     try:
     
+        print('ip', ip)
+        print('neg_percent', once_neg_percent)
+        print('txt', text)
+
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -68,6 +72,7 @@ def l1_user_connect(ip, once_neg_percent, text):
         show = cur.fetchall()
         show = np.array(show)
         show = np.ravel(show)
+        print('ここはDB', show)
         # ['192.168.3.3' '0.0' datetime.datetime(2021, 2, 22, 5, 59, 28, 848773), None] #4
 
         #l1_user データ挿入 バッドワード使用履歴の有無
