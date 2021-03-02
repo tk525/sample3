@@ -516,19 +516,28 @@ def parting(roomname):
     except ValueError:
         pass
 
-#namespaceが部屋番号っぽい
-class test(Namespace):
-
+# #namespaceが部屋番号っぽい
+# class test(Namespace):
+#     roomname = l3_twmc.roomname()
+#     @socketio.on('message', namespace=roomname)
+#     # @socketio.on('message', namespace=x)
+#     def handleMessage(msg, roomname):
+#         print('['+ roomname +'あん？] Message: ' + msg )
+#         send(msg,broadcast=True,
+#             # namespace=roomname
+#         )
+def roomnm():
     roomname = l3_twmc.roomname()
+    return roomname
 
-    @socketio.on('message', namespace=roomname)
-    # @socketio.on('message', namespace=x)
-    def handleMessage(msg, roomname):
-        print('['+ roomname +'あん？] Message: ' + msg )
-        send(msg,
-            broadcast=True,
-            # namespace=roomname
-        )
+@socketio.on('message', namespace=roomnm)
+# @socketio.on('message', namespace=x)
+def handleMessage(msg, roomname):
+    print('['+ roomname +'あん？] Message: ' + msg )
+    send(msg,
+        broadcast=True,
+        # namespace=roomname
+    )
 
 
 
