@@ -169,18 +169,20 @@ def dairy_post():
             if admit == 'OK':
 
                 # UPLOAD_FOLDER = sys.path.append('static/img')
-                UPLOAD_FOLDER = 'static/img'
+                # UPLOAD_FOLDER = 'static/img'
                 # UPLOAD_FOLDER = os.path.join('static', 'img')
+                UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER')
 
-                heroku.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+                # heroku.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
                 file = request.files['imgfile']
                 
                 if file.filename != '':
                     # if file and allwed_file(file.filename):
                     filename = secure_filename(file.filename)
+                    print('app.pyファイルのパス確認', UPLOAD_FOLDER, filename)
                     # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    file.save(heroku.config['UPLOAD_FOLDER'], filename)
+                    file.save(UPLOAD_FOLDER, filename)
                 
                     img = '/static/img/' + file.filename
                     print('Okだった場合のimg',img)
