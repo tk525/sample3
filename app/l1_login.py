@@ -43,18 +43,23 @@ def get_ip():
 
     return name
 
-def login():
+def login(name):
 
-    ip = get_ip().pop()
+    ip = name
+    print('nameですよ',ip)
+    address = ip_address()
+    print('ログイン', address)
+
     try:
         l1_login_last_record = database.l1_login_show(ip)
+        print('l1_login_last_record', l1_login_last_record)
     except:
         l1_login_last_record = ''
 
 
     if len(l1_login_last_record) == 0:
 
-        database.l1_login_connect(ip)
+        database.l1_login_connect(ip, address)
 
     else:
         
