@@ -41,7 +41,7 @@ def l2_ai():
         score = np.ravel(database.l1_user_last_record())[2] #ユーザーの最終スコア取得
         print('ユーザーの最終スコア', score)
     except IndexError:
-        recommend_random = 'sorry, you did not tell us enough yourself yet'
+        recommend_random = 'nothing'
 
     try:
         record_list = np.ravel(database.l2_personality_last_record())[2] #l2パーソナリティの最終レコード取得
@@ -88,18 +88,12 @@ def l2_ai():
 
         x = math.ceil(len(recommend_all_options) * personal_score(ip)) #3.62を切り上げ
         # recommend_random = random.choices(recommend_all_options, k=len(recommend_all_options)-x) #選択肢の中からランダムに１つ選択する 21選択/total25
-        recommend_random_pre = random.choices(recommend_all_options, k=math.ceil(42/(len(recommend_all_options)-x))) #あまりにも多いので、万物の回答42を割った
+        recommend_random = random.choices(recommend_all_options, k=math.ceil(42/(len(recommend_all_options)-x))) #あまりにも多いので、万物の回答42を割った
 
         # print(recommend_random)
         # ['できるだけ許すこと。', '嫌なことがあったら、SNSでつぶやきましょう。', '直感を利用する。', 'ポジティブな言葉を使いましょう。', '手をつなぐ。', '温かいコップを握る。', '自分を見下している人に注意を払うな。', '無視されても気にしないこと。', 'できるだけ許すこと。', '怒りを抱えている人を見ないようにする。', '一度に一つずつチェックしてみましょう。', '他人と自分を比べないこと。', 'ミラーニューロンを活用する。', '三人称で話せ', '批判的な意見に注意を払うな。', '自分の理想を高く持ちすぎないように。', 'SNSを使う場合は、1日30分までに制限しましょう。', '手をつなぐ。', 'SNSを使う場合は、1日30分までに制限しましょう。', '精神的に病んでしまうことは避けられないと考える。', '強く押しすぎないでください。']
     
-        recommend_random = []
-        txt = 'I can reccomend to you'
-        for reco in recommend_random_pre:
-            txt = txt +', '+ reco
-        recommend_random.append(txt + ' and so on.')
-    
     except IndexError:
-        recommend_random = 'sorry, you did not tell us enough yourself yet'
+        recommend_random = 'nothing'
 
     return recommend_random
