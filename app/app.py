@@ -278,7 +278,6 @@ def ur():
     #XSS対策 validation
     form = UserCreateForm()
 
-
     try:
         datas = l3_create_user.l3_user_show()
         sample = np.ravel(datas)
@@ -320,6 +319,8 @@ def ur_post():
             
             #すでにDBにあるかチェック
             result = l3_create_user.user_check()
+            print('有料委員か否か',result)
+            
             if result == 'OK': #部分更新
 
                 l3_create_user.cuser_update(lists)

@@ -26,7 +26,7 @@ def endg_admittion():
     
     # ip = l1_login.get_ip().pop()
     personal_score = l2_ai.personal_score()
-    personal_score = 0.9
+    # personal_score = 0.9
 
     if personal_score >= 0.75:
         result = 0

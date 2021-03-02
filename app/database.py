@@ -616,12 +616,15 @@ def l3_bbs_txt_show_post_id(id):
     return show 
 
 #l3_bbs_txt 挿入
-def l3_bbs_txt_insert(ip, text):
+def l3_bbs_txt_insert(text):
     """ Connect to the PostgreSQL database server """
     conn = None
 
     try:
     
+        ip = pd.read_pickle("app/login.csv")
+        pd.to_pickle(ip, "app/login.csv")
+
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -662,7 +665,10 @@ def l3_bbs_act_show_date(date):
     return show 
 
 #l3_bbs_act 表示
-def l3_bbs_act_show_id(id):
+def l3_bbs_act_show_id():
+
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
@@ -699,12 +705,15 @@ def l3_bbs_act_show_all():
     return show 
 
 #l3_bbs_act 挿入
-def l3_bbs_act_insert(ip, act):
+def l3_bbs_act_insert(act):
     """ Connect to the PostgreSQL database server """
     conn = None
 
     try:
     
+        ip = pd.read_pickle("app/login.csv")
+        pd.to_pickle(ip, "app/login.csv")
+
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -724,12 +733,15 @@ def l3_bbs_act_insert(ip, act):
             print('l3_bbs_act Database connection closed.')
 
 #l3_bbs_act 挿入
-def l3_bbs_act_delete(ip, act):
+def l3_bbs_act_delete(act):
     """ Connect to the PostgreSQL database server """
     conn = None
 
     try:
     
+        ip = pd.read_pickle("app/login.csv")
+        pd.to_pickle(ip, "app/login.csv")
+
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -835,10 +847,12 @@ def l3_create_user_show():
     return show
 
 #paid_mambers 名前 表示
-def l3_create_user_show_all(ip):
+def l3_create_user_show_all():
     """ Connect to the PostgreSQL database server """
-    conn = None
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
 
+    conn = None
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()        
@@ -893,6 +907,7 @@ def l3_create_user_show_ip():
     cur.execute(sql)
     shows = cur.fetchall()
 
+
     num = 1
     if len(shows) > 0:
         for show in shows:
@@ -911,10 +926,12 @@ def l3_create_user_show_ip():
     return show
 
 #paid_mambers ipアドレス 表示
-def l3_create_user_show_idnum(ip):
-    """ Connect to the PostgreSQL database server """
-    conn = None
+def l3_create_user_show_idnum():
 
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
+
+    conn = None
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()        
@@ -1018,12 +1035,15 @@ def l3_uc_update(lists, id_num, roomname):
 
 
 #垢BAN / 3日間のsuspended 挿入
-def suspended_and_baned(ip, level):
+def suspended_and_baned(level):
     """ Connect to the PostgreSQL database server """
     conn = None
 
     try:
     
+        ip = pd.read_pickle("app/login.csv")
+        pd.to_pickle(ip, "app/login.csv")
+
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -1040,10 +1060,12 @@ def suspended_and_baned(ip, level):
             print('suspended_and_baned Database connection closed.')
 
 #垢BAN / 3日間のsuspended 表示
-def suspended_and_baned_show(ip):
-    """ Connect to the PostgreSQL database server """
-    conn = None
+def suspended_and_baned_show():
 
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
+
+    conn = None
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()        
@@ -1063,10 +1085,12 @@ def suspended_and_baned_show(ip):
     return show
 
 #垢BAN / 3日間のsuspended 削除
-def suspended_and_baned_delete(ip):
-    """ Connect to the PostgreSQL database server """
-    conn = None
+def suspended_and_baned_delete():
 
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
+
+    conn = None
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()        

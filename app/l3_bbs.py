@@ -52,19 +52,19 @@ def bbs_show_act():
 
 def bbs_act_insert_remove(act):
 
-    ip = l1_login.get_ip().pop()
-    data = np.array(database.l3_bbs_act_show_id(ip))
+    # ip = l1_login.get_ip().pop()
+    data = np.array(database.l3_bbs_act_show_id())
 
     txt, date, bbs_id = bbs_show()
 
     if len(data) == 0:
-        database.l3_bbs_act_insert(ip, act)
+        database.l3_bbs_act_insert(act)
     else:
         for i in range(len(data)):
             if int(data[i][2]) != int(act):
-                database.l3_bbs_act_insert(ip, act)
+                database.l3_bbs_act_insert(act)
             else:
-                database.l3_bbs_act_delete(ip, act)
+                database.l3_bbs_act_delete(act)
 
 
 
@@ -86,8 +86,8 @@ def bbs(txt):
 
 
     #ユーザーの最終スコア呼び出し
-    ip = l1_login.get_ip().pop()
-    score_pre = np.array(database.l1_user_last_record(ip))
+    # ip = l1_login.get_ip().pop()
+    score_pre = np.array(database.l1_user_last_record())
     score_pre = np.ravel(score_pre)
 
     print('ここ', score_pre)
@@ -98,7 +98,7 @@ def bbs(txt):
         num_of_bw = 0
 
     #垢BANリスト呼び出し
-    ban_user_pre = np.array(database.suspended_and_baned_show(ip))
+    ban_user_pre = np.array(database.suspended_and_baned_show())
     ban_user = np.ravel(ban_user_pre)
     if len(ban_user) > 0:
         ban_user_date = ban_user[3]
@@ -117,12 +117,12 @@ def bbs(txt):
     if score >= 0 and ban_user_date <= datetime.datetime.now() and ban_user_lv == 1: #🌟本番ではscore > 0.8 and ban_user_date+datetime.timedelta(days=3) <= datetime.datetime.now() and ban_user_lv == 1
 
         #垢BANの謹慎期間を超えたので削除
-        database.suspended_and_baned_delete(ip)
+        database.suspended_and_baned_delete()
 
         if num_of_bw % 3 != 0: #禁止ワード3回目 🌟本番ではnum_of_bw % 3 != 0
             # print('3日間使用停止')
             warn = 'we afraid you, you can not use the bbs, now'
-            database.suspended_and_baned(ip, 1)
+            database.suspended_and_baned(1)
 
         else:
             result_bw = 0
@@ -148,7 +148,7 @@ def bbs(txt):
             else:
                 # print('BBSに投稿しますた')
                 warn = 'done!'
-                database.l3_bbs_txt_insert(ip, text_pre)
+                database.l3_bbs_txt_insert(text_pre)
                     
     else:
         # print('BBS利用不可')
