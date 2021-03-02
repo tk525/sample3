@@ -697,13 +697,14 @@ def l3_bbs_act_show_id():
     ip = pd.read_pickle("app/login.csv")
     pd.to_pickle(ip, "app/login.csv")
 
+    conn = None
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
 
     # sql = "SELECT * FROM l3_bullentin_board_act WHERE bbs_act_user_id = '%s';"%(id,)
     #SQL攻撃対策
     sql = "SELECT * FROM l3_bullentin_board_act WHERE bbs_act_user_id = %s;"
-    para = (id,)
+    para = (ip,)
     cur.execute(sql, para)
 
      #全て取得
@@ -879,7 +880,7 @@ def l3_create_user_show():
 #paid_mambers 名前 表示
 def l3_create_user_show_all():
     """ Connect to the PostgreSQL database server """
-    
+
     ip = pd.read_pickle("app/login.csv")
     pd.to_pickle(ip, "app/login.csv")
 
