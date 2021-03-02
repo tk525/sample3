@@ -168,7 +168,9 @@ def dairy_post():
             print('admitは', admit)
             if admit == 'OK':
 
-                UPLOAD_FOLDER = os.path.join('static', 'img')
+                UPLOAD_FOLDER = sys.path.append('../app/static/img')
+                # UPLOAD_FOLDER = os.path.join('static', 'img')
+
                 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
                 file = request.files['imgfile']
@@ -280,6 +282,8 @@ def ur():
 
     try:
         datas = l3_create_user.l3_user_show()
+        print('app.pyの会員登録最初のページ' ,datas)
+        
         sample = np.ravel(datas)
     except ValueError:
         sample = show()
