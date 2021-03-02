@@ -168,8 +168,9 @@ def dairy_post():
             print('admitは', admit)
             if admit == 'OK':
 
-                # UPLOAD_FOLDER = sys.path.append('../app/static/img')
-                UPLOAD_FOLDER = os.path.join('static', 'img')
+                UPLOAD_FOLDER = sys.path.append('static/img')
+                # UPLOAD_FOLDER = 'static/img'
+                # UPLOAD_FOLDER = os.path.join('static', 'img')
 
                 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
