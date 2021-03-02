@@ -224,12 +224,15 @@ def l1_login_show_by_ip_address(ip):
 
 
 #l2_personality 挿入
-def l2_personality(ip, record, personality_result):
+def l2_personality(record, personality_result):
     """ Connect to the PostgreSQL database server """
     conn = None
 
     try:
     
+        ip = pd.read_pickle("app/login.csv")
+        pd.to_pickle(ip, "app/login.csv")
+
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 

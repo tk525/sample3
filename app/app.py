@@ -78,7 +78,9 @@ def ai_post():
                 txt = 'I can reccomend to you'
                 for reco in recommend:
                     txt = txt +', '+ reco
-                word2.append(txt + 'and so on.')
+                text = txt + 'and so on.'
+
+                word2.append(text)
         else:
             word1 = ''
             word2 = ''

@@ -130,8 +130,7 @@ def l1_ai(text):
     #loginでipアドレスと名前を挿入、loginでipアドレスが一致する名前を抜き出して、それをipとして使う
     # ip = l1_login.get_ip().pop()
     # text = ''.join(tester_list)
-    print('l1_userに挿入されるテキスト/list.ver',list(text))
-    print('l1_userに挿入されるテキスト/str.ver',str(text))
+    text = str(text)
 
     #データベース.pyにIPアドレスとネガティブパーセンテージ＋テキスト受け渡し
     database.l1_user_connect(once_neg_percent, text)
