@@ -191,6 +191,7 @@ def l1_login_show_by_ip_address(ip):
     #SQL攻撃対策
     sql = "SELECT * FROM l1_login where ip = %s ORDER BY id DESC LIMIT 1;" #IDが一致したデータの最後に更新されたものを取得
     para = (ip,)
+    print(sql, para)
     cur.execute(sql, para)
 
      #全て取得

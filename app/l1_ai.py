@@ -131,13 +131,14 @@ def l1_ai(text):
     ip_address = l1_login.ip_address().pop()
     print('ip_address', ip_address)
     ip_pre = np.array(database.l1_login_show_by_ip_address(ip_address))
-    ip = np.ravel(x)[1]
+    ip = np.ravel(x)
     # ip = l1_login.get_ip().pop()
 
     # text = ''.join(tester_list)
     text = [text]
 
-    print('ここはaiのip', ip_pre)
+    print('ここはaiのip_pre', ip_pre)
+    print('ここはaiのip', ip)
     # print('ここはaiのip', ip) #ここはaiのip [<25x218 sparse matrix of type '<class 'numpy.float64'>'
     #データベース.pyにIPアドレスとネガティブパーセンテージ＋テキスト受け渡し
     database.l1_user_connect(ip, once_neg_percent, text)
