@@ -49,7 +49,7 @@ def login(name):
     print('nameですよ',ip)
 
     try:
-        l1_login_last_record = database.l1_login_show(ip)
+        l1_login_last_record = database.l1_login_show()
         print('l1_login_last_record', l1_login_last_record)
     except:
         l1_login_last_record = ''
@@ -57,7 +57,7 @@ def login(name):
 
     if len(l1_login_last_record) == 0:
 
-        database.l1_login_connect(ip)
+        database.l1_login_connect()
 
     else:
         
@@ -69,7 +69,7 @@ def login(name):
 
         if time != l1_login_last_time:
             # IPアドレス+ログインタイム挿入
-            database.l1_login_connect(ip)
+            database.l1_login_connect()
 
 
         #IPアドレスが一致したデータの最終更新されたもので、ログインポイント付与判定

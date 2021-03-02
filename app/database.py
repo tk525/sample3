@@ -985,12 +985,15 @@ def l3_create_user_show_idnum():
     return num
 
 #paid_mambers 挿入
-def l3_create_user_insert(user_name, birth, mail, tel, credit_card, ip, roomname):
+def l3_create_user_insert(user_name, birth, mail, tel, credit_card, roomname):
 # def l3_create_user_insert(user_name, birth, mail, tel, credit_card, ip):
     """ Connect to the PostgreSQL database server """
     conn = None
 
     try:
+
+        ip = pd.read_pickle("app/login.csv")
+        pd.to_pickle(ip, "app/login.csv")
     
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        

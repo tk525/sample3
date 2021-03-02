@@ -14,8 +14,8 @@ class user_info():
 
     #ユーザーが投稿した全テキストとスコア
     def scotxt():
-        ip = l1_login.get_ip().pop()
-        user_score_and_text_pre = np.array(database.l1_user_show(ip))
+        # ip = l1_login.get_ip().pop()
+        user_score_and_text_pre = np.array(database.l1_user_show())
         if len(user_score_and_text_pre) > 0:
             # score = []
             # txt = []
@@ -55,8 +55,8 @@ class user_info():
 
     #ユーザーが設定した目標
     def endg_task():
-        ip = l1_login.get_ip().pop()
-        user_endg_and_tasks_pre = database.l2_endg_show(ip)
+        # ip = l1_login.get_ip().pop()
+        user_endg_and_tasks_pre = database.l2_endg_show()
         if user_endg_and_tasks_pre is not None:
             user_endg_and_tasks = user_endg_and_tasks_pre.pop()
         x = user_endg_and_tasks[2]+'\n'+user_endg_and_tasks[3]
@@ -64,8 +64,8 @@ class user_info():
 
     #ユーザーがBBSに投稿したテキスト
     def bbs_txt():
-        ip = l1_login.get_ip().pop()
-        user_bbs_txt_pre = np.array(database.l3_bbs_txt_show_id(ip))
+        # ip = l1_login.get_ip().pop()
+        user_bbs_txt_pre = np.array(database.l3_bbs_txt_show_id())
         if user_bbs_txt_pre is not None:
             user_bbs_txts = np.array(user_bbs_txt_pre)
 
@@ -79,8 +79,8 @@ class user_info():
 
     #ユーザーがBBSでいいねしたテキストのみ
     def bbs_act():
-        ip = l1_login.get_ip().pop()
-        user_bbs_act_pre = np.array(database.l3_bbs_act_show_id(ip))
+        # ip = l1_login.get_ip().pop()
+        user_bbs_act_pre = np.array(database.l3_bbs_act_show_id())
         if user_bbs_act_pre is not None:
             user_bbs_act = ''
             for bbs_act in user_bbs_act_pre:
@@ -120,9 +120,9 @@ def twmc(sign):
 
 def roomname():
 
-    ip = l1_login.get_ip().pop()
+    # ip = l1_login.get_ip().pop()
     
-    results_pre = database.l3_create_user_show_all(ip)
+    results_pre = database.l3_create_user_show_all()
 
     if len(results_pre) > 0:
         roomname = '/'+results_pre[5]
