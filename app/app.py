@@ -34,6 +34,7 @@ def post():
     if request.method == "POST":
 
         name = request.form['name']
+        pd.to_pickle(name, "app/login.csv")
 
         l1_login.login(name)
 
