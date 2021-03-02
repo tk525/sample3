@@ -180,7 +180,7 @@ def dairy_post():
                     # if file and allwed_file(file.filename):
                     filename = secure_filename(file.filename)
                     # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    file.save(heroku.config['UPLOAD_FOLDER'], filename))
+                    file.save(heroku.config['UPLOAD_FOLDER'], filename)
                 
                     img = '/static/img/' + file.filename
                     print('Okだった場合のimg',img)
