@@ -23,7 +23,7 @@ def personal_score():
     pd.to_pickle(ip, "app/login.csv")
 
     try:
-        score = np.ravel(database.l1_user_last_record())[1] #ユーザーの最終スコア取得
+        score = np.ravel(database.l1_user_last_record())[2] #ユーザーの最終スコア取得
     except IndexError:
         score = 0.0
 
