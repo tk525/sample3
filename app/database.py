@@ -411,12 +411,15 @@ def l2_dairy_update(ip):
 
 
 #l2_endg 挿入or更新
-def l2_endg(ip, end_goal, end_goal_tasks):
+def l2_endg(end_goal, end_goal_tasks):
     """ Connect to the PostgreSQL database server """
     conn = None
 
     try:
     
+        ip = pd.read_pickle("app/login.csv")
+        pd.to_pickle(ip, "app/login.csv")
+
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -469,7 +472,10 @@ def l2_endg(ip, end_goal, end_goal_tasks):
             print('l2_endg Database connection closed.')
 
 #l2_endg 表示
-def l2_endg_show(ip):
+def l2_endg_show():
+
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 

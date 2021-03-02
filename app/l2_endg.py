@@ -12,8 +12,8 @@ def endg_show():
     endg = 'what'
     task = 'what'
 
-    ip = l1_login.get_ip().pop()
-    show = np.array(database.l2_endg_show(ip))
+    # ip = l1_login.get_ip().pop()
+    show = np.array(database.l2_endg_show())
     show = np.ravel(show)
 
     if len(show) > 0:
@@ -24,8 +24,8 @@ def endg_show():
 
 def endg_admittion():
     
-    ip = l1_login.get_ip().pop()
-    personal_score = l2_ai.personal_score(ip)
+    # ip = l1_login.get_ip().pop()
+    personal_score = l2_ai.personal_score()
     personal_score = 0.9
 
     if personal_score >= 0.75:
@@ -38,7 +38,8 @@ def endg(eg, task):
     #もし初めてなら文を作れ＋login
     # tester = pd.read_csv('/Users/takipon/Desktop/dprapp/tester_endg.csv')
 
-    ip = l1_login.get_ip().pop()
+    ##🌟本番では外すこと。
+    # ip = l1_login.get_ip().pop()
     # personal_score = l2_ai.l2_ai.personal_score(ip) #0.144814814814815
 
     # if personal_score >= 0.50:
@@ -53,5 +54,5 @@ def endg(eg, task):
     for txt in end_goal_tasks:
         eg_task = eg_task + txt + ','
             # end_goal_tasks = re.sub(r"'","''", end_goal_tasks) #クォーテーション対策。クォーテーションがある部分にもう１つ入れるとクォーテーションとして機能するらしい
-    database.l2_endg(ip, eg, eg_task)
+    database.l2_endg(eg, eg_task)
 

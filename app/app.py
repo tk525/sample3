@@ -90,7 +90,7 @@ def ai_post():
             word2 = ''
             word3 = ''
 
-    return render_template('l1_l2_ai.html', word1=word1, word2=word2, form=form)#word1=understanding, word2=empathy
+    return render_template('l1_l2_ai.html',word3=word3 , word1=word1, word2=word2, form=form)#word1=understanding, word2=empathy
 
 
 
@@ -164,6 +164,8 @@ def dairy_post():
             new_text = bleach.clean(new_text)
 
             admit = l3_record.l3_record()
+
+            print('admitは', admit)
             if admit == 'OK':
 
                 UPLOAD_FOLDER = os.path.join('static', 'img')
@@ -177,7 +179,7 @@ def dairy_post():
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 
                     img = '/static/img/' + file.filename
-
+                    print('Okだった場合のimg',img)
                 else:
                     img = ''
 
