@@ -137,7 +137,7 @@ def l1_user_connect_with_bw(ip, once_neg_percent, text, num_of_bw):
 
 
 #l1_login 挿入
-def l1_login_connect(ip):
+def l1_login_connect(ip, address):
     """ Connect to the PostgreSQL database server """
     conn = None
 
@@ -148,8 +148,8 @@ def l1_login_connect(ip):
 
         # sql = "INSERT INTO l1_login (login_user_id) VALUES ('%s');"%(ip)
         #SQL攻撃対策
-        sql = "INSERT INTO l1_login (login_user_id) VALUES (%s);"
-        para = (ip,)
+        sql = "INSERT INTO l1_login (login_user_id, ip) VALUES (%s, %s);"
+        para = (ip, address)
 
         cur.execute(sql, para)
         conn.commit() #挿入
