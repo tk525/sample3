@@ -89,17 +89,21 @@ def bbs(txt):
     # ip = l1_login.get_ip().pop()
     score_pre = np.array(database.l1_user_last_record())
     score_pre = np.ravel(score_pre)
-
-    print('ここ', score_pre)
-    score = float(score_pre[1])
+    print('l3_bbsのscorepreの値', score_pre)
+    
+    score = float(score_pre[2])
     try:
-        num_of_bw = int(score_pre[3])
+        num_of_bw = int(score_pre[5])
     except TypeError:
         num_of_bw = 0
 
     #垢BANリスト呼び出し
-    ban_user_pre = np.array(database.suspended_and_baned_show())
-    ban_user = np.ravel(ban_user_pre)
+    try:
+        ban_user_pre = np.array(database.suspended_and_baned_show())
+        ban_user = np.ravel(ban_user_pre)
+    except ValueError:
+        ban_user = ''
+        
     if len(ban_user) > 0:
         ban_user_date = ban_user[3]
         ban_user_lv = ban_user[2]
