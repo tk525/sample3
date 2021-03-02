@@ -297,12 +297,14 @@ def l2_personality_last_record():
 
 
 #l2_dairy 挿入
-def l2_dairy(ip, mind, re_text, img):
+def l2_dairy(mind, re_text, img):
     """ Connect to the PostgreSQL database server """
     conn = None
 
     try:
-    
+        ip = pd.read_pickle("app/login.csv")
+        pd.to_pickle(ip, "app/login.csv")
+
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -323,7 +325,10 @@ def l2_dairy(ip, mind, re_text, img):
             print('l2_dairy Database connection closed.')
 
 #l2_dairy 表示
-def l2_dairy_show(ip):
+def l2_dairy_show():
+
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor(cursor_factory=DictCursor) 
@@ -344,7 +349,10 @@ def l2_dairy_show(ip):
     return show 
 
 #l2_dairy 表示
-def l2_dairy_show_text_encode(ip):
+def l2_dairy_show_text_encode():
+
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
@@ -864,10 +872,13 @@ def l3_create_user_show_all(ip):
     return datas
 
 #paid_mambers ipアドレス 表示
-def l3_create_user_show_ip(ip):
+def l3_create_user_show_ip():
     """ Connect to the PostgreSQL database server """
-    conn = None
 
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
+
+    conn = None
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor()        

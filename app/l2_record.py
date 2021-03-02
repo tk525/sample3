@@ -11,12 +11,12 @@ from app import database, l1_login
 
 
 def l2_show_more():
-    ip = l1_login.get_ip().pop()
+    # ip = l1_login.get_ip().pop()
     print('ここ', ip)
-    dairys_pre = np.array(database.l2_dairy_show(ip))
+    dairys_pre = np.array(database.l2_dairy_show())
     print('ここ', dairys_pre)
     # dairys_date = np.ravel(dairys_date)
-    dairys_text_pre = np.array(database.l2_dairy_show_text_encode(ip))
+    dairys_text_pre = np.array(database.l2_dairy_show_text_encode())
     print('ここ', dairys_text_pre)
     dairys_text = np.ravel(dairys_text_pre)
     print('ここ', dairys_text)
@@ -42,8 +42,9 @@ def l2_dairy(new_text, new_mood, img):
     text = new_text
 
     # mind_pre = 3,4,3,4,3 #今までの評価
-    ip = l1_login.get_ip().pop()
-    datas_pre = database.l2_dairy_show(ip)
+    # ip = l1_login.get_ip().pop()
+    
+    datas_pre = database.l2_dairy_show()
 
     mind_pre = []
     if datas_pre == []:
@@ -74,7 +75,7 @@ def l2_dairy(new_text, new_mood, img):
 
 
     #日記 + 数値 挿入
-    ip = l1_login.get_ip().pop()
+    # ip = l1_login.get_ip().pop()
     # mind = mind_trend_new[0][0]
     mind = new_mood
 
@@ -83,6 +84,6 @@ def l2_dairy(new_text, new_mood, img):
     #     re_text = col + re_text
     re_text = new_text
 
-    database.l2_dairy(ip, mind, re_text, img)
+    database.l2_dairy(mind, re_text, img)
 
     return diary_comment

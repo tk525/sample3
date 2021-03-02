@@ -46,12 +46,13 @@ def personality_judge(tester_x):
 
 def personality_to_db(tester_x, personality_judge):
 
-    ip = l1_login.get_ip().pop()
+    # ip = l1_login.get_ip().pop()
 
     #DBのSQL攻撃対策の弊害の対策
     tester_x = str(tester_x)
     
-    database.l2_personality(ip, tester_x, personality_judge)
+    # database.l2_personality(ip, tester_x, personality_judge)
+    database.l2_personality(tester_x, personality_judge)
 
 def l2_dignosis(survey):
 
