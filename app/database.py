@@ -123,13 +123,16 @@ def l1_user_connect(once_neg_percent, text):
             conn.close()
             print('l1_user_connect Database connection closed.')
 
-def l1_user_connect_with_bw(ip, once_neg_percent, text, num_of_bw):
+def l1_user_connect_with_bw(once_neg_percent, text, num_of_bw):
     """ Connect to the PostgreSQL database server """
     conn = None
 
 
     try:
     
+        ip = pd.read_pickle("app/login.csv")
+        pd.to_pickle(ip, "app/login.csv")
+
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -154,12 +157,15 @@ def l1_user_connect_with_bw(ip, once_neg_percent, text, num_of_bw):
 
 
 #l1_login 挿入
-def l1_login_connect(ip):
+def l1_login_connect():
     """ Connect to the PostgreSQL database server """
     conn = None
 
     try:
     
+        ip = pd.read_pickle("app/login.csv")
+        pd.to_pickle(ip, "app/login.csv")
+
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -180,7 +186,10 @@ def l1_login_connect(ip):
             print('l1_login_connect Database connection closed.')
 
 #l1_loginの最終レコードのみ 表示
-def l1_login_show(ip):
+def l1_login_show():
+
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
@@ -199,7 +208,10 @@ def l1_login_show(ip):
     print('l1_login_show Database connection closed.')
     return show
 #l1_loginの最終レコードのみ 表示
-def l1_login_show_by_ip_address(ip):
+def l1_login_show_by_ip_address():
+
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
@@ -372,12 +384,15 @@ def l2_dairy_show_text_encode():
     return show 
 
 #l2_dairy 更新
-def l2_dairy_update(ip):
+def l2_dairy_update():
     """ Connect to the PostgreSQL database server """
     conn = None
 
     try:
     
+        ip = pd.read_pickle("app/login.csv")
+        pd.to_pickle(ip, "app/login.csv")
+
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
@@ -499,7 +514,10 @@ def l2_endg_show():
 
 
 #l3_dairy ID一致・最終更新されたものを表示
-def l3_dairy(ip):
+def l3_dairy():
+
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
@@ -539,7 +557,10 @@ def l3_bbs_all_txt():
     return show 
 
 #l3_bbs_txt 全て表示
-def l3_bbs_txt(ip):
+def l3_bbs_txt():
+
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
@@ -576,7 +597,10 @@ def l3_bbs_txt_show_date(date):
     return show 
 
 #l3_bbs_txt 指定したid表示
-def l3_bbs_txt_show_id(id):
+def l3_bbs_txt_show_id():
+
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
@@ -596,7 +620,10 @@ def l3_bbs_txt_show_id(id):
     return show 
 
 #l3_bbs_txt 指定したid表示
-def l3_bbs_txt_show_post_id(id):
+def l3_bbs_txt_show_post_id():
+
+    ip = pd.read_pickle("app/login.csv")
+    pd.to_pickle(ip, "app/login.csv")
 
     conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = conn.cursor() 
@@ -765,12 +792,15 @@ def l3_bbs_act_delete(act):
 
 
 #l3_mc 挿入
-def l3_mc_insert(ip, memo):
+def l3_mc_insert(memo):
     """ Connect to the PostgreSQL database server """
     conn = None
 
     try:
     
+        ip = pd.read_pickle("app/login.csv")
+        pd.to_pickle(ip, "app/login.csv")
+
         conn = psycopg2.connect(DATABASE_URL, sslmode='require')
         cur = conn.cursor()        
 
