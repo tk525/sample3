@@ -80,7 +80,7 @@ def l1_user_connect(once_neg_percent, text):
 
         #l1_user データ挿入 バッドワード使用履歴の有無
         # if type(show[len(show)-1]) == datetime.datetime:
-        if show == []:
+        if len(show) == 0:
             print(1)
             sql = "INSERT INTO l1_user (user_id, text_score, text) VALUES (%s, %s, %s);"
             para = (ip, once_neg_percent, text)
