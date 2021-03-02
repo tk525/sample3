@@ -46,17 +46,7 @@
 
         //     console.log('Received message');
         // });
-        var socket = io.connect(ws_scheme+location.host+x);
-        socket.on('message', function() {
-        // socket_receive.onmessage = function(msg) { //メッセージ受信 後で
-            var data = JSON.parse($('#myMessage').val());
-            console.log('受信値',data);
 
-            $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
-            // $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
-
-            console.log('Received message');
-        });
                 
         $('#sendbutton').on('click', function() {
             event.preventDefault();
@@ -68,10 +58,23 @@
             // socket.send($('#myMessage').val(), roomname);
             socket.send(JSON.stringify({ handle: roomname, text: $('#myMessage').val() }));
 
-            // 課金料金が超えるので一旦これで
+
+
+
             $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
 
+            // 本番では分離。オーナー側が未調整で見れないためここに記載してる
+            socket.on('message', function() {
+            // socket_receive.onmessage = function(msg) { //メッセージ受信 後で
+                var data = JSON.parse($('#myMessage').val());
+                console.log('受信値',data);
+
+            });
+
+
+
             $('#myMessage').val(''); 
+            console.log('完了');
 
         });
         
