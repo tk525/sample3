@@ -23,12 +23,12 @@ def personal_score():
     pd.to_pickle(ip, "app/login.csv")
 
     try:
-        score = np.ravel(database.l1_user_last_record(ip))[1] #ユーザーの最終スコア取得
+        score = np.ravel(database.l1_user_last_record())[1] #ユーザーの最終スコア取得
     except IndexError:
         score = 0.0
 
     try:
-        personality_judge = database.l2_personality_last_record(ip).pop()[3] #0.185185185185185
+        personality_judge = database.l2_personality_last_record().pop()[3] #0.185185185185185
     except IndexError:
         personality_judge = 0
         
