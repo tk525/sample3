@@ -32,8 +32,14 @@ from app import database
 #                 pass
 #         return result
 def get_ip():
-    name_pre = pd.read_pickle("app/login.csv")
+    
+    try:
+        name_pre = pd.read_pickle("app/login.csv")
+    except EOFError:
+        name_pre = ['']
+
     name = list(name_pre) #ipアドレスの代用。.pop()対策
+
     return name
 
 def login():
