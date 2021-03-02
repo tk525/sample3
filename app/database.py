@@ -80,19 +80,27 @@ def l1_user_connect(once_neg_percent, text):
 
         #l1_user データ挿入 バッドワード使用履歴の有無
         # if type(show[len(show)-1]) == datetime.datetime:
-        if show[len(show)-1] == None or show == []: #最後のレコードの挿入されてるデータ型が日付であれば。つまり、初回であれば
-
-            # sql = "INSERT INTO l1_user (user_id, text_score, text) VALUES ('%s', '%s', '%s');"%(ip, once_neg_percent, text)
-            # SQL攻撃対策
+        if show == []:
+            print(1)
             sql = "INSERT INTO l1_user (user_id, text_score, text) VALUES (%s, %s, %s);"
             para = (ip, once_neg_percent, text)
+        
+        else:
 
-        # elif type(show[len(show)-1]) == int:
-        elif show[len(show)-1] != None:
-            # sql = "INSERT INTO l1_user (user_id, text_score, text, num_of_times_using_bad_word) VALUES ('%s', '%s', '%s', '%s');"%(ip, once_neg_percent, text, show[len(show)-1])
-            #SQL攻撃対策 
-            sql = "INSERT INTO l1_user (user_id, text_score, text, num_of_times_using_bad_word) VALUES (%s, %s, %s, %s);"
-            para = (ip, once_neg_percent, text, show[len(show)-1])
+            if show[len(show)-1] == None : #最後のレコードの挿入されてるデータ型が日付であれば。つまり、初回であれば
+                print(2)
+                # sql = "INSERT INTO l1_user (user_id, text_score, text) VALUES ('%s', '%s', '%s');"%(ip, once_neg_percent, text)
+                # SQL攻撃対策
+                sql = "INSERT INTO l1_user (user_id, text_score, text) VALUES (%s, %s, %s);"
+                para = (ip, once_neg_percent, text)
+
+            # elif type(show[len(show)-1]) == int:
+            elif show[len(show)-1] != None:
+                print(3)
+                # sql = "INSERT INTO l1_user (user_id, text_score, text, num_of_times_using_bad_word) VALUES ('%s', '%s', '%s', '%s');"%(ip, once_neg_percent, text, show[len(show)-1])
+                #SQL攻撃対策 
+                sql = "INSERT INTO l1_user (user_id, text_score, text, num_of_times_using_bad_word) VALUES (%s, %s, %s, %s);"
+                para = (ip, once_neg_percent, text, show[len(show)-1])
 
         cur.execute(sql,para)
         conn.commit() #挿入
