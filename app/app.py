@@ -52,7 +52,8 @@ def ai_p():
     form = AiForm()
 
     text = 'can you tell me your day?'
-    return render_template('l1_l2_ai.html', word2=text, form=form)#word1=understanding, word2=empathy
+    blank = ''
+    return render_template('l1_l2_ai.html',word3=blank , word2=black, word1=text, form=form, )#word1=understanding, word2=empathy
 
 @app.route("/ai", methods=["post"])
 def ai_post():
@@ -75,16 +76,16 @@ def ai_post():
             if float(score)> 0.0:
                 word2 = l2_ai.l2_ai()
                 recommend = l2_ai.l2_ai()
-                txt = 'I can reccomend to you'
+                word3 = 'I can reccomend to you'
                 for reco in recommend:
-                    txt = txt +', '+ reco
-                text = txt + 'and so on.'
-
-                word2 = word2 + text
-                print('加工したword2',word2)
+                    word3 = word3 +', '+ reco
+            else:
+                word3=''
+                
         else:
             word1 = ''
             word2 = ''
+            word3 = ''
 
     return render_template('l1_l2_ai.html', word1=word1, word2=word2, form=form)#word1=understanding, word2=empathy
 

@@ -2,14 +2,9 @@
 {%- block content %}
 <div class="large" style='margin-top: 30px;'>
     <div class="text-center">
-        {% if not word1 %}
-            <label class="subheader">{{word2}}</label>
-        {% else %}
-          <label class="subheader">{{word1}}</label>
-        {% for reco in word2 %}
-        <label class="subheader">{{reco}}</label>
-        {% endfor %}
-        {% endif %}
+      <label class="subheader">{{word2}}</label>
+      <label class="subheader">{{word1}}</label>
+      <label class="subheader">{{word3}}</label>
     </div>
 </div>
 
