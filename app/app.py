@@ -182,7 +182,7 @@ def dairy_post():
                     filename = secure_filename(file.filename)
                     print('app.pyファイルのパス確認', UPLOAD_FOLDER, filename)
                     # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER']))
+                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 
                     img = '/static/img/' + file.filename
                     print('Okだった場合のimg',img)
