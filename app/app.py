@@ -168,9 +168,6 @@ def dairy_post():
             print('admitは', admit)
             if admit == 'OK':
 
-                # UPLOAD_FOLDER = sys.path.append('static/img')
-                # UPLOAD_FOLDER = 'static/img'
-                # UPLOAD_FOLDER = os.path.join('static', 'img')
                 UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER')
 
                 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -181,7 +178,6 @@ def dairy_post():
                     # if file and allwed_file(file.filename):
                     filename = secure_filename(file.filename)
                     print('app.pyファイルのパス確認', UPLOAD_FOLDER, filename)
-                    # file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 
                     img = '/static/img/' + file.filename
@@ -483,6 +479,7 @@ def twmc_post():
 
     return render_template('l3_twmc.html', txt=sign, form=form, roomname=rmsign)
 
+#ユーザーの情報開示 不要だとおもわれ
 @app.route("/twmc_ajax", methods=["post"])
 def twmc_ajax():
 
@@ -509,7 +506,13 @@ def twmc_ajax():
 
 
 
-app.config['SECRET_KEY'] = 'mysecret'
+
+
+
+
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+app.config['SECRET_KEY'] = SECRET_KEY
 socketio = SocketIO(app, cors_allowed_origins='*')
 
 # @socketio.on("join", namespace='/jimin')
