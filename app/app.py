@@ -512,8 +512,8 @@ def twmc_ajax():
 # REDIS_CHAN = 'chat'
 
 
-# SECRET_KEY = os.environ.get('SECRET_KEY')
-# app.config['SECRET_KEY'] = SECRET_KEY
+SECRET_KEY = os.environ.get('SECRET_KEY')
+app.config['SECRET_KEY'] = SECRET_KEY
 # socketio = SocketIO(app, cors_allowed_origins='*')
 socketio = SocketIO(app, async_mode=None)
 
