@@ -65,11 +65,11 @@
 
             // 本番では分離。オーナー側が未調整で見れないためここに記載してる
             // socket.on('message', function() {
-            // socket_receive.onmessage = function(msg) { //メッセージ受信 後で
-            var data = JSON.parse($('#myMessage').val());
-            console.log('受信値',data);
+            socket_receive.onmessage = function() { //メッセージ受信 後で
+                var data = JSON.parse($('#myMessage').val());
+                console.log('受信値',data);
 
-            // });
+            };
 
 
 
