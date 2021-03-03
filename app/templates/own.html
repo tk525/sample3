@@ -21,7 +21,7 @@
         var socket_emi = io.connect(ws_scheme+location.host);
         var socket = io.connect(ws_scheme+location.host+x);
         // var socket_emi = new ReconnectingWebSocket(ws_scheme + location.host);
-        var socket_receive = new ReconnectingWebSocket(ws_scheme + location.host + x);
+        var socket_receive = new ReconnectingWebSocket(ws_scheme + location.host +'/twmc_p'+ x);
 
 
         

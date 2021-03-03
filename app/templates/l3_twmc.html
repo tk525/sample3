@@ -23,10 +23,10 @@
             var ws_scheme = "ws://"
         };
         
-        var socket_emi = io.connect(ws_scheme+location.host);
-        var socket = io.connect(ws_scheme+location.host+x);
+        var socket_emi = io.connect(ws_scheme+location.host+'/twmc_p');
+        var socket = io.connect(ws_scheme+location.host+'/twmc_p'+x);
         // var socket_emi = new ReconnectingWebSocket(ws_scheme + location.host);
-        var socket_receive = new ReconnectingWebSocket(ws_scheme + location.host + x);
+        var socket_receive = new ReconnectingWebSocket(ws_scheme + location.host +'/twmc_p'+ x);
         
         // 課金料金が超えるので一旦コメントアウト
         // $('#choice').on('click', function() { //部屋チョイス
