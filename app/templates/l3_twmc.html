@@ -17,16 +17,16 @@
 
         if (window.location.protocol == "https:") {
             // var ws_scheme = "wss://";
-            var ws_scheme = "wss://";
+            var ws_scheme = "wss:";
             } else {
             // var ws_scheme = "ws://"
-            var ws_scheme = "ws://"
+            var ws_scheme = "ws:"
         };
         
-        var socket_emi = io.connect('https:'+location.host+'/twmc_p');
-        var socket = io.connect('https:'+location.host+'/twmc_p'+x);
+        var socket_emi = io.connect(ws_scheme+location.host+'/twmc_p');
+        var socket = io.connect(ws_scheme+location.host+'/twmc_p'+x);
         // var socket_emi = new ReconnectingWebSocket(ws_scheme + location.host);
-        var socket_receive = new ReconnectingWebSocket('https:' + location.host +'/twmc_p'+ x);
+        var socket_receive = new ReconnectingWebSocket(ws_scheme + location.host +'/twmc_p'+ x);
         
         // 課金料金が超えるので一旦コメントアウト
         // $('#choice').on('click', function() { //部屋チョイス
