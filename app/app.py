@@ -2,6 +2,7 @@ import os
 import sys
 sys.path.append('../')
 
+import redis
 import csv
 import datetime
 import math
@@ -13,7 +14,7 @@ from flask import send_from_directory, redirect, url_for, jsonify
 from flask_socketio import join_room, leave_room, SocketIO, send, Namespace, emit
 from werkzeug.utils import secure_filename
 from flask_paginate import Pagination, get_page_parameter
-
+from flask_sockets import Sockets
 
 from app import database, l1_ai, l1_login , l2_pd, l2_ai, l2_record, l3_record, l2_endg, l3_create_user, l3_bbs, l3_twmc
 
@@ -509,11 +510,14 @@ def twmc_ajax():
 
 
 
+# REDIS_URL = os.environ['REDIS_URL']
+# REDIS_CHAN = 'chat'
 
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 app.config['SECRET_KEY'] = SECRET_KEY
-socketio = SocketIO(app, cors_allowed_origins='*')
+# socketio = SocketIO(app, cors_allowed_origins='*')
+socketio = SocketIO(app, async_mode=None)
 
 # @socketio.on("join", namespace='/jimin')
 @socketio.on("join") 
