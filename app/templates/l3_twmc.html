@@ -23,7 +23,7 @@
             // var ws_scheme = "ws:"
         };
         
-        var socket_emi = io.connect("ws://"+location.host+'/twmc_p');
+        // var socket_emi = io.connect("ws://"+location.host+'/twmc_p');
         var socket = io.connect("ws://"+location.host+'/twmc_p');
         // var socket = io.connect("ws://"+location.host+'/twmc_p'+x);
         // var socket_emi = new ReconnectingWebSocket(ws_scheme + location.host);
@@ -81,14 +81,14 @@
         
 
         // ページ離れる時の処理
-        window.onload = function(){
+        // window.onload = function(){
 
-            //ページを離れた時に新規ウィンドウを開く 
-            window.onunload = function(){
-                var roomname = $('#rn').val();
-                socket_emi.emit("parting", roomname);
-            }
-        }
+        //     //ページを離れた時に新規ウィンドウを開く 
+        //     window.onunload = function(){
+        //         var roomname = $('#rn').val();
+        //         socket_emi.emit("parting", roomname);
+        //     }
+        // }
 
     });
 </script>
