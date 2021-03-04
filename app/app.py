@@ -465,8 +465,6 @@ q = Queue(connection=conn)
 #L3会話withMC Conversation with MC🌟
 @app.route("/twmc_p")
 def twmc():
-    
-    result = q.enqueue(background_process)
 
     form = TwmcForm()
     txt =''
@@ -523,9 +521,9 @@ def twmc_ajax():
         else:
             return jsonify({'output':form})
 
-def background_process(name):
-    # ここに時間のかかる処理を書く
-    return name * 10
+
+
+
 
 
 
@@ -534,25 +532,27 @@ app.config['SECRET_KEY'] = SECRET_KEY
 # socketio = SocketIO(app, cors_allowed_origins='*')
 socketio = SocketIO(app, async_mode=None)
 
+result = q.enqueue(background_process, socketio)
+
 # @socketio.on("join", namespace='/jimin')
-@socketio.on("join") 
-def join(roomname):
-    print(f"A user is joining. roomname is {roomname}")
-    join_room(roomname)
+# @socketio.on("join") 
+# def join(roomname):
+#     print(f"A user is joining. roomname is {roomname}")
+#     join_room(roomname)
 
-@socketio.on("parting")
-def parting(roomname):
+# @socketio.on("parting") #csv読み込みの仕様により不要と判断
+# def parting(roomname):
 
-    room_list = pd.read_pickle("app/rm.csv")
-    print(room_list)
-    try:
-        num = room_list.index(roomname)
-        print(num)
-        room_list.pop(num)
+#     room_list = pd.read_pickle("app/rm.csv")
+#     print(room_list)
+#     try:
+#         num = room_list.index(roomname)
+#         print(num)
+#         room_list.pop(num)
 
-        pd.to_pickle(room_list, "app/rm.csv")
-    except ValueError:
-        pass
+#         pd.to_pickle(room_list, "app/rm.csv")
+#     except ValueError:
+#         pass
 
 # #namespaceが部屋番号っぽい
 # class test(Namespace):
@@ -568,8 +568,8 @@ def roomnm():
     roomname = l3_twmc.roomname()
     return roomname
 
-@socketio.on('message', namespace=roomnm)
-# @socketio.on('message', namespace=x)
+# @socketio.on('message', namespace=roomnm())
+@result.on('message', namespace=roomnm())
 def handleMessage(msg, roomname):
     print('['+ roomname +'あん？] Message: ' + msg )
     send(msg,
