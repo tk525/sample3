@@ -3,7 +3,7 @@ import sys
 sys.path.append('../')
 
 from rq import Queue
-import worker.conn
+from worker import conn
 import csv
 import datetime
 import math
