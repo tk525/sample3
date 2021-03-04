@@ -3,7 +3,7 @@ import sys
 sys.path.append('../')
 
 from rq import Queue
-from worker import conn
+from app.worker import conn
 from bottle import route, run
 import csv
 import datetime
