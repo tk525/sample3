@@ -2,6 +2,9 @@ import os
 import sys
 sys.path.append('../')
 
+from rq import Queue
+from worker import conn
+from bottle import route, run
 import csv
 import datetime
 import math
@@ -444,16 +447,21 @@ def bbs_pagination_func(datas, date, act, bbs_id):  #ページネーション
 
 
 
+
+q = Queue(connection=conn)
+
 #L3会話withMC Conversation with MC🌟
 @app.route("/twmc_p")
 def twmc():
     
+    result = q.enqueue(background_process, '引数１')
+
     form = TwmcForm()
     txt =''
 
     rmsign = l3_twmc.roomname()
 
-    return render_template('l3_twmc.html', roomname=rmsign, txt=txt, form=form)
+    return render_template('l3_twmc.html', roomname=rmsign, txt=txt, form=form), result
 
 @app.route("/twmc_p", methods=["post"])
 def twmc_post():
@@ -503,13 +511,10 @@ def twmc_ajax():
         else:
             return jsonify({'output':form})
 
+def background_process(name):
+    # ここに時間のかかる処理を書く
+    return name * 10
 
-
-
-
-
-# REDIS_URL = os.environ['REDIS_URL']
-# REDIS_CHAN = 'chat'
 
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
