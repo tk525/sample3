@@ -5,7 +5,7 @@ from rq import Worker, Queue, Connection
 
 listen = ['high', 'default', 'low']
 
-print('worker.pyでローカルホスト'location.host)
+print('worker.pyでローカルホスト',location.host)
 redis_url = os.getenv('REDISTOGO_URL', 'https://sample301-20210223.herokuapp.com/twmc_p')
 
 conn = redis.from_url(redis_url)
