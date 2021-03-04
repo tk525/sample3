@@ -447,13 +447,13 @@ def bbs_pagination_func(datas, date, act, bbs_id):  #ページネーション
 
 
 
-# q = Queue(connection=conn)
+q = Queue(connection=conn)
 
 #L3会話withMC Conversation with MC🌟
 @app.route("/twmc_p")
 def twmc():
     
-    # result = q.enqueue(background_process, '引数１')
+    result = q.enqueue(background_process, '引数１')
 
     form = TwmcForm()
     txt =''
