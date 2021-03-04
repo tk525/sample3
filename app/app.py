@@ -532,7 +532,7 @@ app.config['SECRET_KEY'] = SECRET_KEY
 # socketio = SocketIO(app, cors_allowed_origins='*')
 socketio = SocketIO(app, async_mode=None)
 
-result = q.enqueue(background_process, socketio)
+# result = q.enqueue(background_process, socketio)
 
 # @socketio.on("join", namespace='/jimin')
 # @socketio.on("join") 
@@ -568,8 +568,7 @@ def roomnm():
     roomname = l3_twmc.roomname()
     return roomname
 
-# @socketio.on('message', namespace=roomnm())
-@result.on('message', namespace=roomnm())
+@socketio.on('message', namespace=roomnm())
 def handleMessage(msg, roomname):
     print('['+ roomname +'あん？] Message: ' + msg )
     send(msg,
