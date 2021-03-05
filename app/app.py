@@ -456,12 +456,6 @@ def bbs_pagination_func(datas, date, act, bbs_id):  #ページネーション
 
 
 
-
-
-
-
-q = Queue(connection=conn)
-
 #L3会話withMC Conversation with MC🌟
 @app.route("/twmc_p")
 def twmc():
@@ -532,6 +526,7 @@ app.config['SECRET_KEY'] = SECRET_KEY
 # socketio = SocketIO(app, cors_allowed_origins='*')
 # socketio = SocketIO(app, async_mode=None)
 
+q = Queue(connection=conn)
 result = q.enqueue(background_process, socketio)
 
 # @socketio.on("join", namespace='/jimin')
