@@ -526,6 +526,10 @@ app.config['SECRET_KEY'] = SECRET_KEY
 # socketio = SocketIO(app, cors_allowed_origins='*')
 # socketio = SocketIO(app, async_mode=None)
 
+def background_process(name):
+    # ここに時間のかかる処理を書く
+    return name * 10
+
 q = Queue(connection=conn)
 result = q.enqueue(background_process, socketio)
 
@@ -570,9 +574,6 @@ def handleMessage(msg, roomname):
         broadcast=True,
         # namespace=roomname
     )
-def background_process(name):
-    # ここに時間のかかる処理を書く
-    return name * 10
 
 
 
