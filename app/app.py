@@ -531,7 +531,8 @@ def background_process(name):
     return name * 10
 
 q = Queue(connection=conn)
-result = q.enqueue(background_process, socketio)
+# result = q.enqueue(background_process, socketio)
+result = q.enqueue(background_process, 'https://sample301-20210223.herokuapp.com/')
 
 # @socketio.on("join", namespace='/jimin')
 # @socketio.on("join") 
