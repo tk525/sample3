@@ -5,8 +5,7 @@ from rq import Worker, Queue, Connection
 
 listen = ['high', 'default', 'low']
 
-# redis_url = os.getenv('REDISTOGO_URL', 'redis://sample301-20210223.herokuapp.com:6379')
-redis_url = os.getenv('REDISTOGO_URL', 'redis://sample301-20210223:6379')
+redis_url = os.getenv('REDISTOGO_URL', 'redis://sample301-20210223.herokuapp.com:6379')
 # DATABASE_URL = os.environ.get('DATABASE_URL')
 
 conn = redis.from_url(redis_url)
