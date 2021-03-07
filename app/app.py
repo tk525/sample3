@@ -529,15 +529,15 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 def background_process(name):
     # ここに時間のかかる処理を書く
     # return name * 10
-
+    print('ああああ',name)
     resp = requests.get(name)
     return len(resp.text.split())
 
-def x(x):
-    q = Queue(connection=conn)
+# def x(x): #エラーを強制的に黙らせる
+q = Queue(connection=conn)
     # result = q.enqueue(background_process, socketio)
-    result = q.enqueue(background_process, 'https://sample301-20210223.herokuapp.com/twmc_p/')
-    return result
+socketio = q.enqueue(background_process, 'https://sample301-20210223.herokuapp.com/twmc_p/')
+    # return result
 
 
 
