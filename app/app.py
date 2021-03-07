@@ -528,7 +528,11 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 
 def background_process(name):
     # ここに時間のかかる処理を書く
-    return name * 10
+    # return name * 10
+
+    resp = requests.get(name)
+    return len(resp.text.split())
+
 
 q = Queue(connection=conn)
 # result = q.enqueue(background_process, socketio)
