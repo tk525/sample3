@@ -465,7 +465,7 @@ def twmc():
 
     rmsign = l3_twmc.roomname()
 
-    return render_template('l3_twmc.html', roomname=rmsign, txt=txt, form=form), result
+    return render_template('l3_twmc.html', roomname=rmsign, txt=txt, form=form)
 
 @app.route("/twmc_p", methods=["post"])
 def twmc_post():
