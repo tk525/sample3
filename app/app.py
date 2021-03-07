@@ -533,10 +533,25 @@ def background_process(name):
     resp = requests.get(name)
     return len(resp.text.split())
 
+def x(x):
+    q = Queue(connection=conn)
+    # result = q.enqueue(background_process, socketio)
+    result = q.enqueue(background_process, 'https://sample301-20210223.herokuapp.com/twmc_p/')
+    return result
 
-q = Queue(connection=conn)
-# result = q.enqueue(background_process, socketio)
-result = q.enqueue(background_process, 'https://sample301-20210223.herokuapp.com/twmc_p/')
+
+
+def roomnm():
+    roomname = l3_twmc.roomname()
+    return roomname
+
+@socketio.on('message', namespace=roomnm())
+def handleMessage(msg, roomname):
+    print('['+ roomname +'あん？] Message: ' + msg )
+    send(msg,
+        broadcast=True,
+        # namespace=roomname
+    )
 
 # @socketio.on("join", namespace='/jimin')
 # @socketio.on("join") 
@@ -568,18 +583,6 @@ result = q.enqueue(background_process, 'https://sample301-20210223.herokuapp.com
 #         send(msg,broadcast=True,
 #             # namespace=roomname
 #         )
-def roomnm():
-    roomname = l3_twmc.roomname()
-    return roomname
-
-@socketio.on('message', namespace=roomnm())
-def handleMessage(msg, roomname):
-    print('['+ roomname +'あん？] Message: ' + msg )
-    send(msg,
-        broadcast=True,
-        # namespace=roomname
-    )
-
 
 
 
