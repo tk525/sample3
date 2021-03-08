@@ -48,7 +48,14 @@
         //     console.log('Received message');
         // });
 
-                
+            // 本番では分離。オーナー側が未調整で見れないためここに記載してる
+        socket.on('message', function() {
+        // socket_receive.onmessage = function() { //メッセージ受信 後で
+            var data = JSON.parse($('#myMessage').val());
+            $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
+            console.log('受信値',data);
+        });
+
         $('#sendbutton').on('click', function() {
             event.preventDefault();
 
@@ -64,13 +71,13 @@
 
             $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
 
-            // 本番では分離。オーナー側が未調整で見れないためここに記載してる
-            socket.on('message', function() {
-            // socket_receive.onmessage = function() { //メッセージ受信 後で
-                var data = JSON.parse($('#myMessage').val());
-                console.log('受信値',data);
+            // // 本番では分離。オーナー側が未調整で見れないためここに記載してる
+            // socket.on('message', function() {
+            // // socket_receive.onmessage = function() { //メッセージ受信 後で
+            //     var data = JSON.parse($('#myMessage').val());
+            //     console.log('受信値',data);
 
-            });
+            // });
 
 
 
