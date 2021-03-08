@@ -56,8 +56,8 @@
             console.log('入力値/roomname',$('#myMessage').val(), roomname);
 
             var socket = io.connect(ws_scheme+location.host+roomname);
-            // socket.send($('#myMessage').val(), roomname);
-            socket.send(JSON.stringify({ handle: roomname, text: $('#myMessage').val() }));
+            socket.send($('#myMessage').val(), roomname);
+            // socket.send(JSON.stringify({ handle: roomname, text: $('#myMessage').val() }));
 
 
 
