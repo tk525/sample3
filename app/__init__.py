@@ -2,4 +2,5 @@ import os
 import sys
 sys.path.append('../')
 
-import app, worker
+import app
+import app.worker
