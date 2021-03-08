@@ -23,7 +23,8 @@
         // // var socket_emi = new ReconnectingWebSocket(ws_scheme + location.host);
         // var socket_receive = new ReconnectingWebSocket(ws_scheme + location.host +'/twmc_p'+ x);
         var socket = io.connect(ws_scheme+location.host+'/twmc_p'+x);
-
+        console.log('ほすと',location.host);
+        console.log('えくす',x);
 
         
         // $('#enter').on('click', function() {

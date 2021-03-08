@@ -1,2 +1,2 @@
 web: gunicorn app.app:app —log-file=-
-worker: gunicorn worker:app
+worker: gunicorn worker
