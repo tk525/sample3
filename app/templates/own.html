@@ -43,10 +43,12 @@
                 
         $('#sendbutton').on('click', function() {
             var roomname = $('#rmid').val();
-            console.log('roomnameは',roomname);
+            console.log('roomnameは',roomname, '入力値は',$('#myMessage').val());
 
             var socket = io.connect(ws_scheme+location.host+roomname);
             socket.send($('#myMessage').val(), roomname);
+
+            $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
 
             $('#myMessage').val('');
         });
@@ -149,7 +151,7 @@
       
           <ul class="vertical menu" data-accordion-menu>
             <li>
-                <a href="#0">This is the code for a feature that could not be used due to heroku's slug size issue.</a>
+                <a href="#0">こレはこのページの設計のようなものです</a>
                 <ul class="menu vertical nested">
                   <li>
                       <textarea style="height: 500px;">
