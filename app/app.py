@@ -533,9 +533,9 @@ def background_process(name):
     resp = requests.get(name)
     return len(resp.text.split())
 
-# def x(x): #エラーを強制的に黙らせる
+# # def x(x): #エラーを強制的に黙らせる
 # q = Queue(connection=conn)
-#     # result = q.enqueue(background_process, socketio)
+# #     # result = q.enqueue(background_process, socketio)
 # socketio = q.enqueue(
 #     background_process,
 #     'https://sample301-20210223.herokuapp.com/twmc_p/'
