@@ -526,12 +526,12 @@ app.config['SECRET_KEY'] = SECRET_KEY
 socketio = SocketIO(app, cors_allowed_origins='*')
 # socketio = SocketIO(app, async_mode=None)
 
-def background_process(name):
-    # ここに時間のかかる処理を書く
-    # return name * 10
-    print('ああああ',name)
-    resp = requests.get(name)
-    return len(resp.text.split())
+# def background_process(name):
+#     # ここに時間のかかる処理を書く
+#     # return name * 10
+#     print('ああああ',name)
+#     resp = requests.get(name)
+#     return len(resp.text.split())
 
 # # def x(x): #エラーを強制的に黙らせる
 # q = Queue(connection=conn)
@@ -550,7 +550,7 @@ def roomnm():
 
 @socketio.on('message', namespace=roomnm())
 def handleMessage(msg, roomname):
-    print('['+ roomname +'あん？] Message: ' + msg )
+    print('['+ roomname +'] Message: ' + msg )
     send(msg,
         broadcast=True,
         # namespace=roomname

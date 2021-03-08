@@ -18,27 +18,35 @@
             var ws_scheme = "ws://"
         };
         
-        var socket_emi = io.connect(ws_scheme+location.host);
-        var socket = io.connect(ws_scheme+location.host+x);
-        // var socket_emi = new ReconnectingWebSocket(ws_scheme + location.host);
-        var socket_receive = new ReconnectingWebSocket(ws_scheme + location.host +'/twmc_p'+ x);
+        // var socket_emi = io.connect(ws_scheme+location.host);
+        // var socket = io.connect(ws_scheme+location.host+x);
+        // // var socket_emi = new ReconnectingWebSocket(ws_scheme + location.host);
+        // var socket_receive = new ReconnectingWebSocket(ws_scheme + location.host +'/twmc_p'+ x);
+        var socket = io.connect(ws_scheme+location.host+'/twmc_p'+x);
 
 
         
-        $('#enter').on('click', function() {
-            var value = $('#enter').val();
-            console.log('確認1');
-            socket_emi.emit("joins", value);
-        });
+        // $('#enter').on('click', function() {
+        //     var value = $('#enter').val();
+        //     console.log('確認1');
+        //     socket_emi.emit("joins", value);
+        // });
 
-        socket.on('message', function(msg) {
-            $("#messages").append('<li>'+msg+'</li>');
-            console.log('Received message');
+        // socket.on('message', function(msg) {
+        socket.on('message', function() {
+
+            $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
+
+            console.log('Received message',$('#myMessage').val());
         });
                 
         $('#sendbutton').on('click', function() {
             var roomname = '/'+$('#rmid').val();
+            console.log('roomnameは',roomname);
+
+            var socket = io.connect(ws_scheme+location.host+roomname);
             socket.send($('#myMessage').val(), roomname);
+
             $('#myMessage').val('');
         });
 
