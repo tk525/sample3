@@ -69,7 +69,8 @@
         //     console.log('Received message');
         // });
 
-        socket.on('message', function(msg) {
+        // socket.on('message', function(msg) {
+        socket.on('get_msg', function(msg) {
         // socket.onmessage = function(message) {
             // var data = JSON.parse(msg.data);
             console.log('メッセージ受信処理開始', msg.data);
@@ -90,7 +91,11 @@
             console.log('入力値/roomname',$('#myMessage').val(), roomname);
 
             var socket = io.connect(ws_scheme+location.host+roomname);
-            socket.send($('#myMessage').val(), roomname);
+            socket.on('message', function() {
+
+                socket.send($('#myMessage').val(), roomname);
+            
+            });
             // socket.send(JSON.stringify({ handle: roomname, text: $('#myMessage').val() }));
 
 
