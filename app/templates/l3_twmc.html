@@ -67,14 +67,17 @@
 
         //     console.log('Received message');
         // });
-        event.preventDefault();
 
-        socket.on('message', function() {
+        // socket.on('message', function() {
+        socket.onmessage = function(message) {
+            var data = JSON.parse(message.data);
 
-            $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
+            $("#messages").append('<li>'+ data +'</li>');
 
-            console.log('Received message', $('#myMessage').val());
-        });
+            console.log('Received message', data);
+
+        };
+        // });
 
 
 
