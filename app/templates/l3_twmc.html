@@ -68,9 +68,11 @@
         //     console.log('Received message');
         // });
         event.preventDefault();
+
         socket.on('message', function() {
-            event.preventDefault();
+
             $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
+
             console.log('Received message', $('#myMessage').val());
         });
 
