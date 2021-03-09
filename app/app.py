@@ -546,12 +546,12 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 
 def roomnm():
     roomname = l3_twmc.roomname()
-    print('ここあ',roomname)
+    # print('ここあ',roomname) #/RKwM7UEI3v
     return roomname
 
 @socketio.on('message', namespace=roomnm())
 def handleMessage(msg, roomname):
-    print('['+ roomname +'] Message: ' + msg.data )
+    print('['+ roomname +'] Message: ' + msg )
     send(msg,
         broadcast=True,
         # namespace=roomname
