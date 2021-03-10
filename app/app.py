@@ -549,7 +549,7 @@ def roomnm():
     print('ここあ',roomname) #/RKwM7UEI3v
     return roomname
 
-@socketio.on('message', namespace='/RKwM7UEI3v')
+@socketio.on('message', namespace='/twmc')
 def handleMessage(msg, roomname):
     print('['+ roomname +'] Message: ' + msg )
     send(msg, broadcast=True)
