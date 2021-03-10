@@ -11,31 +11,16 @@
         var x = $('#rn').val();
         console.log('ここ',x);
 
-        // var socket_emi = io.connect('https://sample301-20210223.herokuapp.com');
-        // var socket = io.connect('https://sample301-20210223.herokuapp.com'+'/'+x);
-
-
         if (window.location.protocol == "https:") {
             var ws_scheme = "wss://";
-            // var ws_scheme = "wss:";
             } else {
             var ws_scheme = "ws://"
-            // var ws_scheme = "ws:"
         };
         
         // var socket_emi = io.connect("ws://"+location.host+'/twmc_p');
         // var socket = io.connect(ws_scheme+location.host+x);
         // var socket = io.connect(ws_scheme+location.host);
-        // console.log('あ',ws_scheme+location.host+'/twmc_p')
-        // var socket = io.connect("ws://"+location.host+'/twmc_p'+x);
-        // var socket_emi = new ReconnectingWebSocket(ws_scheme + location.host);
-        // var socket_receive = new ReconnectingWebSocket("ws://" + location.host +'/twmc_p'+ x);
         
-        // 課金料金が超えるので一旦コメントアウト
-        // $('#choice').on('click', function() { //部屋チョイス
-        //     var value = $('#twmc_rn').val();
-        //     socket_emi.emit("join", value);
-        // });
 
         // 課金料金が超えるので一旦コメントアウト
         // var socket = io.connect(ws_scheme+location.host+x);
@@ -79,16 +64,11 @@
         var socket = io.connect(ws_scheme+location.host);
 
         socket.on('message', function(msg) {
-        // socket.on('get_msg', function(msg) {
-        // socket.onmessage = function(message) {
-            // var data = JSON.parse(msg.data);
-            console.log('メッセージ受信処理開始', msg);
 
             $("#messages").append('<li>'+ msg +'</li>');
 
-            console.log('Received message', msg);
+            console.log('受信内容(メッセージ反映まで1.30sec)', msg);
 
-        // };
         });
 
 
@@ -103,17 +83,11 @@
             var socket = io.connect(ws_scheme+location.host);
 
             socket.send($('#myMessage').val(), roomname);            
-            // socket.send(JSON.stringify({ handle: roomname, text: $('#myMessage').val() }));
-
-            // 秘奥義
-            // $("#messages").append('<li>'+ msg +'</li>');
-
 
             $('#myMessage').val(''); 
             console.log('完了');
 
         });
-
 
 
 

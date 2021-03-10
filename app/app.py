@@ -517,31 +517,9 @@ def twmc_ajax():
 
 
 
-
-
-
-
 SECRET_KEY = os.environ.get('SECRET_KEY')
 app.config['SECRET_KEY'] = SECRET_KEY
 socketio = SocketIO(app, cors_allowed_origins='*')
-# socketio = SocketIO(app, async_mode=None)
-
-# def background_process(name):
-#     # ここに時間のかかる処理を書く
-#     # return name * 10
-#     print('ああああ',name)
-#     resp = requests.get(name)
-#     return len(resp.text.split())
-
-# # def x(x): #エラーを強制的に黙らせる
-# q = Queue(connection=conn)
-# #     # result = q.enqueue(background_process, socketio)
-# socketio = q.enqueue(
-#     background_process,
-#     'https://sample301-20210223.herokuapp.com/twmc_p/'
-#     )
-    # return result
-
 
 
 def roomnm():
@@ -558,37 +536,6 @@ def handleMessage(msg, roomname):
     # return jsonify({'output':msg})
 
 
-
-# @socketio.on("join", namespace='/jimin')
-# @socketio.on("join") 
-# def join(roomname):
-#     print(f"A user is joining. roomname is {roomname}")
-#     join_room(roomname)
-
-# @socketio.on("parting") #csv読み込みの仕様により不要と判断
-# def parting(roomname):
-
-#     room_list = pd.read_pickle("app/rm.csv")
-#     print(room_list)
-#     try:
-#         num = room_list.index(roomname)
-#         print(num)
-#         room_list.pop(num)
-
-#         pd.to_pickle(room_list, "app/rm.csv")
-#     except ValueError:
-#         pass
-
-# #namespaceが部屋番号っぽい
-# class test(Namespace):
-#     roomname = l3_twmc.roomname()
-#     @socketio.on('message', namespace=roomname)
-#     # @socketio.on('message', namespace=x)
-#     def handleMessage(msg, roomname):
-#         print('['+ roomname +'あん？] Message: ' + msg )
-#         send(msg,broadcast=True,
-#             # namespace=roomname
-#         )
 
 
 

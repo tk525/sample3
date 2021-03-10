@@ -6,15 +6,10 @@
     $(document).ready(function() {
     
         var x = $('#rmid').val();
-        // console.log('ここ',x);
 
-        // var socket_emi = io.connect('https://sample301-20210223.herokuapp.com');
-        // var socket = io.connect('https://sample301-20210223.herokuapp.com'+'/'+x);
         if (window.location.protocol == "https:") {
-            // var ws_scheme = "wss://";
             var ws_scheme = "wss://";
             } else {
-            // var ws_scheme = "ws://"
             var ws_scheme = "ws://"
         };
         
@@ -22,22 +17,22 @@
         // var socket = io.connect(ws_scheme+location.host+x);
         // // var socket_emi = new ReconnectingWebSocket(ws_scheme + location.host);
         // var socket_receive = new ReconnectingWebSocket(ws_scheme + location.host +'/twmc_p'+ x);
-        var socket = io.connect(ws_scheme+location.host+'/twmc_p'+x);
+        // var socket = io.connect(ws_scheme+location.host+'/twmc_p'+x);
         // console.log('ほすと',location.host); //sample301-20210223.herokuapp.com
         // console.log('えくす',x); ///RKwM7UEI3v
-
+        
         
         // $('#enter').on('click', function() {
-        //     var value = $('#enter').val();
-        //     console.log('確認1');
-        //     socket_emi.emit("joins", value);
-        // });
-
-        // socket.on('message', function(msg) {
+          //     var value = $('#enter').val();
+          //     console.log('確認1');
+          //     socket_emi.emit("joins", value);
+          // });
+          
+        var socket = io.connect(ws_scheme+location.host);
         socket.on('message', function(msg) {
             console.log('msg',msg);
             // $("#messages").append('<li>'+msg.data+'</li>');
-            $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
+            $("#messages").append('<li>'+ msg +'</li>');
 
             console.log('Received message',$('#myMessage').val());
         });
@@ -46,10 +41,9 @@
             var roomname = $('#rmid').val();
             console.log('roomnameは',roomname, '入力値は',$('#myMessage').val());
 
-            var socket = io.connect(ws_scheme+location.host+roomname);
+            // var socket = io.connect(ws_scheme+location.host+roomname);
+            var socket = io.connect(ws_scheme+location.host);
             socket.send($('#myMessage').val(), roomname);
-
-            $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
 
             $('#myMessage').val('');
         });
