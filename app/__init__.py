@@ -3,4 +3,4 @@ import sys
 sys.path.append('../')
 
 import app
-from . import worker
+import worker
