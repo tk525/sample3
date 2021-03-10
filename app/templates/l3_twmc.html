@@ -84,7 +84,7 @@
 
 
 
-        $('#sendbutton').on('click', function() {
+        $('#sendbutton').on('click', function() { //OK!
             event.preventDefault();
 
             var roomname = $('#rn').val();
@@ -92,29 +92,8 @@
 
             var socket = io.connect(ws_scheme+location.host+roomname);
 
-            // socket.on('message', function() {
-
-            socket.send($('#myMessage').val(), roomname);
-            
-            // });
+            socket.send($('#myMessage').val(), roomname);            
             // socket.send(JSON.stringify({ handle: roomname, text: $('#myMessage').val() }));
-
-
-
-
-
-            // // 本番では分離。オーナー側が未調整で見れないためここに記載してる
-            // socket.on('message', function() {
-            // // socket_receive.onmessage = function() { //メッセージ受信 後で
-            //     var data = JSON.parse($('#myMessage').val());
-            //     console.log('受信値',data);
-
-            // });
-
-            // $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
-
-
-
 
             $('#myMessage').val(''); 
             console.log('完了');

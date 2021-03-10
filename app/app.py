@@ -555,7 +555,7 @@ def handleMessage(msg, roomname):
     send(msg, broadcast=True,
         # namespace=roomname
     )
-    # emit('get_msg', {'data': msg}, broadcast=True)
+    emit('message',msg ,broadcast=True)
 
 # @socketio.on("join", namespace='/jimin')
 # @socketio.on("join") 
