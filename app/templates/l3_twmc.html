@@ -24,9 +24,9 @@
         };
         
         // var socket_emi = io.connect("ws://"+location.host+'/twmc_p');
-        // var socket = io.connect(ws_scheme+location.host+x);
-        var socket = io.connect(ws_scheme+location.host);
-        console.log('あ',ws_scheme+location.host+'/twmc_p')
+        var socket = io.connect(ws_scheme+location.host+x);
+        // var socket = io.connect(ws_scheme+location.host);
+        // console.log('あ',ws_scheme+location.host+'/twmc_p')
         // var socket = io.connect("ws://"+location.host+'/twmc_p'+x);
         // var socket_emi = new ReconnectingWebSocket(ws_scheme + location.host);
         // var socket_receive = new ReconnectingWebSocket("ws://" + location.host +'/twmc_p'+ x);
@@ -97,8 +97,8 @@
             var roomname = $('#rn').val();
             console.log('入力値',$('#myMessage').val(), '部屋名', roomname);
 
-            // var socket = io.connect(ws_scheme+location.host+roomname);
-            var socket = io.connect(ws_scheme+location.host);
+            var socket = io.connect(ws_scheme+location.host+roomname);
+            // var socket = io.connect(ws_scheme+location.host);
 
             socket.send($('#myMessage').val(), roomname);            
             // socket.send(JSON.stringify({ handle: roomname, text: $('#myMessage').val() }));
