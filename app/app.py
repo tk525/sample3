@@ -549,14 +549,14 @@ def roomnm():
     print('ここあ',roomname) #/RKwM7UEI3v
     return roomname
 
-@socketio.on('message', namespace=roomnm())
+@socketio.on('message', namespace='/RKwM7UEI3v')
 def handleMessage(msg, roomname):
     print('['+ roomname +'] Message: ' + msg )
-    # send(msg, broadcast=True,
-        # namespace=roomname
-    # )
+    send(msg, broadcast=True)
     # emit('message',msg ,broadcast=True)
-    return jsonify({'output':msg})
+    # return jsonify({'output':msg})
+
+
 
 # @socketio.on("join", namespace='/jimin')
 # @socketio.on("join") 
