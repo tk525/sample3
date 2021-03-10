@@ -20,40 +20,6 @@
         // var socket_emi = io.connect("ws://"+location.host+'/twmc_p');
         // var socket = io.connect(ws_scheme+location.host+x);
         // var socket = io.connect(ws_scheme+location.host);
-        
-
-        // 課金料金が超えるので一旦コメントアウト
-        // var socket = io.connect(ws_scheme+location.host+x);
-        // socket.on('message', function(msg) {
-        // // socket_receive.onmessage = function(msg) { //メッセージ受信 後で
-        //     var data = JSON.parse(msg.data);
-        //     console.log('受信値',data);
-
-        //     $("#messages").append('<li>'+data+'</li>');
-        //     // $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
-
-        //     console.log('Received message');
-        // });
-
-
-
-        //     // 本番では分離。オーナー側が未調整で見れないためここに記載してる
-        // socket.on('message', function() {
-        // // socket_receive.onmessage = function() { //メッセージ受信 後で
-        //     var data = JSON.parse($('#myMessage').val());
-        //     $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
-        //     console.log('受信値',data);
-        // });
-        // socket.on('message', function(msg) {
-        // // socket_receive.onmessage = function(msg) { //メッセージ受信 後で
-        //     var data = JSON.parse(msg.data);
-        //     console.log('受信値',data);
-
-        //     $("#messages").append('<li>'+data+'</li>');
-        //     // $("#messages").append('<li>'+$('#myMessage').val()+'</li>');
-
-        //     console.log('Received message');
-        // });
 
 
 
@@ -61,14 +27,19 @@
 		//     socket.send('User has connected!');
 	    // });
 
-        var socket = io.connect(ws_scheme+location.host);
+
+        const options = { 
+            transports: ['websocket', 'polling' ]
+        };
+
+        // var socket = io.connect(ws_scheme+location.host);
+        var socket = io.connect(ws_scheme+location.host, options);
 
         socket.on('message', function(msg) {
 
             $("#messages").append('<li>'+ msg +'</li>');
 
             console.log('受信内容(メッセージ反映まで1.30sec)', msg);
-
         });
 
 
@@ -80,7 +51,8 @@
             console.log('入力値',$('#myMessage').val(), '部屋名', roomname);
 
             // var socket = io.connect(ws_scheme+location.host+roomname);
-            var socket = io.connect(ws_scheme+location.host);
+            // var socket = io.connect(ws_scheme+location.host);
+            var socket = io.connect(ws_scheme+location.host,options);
 
             socket.send($('#myMessage').val(), roomname);            
 

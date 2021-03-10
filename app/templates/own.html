@@ -13,25 +13,12 @@
             var ws_scheme = "ws://"
         };
         
-        // var socket_emi = io.connect(ws_scheme+location.host);
+
+
         // var socket = io.connect(ws_scheme+location.host+x);
-        // // var socket_emi = new ReconnectingWebSocket(ws_scheme + location.host);
-        // var socket_receive = new ReconnectingWebSocket(ws_scheme + location.host +'/twmc_p'+ x);
-        // var socket = io.connect(ws_scheme+location.host+'/twmc_p'+x);
-        // console.log('ほすと',location.host); //sample301-20210223.herokuapp.com
-        // console.log('えくす',x); ///RKwM7UEI3v
-        
-        
-        // $('#enter').on('click', function() {
-          //     var value = $('#enter').val();
-          //     console.log('確認1');
-          //     socket_emi.emit("joins", value);
-          // });
-          
         var socket = io.connect(ws_scheme+location.host);
         socket.on('message', function(msg) {
-            console.log('msg',msg);
-            // $("#messages").append('<li>'+msg.data+'</li>');
+
             $("#messages").append('<li>'+ msg +'</li>');
 
             console.log('Received message',$('#myMessage').val());
