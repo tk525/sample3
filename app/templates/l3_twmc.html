@@ -93,10 +93,10 @@
             event.preventDefault();
 
             var roomname = $('#rn').val();
-            console.log('入力値/roomname',$('#myMessage').val(), roomname);
+            console.log('入力値',$('#myMessage').val(), '部屋名', roomname);
 
-            // var socket = io.connect(ws_scheme+location.host+roomname);
-            var socket = io.connect(ws_scheme+location.host+'/twmc_p'+roomname);
+            var socket = io.connect(ws_scheme+location.host+roomname);
+            // var socket = io.connect(ws_scheme+location.host+'/twmc_p'+roomname);
 
             socket.send($('#myMessage').val(), roomname);            
             // socket.send(JSON.stringify({ handle: roomname, text: $('#myMessage').val() }));
