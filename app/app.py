@@ -552,10 +552,11 @@ def roomnm():
 @socketio.on('message', namespace=roomnm())
 def handleMessage(msg, roomname):
     print('['+ roomname +'] Message: ' + msg )
-    send(msg, broadcast=True,
+    # send(msg, broadcast=True,
         # namespace=roomname
-    )
-    emit('message',msg ,broadcast=True)
+    # )
+    # emit('message',msg ,broadcast=True)
+    return jsonify({'output':msg})
 
 # @socketio.on("join", namespace='/jimin')
 # @socketio.on("join") 

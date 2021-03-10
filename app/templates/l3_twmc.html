@@ -99,7 +99,12 @@
             console.log('完了');
 
         });
-        
+        // .done(function(data){
+        $("#messages").append('<li>'+ data.output +'</li>');
+        $("#messages").text(data.output).show();
+        // });
+
+
 
         // ページ離れる時の処理
         // window.onload = function(){
