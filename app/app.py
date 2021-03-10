@@ -545,7 +545,7 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 
 
 def roomnm():
-    roomname = "'" + l3_twmc.roomname() + "'"
+    roomname = l3_twmc.roomname()
     print('ここあ',roomname) #/RKwM7UEI3v
     return roomname
 

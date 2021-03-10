@@ -23,8 +23,6 @@
             var ws_scheme = "ws://"
             // var ws_scheme = "ws:"
         };
-        console.log('どめ',document.domain);
-        console.log('ローカル',location.host);
         
         // var socket_emi = io.connect("ws://"+location.host+'/twmc_p');
         var socket = io.connect(ws_scheme+location.host+'/twmc_p'+x);
@@ -75,11 +73,11 @@
         // socket.on('get_msg', function(msg) {
         // socket.onmessage = function(message) {
             // var data = JSON.parse(msg.data);
-            console.log('メッセージ受信処理開始', msg.data);
+            console.log('メッセージ受信処理開始', msg);
 
-            $("#messages").append('<li>'+ msg.data +'</li>');
+            $("#messages").append('<li>'+ msg +'</li>');
 
-            console.log('Received message', data);
+            console.log('Received message', msg);
 
         // };
         });
