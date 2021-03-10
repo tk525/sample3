@@ -24,7 +24,7 @@
         };
         
         // var socket_emi = io.connect("ws://"+location.host+'/twmc_p');
-        var socket = io.connect(ws_scheme+location.host+'/twmc_p'+x);
+        var socket = io.connect(ws_scheme+location.host+x);
         // var socket = io.connect("ws://"+location.host+'/twmc_p'+x);
         // var socket_emi = new ReconnectingWebSocket(ws_scheme + location.host);
         // var socket_receive = new ReconnectingWebSocket("ws://" + location.host +'/twmc_p'+ x);
