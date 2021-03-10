@@ -67,9 +67,12 @@
 
         //     console.log('Received message');
         // });
-        socket.on('connect', function() {
-		    socket.send('User has connected!');
-	    });
+
+
+
+        // socket.on('connect', function() {
+		//     socket.send('User has connected!');
+	    // });
 
         socket.on('message', function(msg) {
         // socket.on('get_msg', function(msg) {
@@ -92,7 +95,8 @@
             var roomname = $('#rn').val();
             console.log('入力値/roomname',$('#myMessage').val(), roomname);
 
-            var socket = io.connect(ws_scheme+location.host+roomname);
+            // var socket = io.connect(ws_scheme+location.host+roomname);
+            var socket = io.connect(ws_scheme+location.host+'/twmc_p'+roomname);
 
             socket.send($('#myMessage').val(), roomname);            
             // socket.send(JSON.stringify({ handle: roomname, text: $('#myMessage').val() }));
