@@ -523,7 +523,7 @@ def twmc_ajax():
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 app.config['SECRET_KEY'] = SECRET_KEY
-socketio = SocketIO(app, cors_allowed_origins='*', ping_timeout=600)
+socketio = SocketIO(app, cors_allowed_origins='*')
 # socketio = SocketIO(app, async_mode=None)
 
 # def background_process(name):
