@@ -546,7 +546,7 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 
 def roomnm():
     roomname = "'" + l3_twmc.roomname() + "'"
-    # print('ここあ',roomname) #/RKwM7UEI3v
+    print('ここあ',roomname) #/RKwM7UEI3v
     return roomname
 
 @socketio.on('message', namespace=roomnm())
@@ -555,7 +555,7 @@ def handleMessage(msg, roomname):
     send(msg, broadcast=True,
         # namespace=roomname
     )
-    emit('get_msg', {'data': msg}, broadcast=True)
+    # emit('get_msg', {'data': msg}, broadcast=True)
 
 # @socketio.on("join", namespace='/jimin')
 # @socketio.on("join") 
